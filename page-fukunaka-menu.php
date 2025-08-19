@@ -94,18 +94,24 @@ get_header(); ?>
                                 <div class="menu-item-content">
                                     <div class="menu-item-header">
                                         <h3 class="menu-item-name"><?php the_title(); ?></h3>
-                                        <?php if (get_field('price')) : ?>
+                                        <?php 
+                                        $price = get_post_meta(get_the_ID(), '_menu_price', true);
+                                        if ($price) : ?>
                                             <span class="menu-leader" aria-hidden="true"></span>
-                                            <span class="menu-item-price">¥<?php the_field('price'); ?></span>
+                                            <span class="menu-item-price"><?php echo ($price === '時価') ? $price : '¥' . esc_html($price); ?></span>
                                         <?php endif; ?>
                                     </div>
                                     <div class="menu-item-meta">
-                                        <?php if (get_field('is_seasonal') && get_field('is_seasonal') == true) : ?>
+                                        <?php 
+                                        $is_seasonal = get_post_meta(get_the_ID(), '_menu_is_seasonal', true);
+                                        if ($is_seasonal == '1') : ?>
                                             <span class="menu-badge seasonal">季節限定</span>
                                         <?php endif; ?>
                                     </div>
-                                    <?php if (get_field('description')) : ?>
-                                        <p class="menu-item-description"><?php the_field('description'); ?></p>
+                                    <?php 
+                                    $description = get_post_meta(get_the_ID(), '_menu_description', true);
+                                    if ($description) : ?>
+                                        <p class="menu-item-description"><?php echo esc_html($description); ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>

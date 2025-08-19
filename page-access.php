@@ -9,10 +9,11 @@
 get_header(); ?>
 
 <main class="main-content">
-    <section class="page-hero">
-        <div class="container">
-            <h1 class="page-title">アクセス</h1>
-            <p class="page-subtitle">両店舗へのご案内</p>
+    <!-- ページヘッダー -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">当店への道案内</h1>
+            <p class="page-subtitle">ACCESS</p>
         </div>
     </section>
 

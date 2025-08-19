@@ -1010,43 +1010,86 @@ a.btn-japanese:hover::after {
 }
 
 /* ==========================================
-   ページヘッダー
+   ページヘッダー（統一デザイン）
    ========================================== */
 .page-header {
-  background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
   padding: var(--spacing-xxl) 0 var(--spacing-xl);
   margin-top: 80px;
   text-align: center;
-  color: var(--bg-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M1200 0L0 0 0 120 1200 120z" fill="%23ffffff" opacity="0.1"/></svg>');
+  background-size: cover;
 }
 
 .page-header-content {
+  position: relative;
+  z-index: 1;
   animation: fadeInUp 0.8s ease;
 }
 
 /* ==========================================
-   WordPress固有のスタイル
+   ページヒーロー（統一デザイン）
    ========================================== */
 .page-hero {
-  background: linear-gradient(135deg, #2a2a2a 0%, #1b1b1b 100%);
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
   padding: var(--spacing-xxl) 0 var(--spacing-xl);
   margin-top: 80px;
   text-align: center;
-  color: var(--bg-white);
+  position: relative;
+}
+
+.page-hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
 }
 
 .page-title {
   font-family: var(--font-serif);
   font-size: 3rem;
   font-weight: 500;
+  color: var(--primary-color);
   margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.05em;
 }
 
 .page-subtitle {
-  font-size: 1rem;
-  letter-spacing: 0.25em;
-  opacity: 0.9;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.875rem;
+  letter-spacing: 0.3em;
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+/* メニューページ用ヒーロー */
+.fukunaka-hero,
+.shiomachi-hero {
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+}
+
+.fukunaka-hero .page-title,
+.shiomachi-hero .page-title {
+  color: var(--primary-color);
+}
+
+.fukunaka-hero .page-subtitle,
+.shiomachi-hero .page-subtitle {
+  color: var(--secondary-color);
 }
 
 .main-content {
@@ -1614,12 +1657,12 @@ a.btn-japanese:hover::after {
   background: linear-gradient(180deg, #f5f5f5 0%, #fafafa 100%);
 }
 
-/* メニュー紹介セクション */
+/* メニュー紹介セクション（統一デザイン） */
 .menu-introduction {
-  background: linear-gradient(180deg, #3a3531 0%, #2d2925 100%);
-  padding: var(--spacing-xxl) 0;
-  position: relative;
-  border-bottom: 1px solid rgba(139, 115, 85, 0.3);
+  background-color: var(--bg-white);
+  padding: var(--spacing-xl) 0;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .intro-content {
@@ -1631,9 +1674,9 @@ a.btn-japanese:hover::after {
 .intro-content h2 {
   font-family: var(--font-serif);
   font-size: 2.5rem;
-  font-weight: 300;
+  font-weight: 500;
   margin-bottom: var(--spacing-lg);
-  color: #f5f5f5;
+  color: var(--primary-color);
   position: relative;
   display: inline-block;
   letter-spacing: 0.08em;
@@ -1654,12 +1697,12 @@ a.btn-japanese:hover::after {
 .lead-text {
   font-size: 1.125rem;
   line-height: 2.2;
-  color: #e0e0e0;
+  color: var(--text-light);
   background-color: transparent;
   padding: 0;
   border-radius: 0;
   box-shadow: none;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: 0.05em;
 }
 

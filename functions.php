@@ -92,6 +92,9 @@ function washouen_scripts() {
 }
 add_action('wp_enqueue_scripts', 'washouen_scripts');
 
+// メニュー編集機能を読み込む
+require_once get_template_directory() . '/inc/menu-editor.php';
+
 // カスタム投稿タイプ: メニュー
 function washouen_custom_post_types() {
     // 福中店メニュー
@@ -109,7 +112,7 @@ function washouen_custom_post_types() {
         ),
         'public' => true,
         'has_archive' => true,
-        'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
+        'supports' => array('title', 'thumbnail', 'page-attributes'),
         'menu_icon' => 'dashicons-food',
         'rewrite' => array('slug' => 'fukunaka-menu-items'),
     ));
@@ -129,7 +132,7 @@ function washouen_custom_post_types() {
         ),
         'public' => true,
         'has_archive' => true,
-        'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
+        'supports' => array('title', 'thumbnail', 'page-attributes'),
         'menu_icon' => 'dashicons-food',
         'rewrite' => array('slug' => 'shiomachi-menu-items'),
     ));
