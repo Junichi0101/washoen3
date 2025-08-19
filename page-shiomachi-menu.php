@@ -121,7 +121,6 @@ get_header(); ?>
     <section class="menu-category sushi-category">
         <div class="container">
             <div class="category-header">
-                <span class="category-icon">🍣</span>
                 <h2 class="category-title">本日のおすすめ握り</h2>
                 <p class="category-description">旬の素材を職人の技で</p>
             </div>
@@ -214,7 +213,6 @@ get_header(); ?>
     <section class="menu-category sushi-category">
         <div class="container">
             <div class="category-header">
-                <span class="category-icon">⭐</span>
                 <h2 class="category-title">おまかせコース</h2>
                 <p class="category-description">季節の味覚をコースで堪能</p>
             </div>
@@ -254,7 +252,6 @@ get_header(); ?>
     <section class="menu-category">
         <div class="container">
             <div class="category-header">
-                <span class="category-icon">🍶</span>
                 <h2 class="category-title">お飲み物</h2>
                 <p class="category-description">鮨と楽しむ厳選された日本酒</p>
             </div>

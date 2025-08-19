@@ -121,7 +121,6 @@ get_header(); ?>
     <section class="menu-category" id="static-menu">
         <div class="container">
             <div class="category-header">
-                <span class="category-icon">🐟</span>
                 <h2 class="category-title">本日のおすすめ</h2>
                 <p class="category-description">市場直送の新鮮な魚介類</p>
             </div>
@@ -174,7 +173,6 @@ get_header(); ?>
     <section class="menu-category">
         <div class="container">
             <div class="category-header">
-                <span class="category-icon">🍶</span>
                 <h2 class="category-title">お飲み物</h2>
                 <p class="category-description">料理に合う厳選された日本酒・焼酎</p>
             </div>
