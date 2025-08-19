@@ -293,3 +293,73 @@ function washouen_menu_orderby($query) {
     }
 }
 add_action('pre_get_posts', 'washouen_menu_orderby');
+
+// 管理画面でソート用JavaScriptを読み込む
+function washouen_admin_menu_scripts($hook) {
+    global $post_type;
+    
+    if (($post_type == 'fukunaka_menu' || $post_type == 'shiomachi_menu') && $hook == 'edit.php') {
+        wp_enqueue_script('jquery-ui-sortable');
+        wp_enqueue_script(
+            'washouen-admin-menu-sort',
+            get_template_directory_uri() . '/js/admin-menu-sort.js',
+            array('jquery', 'jquery-ui-sortable'),
+            '1.0.0',
+            true
+        );
+        
+        wp_localize_script('washouen-admin-menu-sort', 'washouen_admin', array(
+            'nonce' => wp_create_nonce('update_menu_order')
+        ));
+    }
+}
+add_action('admin_enqueue_scripts', 'washouen_admin_menu_scripts');
+
+// Ajaxでメニューの並び順を更新
+function washouen_update_menu_order() {
+    // nonce検証
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'update_menu_order')) {
+        wp_die('Security check failed');
+    }
+    
+    // 権限チェック
+    if (!current_user_can('edit_posts')) {
+        wp_die('Permission denied');
+    }
+    
+    $order = $_POST['order'];
+    
+    if (is_array($order)) {
+        foreach ($order as $position => $post_id) {
+            // post-123 形式からIDを抽出
+            $post_id = str_replace('post-', '', $post_id);
+            
+            // menu_orderを更新
+            wp_update_post(array(
+                'ID' => intval($post_id),
+                'menu_order' => $position
+            ));
+        }
+        
+        wp_send_json_success();
+    } else {
+        wp_send_json_error();
+    }
+}
+add_action('wp_ajax_update_menu_order', 'washouen_update_menu_order');
+
+// メニュー一覧のデフォルトソートをmenu_orderに設定
+function washouen_menu_default_order($query) {
+    if (is_admin() && $query->is_main_query()) {
+        $post_type = $query->get('post_type');
+        
+        if ($post_type == 'fukunaka_menu' || $post_type == 'shiomachi_menu') {
+            // orderbyが指定されていない場合のみ
+            if (!$query->get('orderby')) {
+                $query->set('orderby', 'menu_order');
+                $query->set('order', 'ASC');
+            }
+        }
+    }
+}
+add_action('pre_get_posts', 'washouen_menu_default_order', 20);

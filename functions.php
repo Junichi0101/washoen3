@@ -95,6 +95,12 @@ add_action('wp_enqueue_scripts', 'washouen_scripts');
 // メニュー編集機能を読み込む
 require_once get_template_directory() . '/inc/menu-editor.php';
 
+// サンプルデータ生成機能を読み込む
+require_once get_template_directory() . '/inc/menu-sample-data.php';
+
+// インポート/エクスポート機能を読み込む
+require_once get_template_directory() . '/inc/menu-import-export.php';
+
 // カスタム投稿タイプ: メニュー
 function washouen_custom_post_types() {
     // 福中店メニュー
