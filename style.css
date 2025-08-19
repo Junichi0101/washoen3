@@ -1,0 +1,172 @@
+/*
+Theme Name: 和招縁 - Washouen
+Theme URI: https://washouen.jp/
+Author: Washouen Development Team
+Author URI: https://washouen.jp/
+Description: 和招縁（福中店・塩町店）の公式WordPressテーマ。瀬戸内海の新鮮な魚介を使った寿司と魚料理店のための高級感のあるレスポンシブデザイン。
+Version: 1.0.0
+License: GPL v2 or later
+Text Domain: washouen
+Tags: restaurant, sushi, japanese-food, responsive, custom-menu, featured-images, translation-ready
+*/
+
+/* ==========================================
+   和招縁 - メインスタイルシート
+   ========================================== */
+
+/* リセットと基本設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* カラーパレット */
+    --primary-color: #1a1a1a;
+    --secondary-color: #8b7355;
+    --accent-color: #c9302c;
+    --text-dark: #333333;
+    --text-light: #666666;
+    --bg-light: #f8f8f8;
+    --bg-white: #ffffff;
+    --border-color: #e0e0e0;
+    
+    /* フォント */
+    --font-serif: 'Noto Serif JP', serif;
+    --font-sans: 'Noto Sans JP', sans-serif;
+    
+    /* スペーシング */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4rem;
+    --spacing-xxl: 6rem;
+    
+    /* トランジション */
+    --transition: all 0.3s ease;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--text-dark);
+    background-color: var(--bg-white);
+    overflow-x: hidden;
+}
+
+/* WordPress管理バー対応 */
+body.admin-bar .header {
+    top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar .header {
+        top: 46px;
+    }
+}
+
+/* コンテナ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* セクション共通 */
+.section {
+    padding: var(--spacing-xxl) 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    position: relative;
+    display: inline-block;
+}
+
+.title-ja {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.title-en {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--secondary-color);
+}
+
+/* WordPress固有のクラス */
+.alignleft {
+    float: left;
+    margin-right: var(--spacing-md);
+}
+
+.alignright {
+    float: right;
+    margin-left: var(--spacing-md);
+}
+
+.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wp-caption {
+    max-width: 100%;
+}
+
+.wp-caption-text {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    text-align: center;
+    margin-top: var(--spacing-xs);
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.sticky {
+    background-color: var(--bg-light);
+    padding: var(--spacing-md);
+    border-left: 4px solid var(--secondary-color);
+}
+
+.bypostauthor {
+    background-color: var(--bg-light);
+}
+
+/* 画面読み上げテキスト */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/* その他のスタイルはcss/style.cssから読み込み */

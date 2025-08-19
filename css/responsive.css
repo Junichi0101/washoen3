@@ -1,0 +1,659 @@
+/* ==========================================
+   和招縁 - レスポンシブスタイルシート
+   ========================================== */
+
+/* タブレット（1024px以下） */
+@media screen and (max-width: 1024px) {
+    /* ヘッダー */
+    .header-inner {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .nav-menu ul {
+        gap: var(--spacing-md);
+    }
+    
+    /* ヒーロー */
+    .hero-title-main {
+        font-size: 2.5rem;
+    }
+    
+    .hero-title-sub {
+        font-size: 3rem;
+    }
+    
+    /* メニュー */
+    .menu-categories {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    /* コース */
+    .course-list {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    /* 店内 */
+    .interior-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .interior-text {
+        order: -1;
+    }
+    
+    /* 大将 */
+    .chef-content {
+        grid-template-columns: 1fr;
+    }
+    
+    /* アクセス */
+    .access-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .access-map .image-placeholder {
+        min-height: 400px;
+    }
+}
+
+/* スマートフォン（768px以下） */
+@media screen and (max-width: 768px) {
+    /* 基本設定 */
+    :root {
+        --spacing-xxl: 3rem;
+        --spacing-xl: 2rem;
+        --spacing-lg: 1.5rem;
+        --spacing-md: 1rem;
+        --spacing-sm: 0.75rem;
+    }
+    
+    .section {
+        padding: var(--spacing-xl) 0;
+    }
+    
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    /* タイトル */
+    .title-ja {
+        font-size: 1.75rem;
+    }
+    
+    .title-en {
+        font-size: 0.7rem;
+    }
+    
+    /* ヘッダー */
+    .header {
+        background-color: rgba(255, 255, 255, 0.98);
+    }
+    
+    .header-inner {
+        height: 60px;
+    }
+    
+    .logo-text {
+        font-size: 1.5rem;
+    }
+    
+    .logo-subtitle {
+        display: none;
+    }
+    
+    /* ナビゲーション（モバイル） */
+    .nav-menu {
+        position: fixed;
+        top: 60px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 60px);
+        background-color: var(--bg-white);
+        transition: left 0.3s ease;
+        overflow-y: auto;
+    }
+    
+    .nav-menu.active {
+        left: 0;
+    }
+    
+    .nav-menu ul,
+    .nav-menu-list {
+        flex-direction: column;
+        padding: var(--spacing-lg) var(--spacing-md);
+        gap: 0;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .nav-menu a {
+        display: block;
+        padding: var(--spacing-md) 0;
+        font-size: 1rem;
+    }
+    
+    .nav-menu a::after {
+        display: none;
+    }
+    
+    .reservation-btn {
+        margin-top: var(--spacing-md);
+        text-align: center;
+        width: 100%;
+    }
+    
+    /* ハンバーガーメニュー表示 */
+    .hamburger {
+        display: flex;
+    }
+    
+    /* ヒーロー */
+    .hero {
+        margin-top: 60px;
+        height: auto;
+        min-height: auto;
+        padding: var(--spacing-xl) 0;
+    }
+    
+    .hero-visual {
+        min-height: 600px;
+        padding: var(--spacing-lg);
+    }
+    
+    .hero-title-main {
+        font-size: 1.25rem;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .hero-title-sub {
+        font-size: 1.5rem;
+        letter-spacing: 0.05em;
+    }
+    
+    .hero-message p {
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .hero-btn {
+        width: 100%;
+        text-align: center;
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.95rem;
+    }
+    
+    /* コンセプト */
+    .concept-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    .concept-text h3 {
+        font-size: 1.5rem;
+    }
+    
+    .concept-text p {
+        font-size: 0.95rem;
+    }
+    
+    /* メニュー */
+    .menu-categories {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-title {
+        font-size: 1.25rem;
+        text-align: center;
+        padding-bottom: var(--spacing-sm);
+    }
+    
+    .menu-item {
+        font-size: 0.9rem;
+        padding: var(--spacing-xs) 0;
+    }
+    
+    .menu-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+    }
+    
+    .menu-gallery-item.large {
+        grid-column: span 2;
+    }
+    
+    .menu-notes {
+        padding: var(--spacing-sm);
+        font-size: 0.8rem;
+    }
+    
+    /* コース */
+    .course-item {
+        padding: var(--spacing-md);
+    }
+    
+    .course-name {
+        font-size: 1.25rem;
+    }
+    
+    .course-price {
+        font-size: 1.5rem;
+    }
+    
+    /* 初めての方へ */
+    .welcome-content {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .welcome-title {
+        font-size: 1.75rem;
+    }
+    
+    .welcome-text p {
+        font-size: 0.9rem;
+    }
+    
+    .store-detail-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .store-detail.reverse .store-detail-content {
+        direction: ltr;
+    }
+    
+    .store-detail-text h3 {
+        font-size: 1.5rem;
+    }
+    
+    .store-detail-text p {
+        font-size: 0.9rem;
+    }
+    
+    .image-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-xs);
+    }
+    
+    /* CTA */
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .cta-btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    /* 大将 */
+    .chef-profile h3 {
+        font-size: 1.5rem;
+    }
+    
+    .chef-philosophy {
+        padding: var(--spacing-sm);
+        font-size: 0.95rem;
+    }
+    
+    /* 予約 */
+    .reservation-methods {
+        grid-template-columns: 1fr;
+    }
+    
+    .phone-number {
+        font-size: 1.25rem;
+    }
+    
+    /* フッター */
+    .footer-upper {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        text-align: center;
+    }
+    
+    .footer-stores {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-menu {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    /* 店舗紹介 */
+    .stores-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .store-card {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .store-image {
+        height: 200px;
+    }
+    
+    .store-content {
+        padding: var(--spacing-md);
+    }
+    
+    .store-name {
+        font-size: 1.5rem;
+    }
+    
+    .store-description {
+        font-size: 0.9rem;
+    }
+    
+    /* ギャラリー */
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+    }
+    
+    .gallery-store-title {
+        font-size: 1.25rem;
+    }
+    
+    /* メニュープレビュー */
+    .menu-stores {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-store-card {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    /* アクセス */
+    .access-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .access-card {
+        margin-bottom: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+    
+    /* Google Maps */
+    .access-maps {
+        grid-template-columns: 1fr;
+    }
+    
+    .map-frame iframe {
+        height: 250px;
+    }
+    
+    /* ページヘッダー */
+    .page-header,
+    .page-hero {
+        padding: var(--spacing-lg) 0;
+        margin-top: 60px;
+    }
+    
+    .page-title {
+        font-size: 1.75rem;
+    }
+    
+    .page-subtitle {
+        font-size: 0.8rem;
+    }
+    
+    /* モーダル */
+    .modal-content {
+        padding: var(--spacing-lg) var(--spacing-md);
+        width: 95%;
+    }
+    
+    .modal-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    /* WordPressメニュー */
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .guide-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .transport-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .reservation-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 小型スマートフォン（480px以下） */
+@media screen and (max-width: 480px) {
+    /* ヒーロー */
+    .hero-title-main {
+        font-size: 1.5rem;
+    }
+    
+    .hero-title-sub {
+        font-size: 1.75rem;
+    }
+    
+    .hero-text {
+        font-size: 0.875rem;
+    }
+    
+    /* セクションタイトル */
+    .title-ja {
+        font-size: 1.75rem;
+    }
+    
+    /* コンセプト */
+    .concept-text h3 {
+        font-size: 1.25rem;
+    }
+    
+    /* メニュー */
+    .menu-category {
+        padding: var(--spacing-md);
+    }
+    
+    /* アクセス詳細 */
+    .access-method {
+        padding: var(--spacing-md);
+    }
+    
+    .access-method h3 {
+        font-size: 1.25rem;
+    }
+    
+    .access-method h4 {
+        font-size: 1rem;
+    }
+    
+    .route-steps {
+        margin-left: var(--spacing-sm);
+        font-size: 0.9rem;
+    }
+    
+    .parking-info,
+    .bus-info {
+        padding: var(--spacing-sm);
+        font-size: 0.9rem;
+    }
+    
+    .map-container iframe {
+        height: 300px;
+    }
+    
+    .contact-stores {
+        grid-template-columns: 1fr;
+    }
+    
+    .maps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* 店舗情報 */
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .store-info-content h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* 横向き対応 */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        height: 100vh;
+        min-height: auto;
+    }
+    
+    .hero-title-main {
+        font-size: 1.5rem;
+    }
+    
+    .hero-title-sub {
+        font-size: 2rem;
+    }
+    
+    .scroll-indicator {
+        display: none;
+    }
+}
+
+/* プリント対応 */
+@media print {
+    /* 不要な要素を非表示 */
+    .header,
+    .hamburger,
+    .scroll-indicator,
+    .reservation-btn,
+    .online-reservation-btn,
+    .modal,
+    .social-links {
+        display: none !important;
+    }
+    
+    /* ページブレイクの制御 */
+    .section {
+        page-break-inside: avoid;
+    }
+    
+    /* 背景色を削除 */
+    * {
+        background: transparent !important;
+        color: black !important;
+    }
+    
+    /* リンクのURLを表示 */
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+}
+
+/* ハイコントラストモード対応 */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-color: #000000;
+        --secondary-color: #555555;
+        --accent-color: #990000;
+        --text-dark: #000000;
+        --text-light: #333333;
+        --bg-light: #f0f0f0;
+        --bg-white: #ffffff;
+        --border-color: #666666;
+    }
+    
+    .reservation-btn,
+    .online-reservation-btn,
+    .submit-btn {
+        border: 2px solid currentColor;
+    }
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #f0f0f0;
+        --secondary-color: #c9a876;
+        --accent-color: #e85d5d;
+        --text-dark: #e0e0e0;
+        --text-light: #b0b0b0;
+        --bg-light: #1a1a1a;
+        --bg-white: #2a2a2a;
+        --border-color: #404040;
+    }
+    
+    body {
+        background-color: #1a1a1a;
+    }
+    
+    .header {
+        background-color: rgba(42, 42, 42, 0.95);
+    }
+    
+    .header.scrolled {
+        background-color: rgba(42, 42, 42, 0.98);
+    }
+    
+    .hero-visual {
+        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    }
+    
+    .image-placeholder {
+        background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    }
+    
+    .modal {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    .footer {
+        background-color: #1a1a1a;
+    }
+    
+    .page-hero {
+        background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+    }
+}
+
+/* アクセシビリティ：フォーカス表示の改善 */
+*:focus {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+/* アクセシビリティ：動きを減らす */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .scroll-indicator {
+        animation: none;
+    }
+}
