@@ -64,7 +64,7 @@ get_header(); ?>
             'posts_per_page' => -1,
             'tax_query' => array(
                 array(
-                    'taxonomy' => 'shiomachi_menu_category',
+                    'taxonomy' => 'shiomachi_category',
                     'field' => 'slug',
                     'terms' => $category_slug,
                 ),

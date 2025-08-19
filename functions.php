@@ -111,7 +111,7 @@ function washouen_custom_post_types() {
         'has_archive' => true,
         'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
         'menu_icon' => 'dashicons-food',
-        'rewrite' => array('slug' => 'fukunaka-menu'),
+        'rewrite' => array('slug' => 'fukunaka-menu-items'),
     ));
     
     // 塩町店メニュー
@@ -131,7 +131,7 @@ function washouen_custom_post_types() {
         'has_archive' => true,
         'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
         'menu_icon' => 'dashicons-food',
-        'rewrite' => array('slug' => 'shiomachi-menu'),
+        'rewrite' => array('slug' => 'shiomachi-menu-items'),
     ));
 }
 add_action('init', 'washouen_custom_post_types');

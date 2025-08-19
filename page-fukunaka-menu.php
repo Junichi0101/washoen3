@@ -64,7 +64,7 @@ get_header(); ?>
             'posts_per_page' => -1,
             'tax_query' => array(
                 array(
-                    'taxonomy' => 'fukunaka_menu_category',
+                    'taxonomy' => 'fukunaka_category',
                     'field' => 'slug',
                     'terms' => $category_slug,
                 ),
