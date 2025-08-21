@@ -588,23 +588,117 @@ body {
 /* ==========================================
    店舗関連
    ========================================== */
+.stores.section {
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f0f0f 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.stores.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 80%,
+      rgba(139, 115, 85, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(201, 48, 44, 0.05) 0%,
+      transparent 50%
+    ),
+    linear-gradient(45deg, rgba(139, 115, 85, 0.02) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+.stores.section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139, 115, 85, 0.3),
+    transparent
+  );
+}
+
+.stores .section-header {
+  position: relative;
+  z-index: 1;
+}
+
+.stores .section-title .title-ja {
+  color: #f8f8f8;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.stores .section-title .title-en {
+  color: rgba(139, 115, 85, 0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
 .stores-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-xl);
+  position: relative;
+  z-index: 1;
+}
+
+/* フェードインアニメーション */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .store-card {
-  background-color: var(--bg-white);
-  border-radius: 8px;
+  background: linear-gradient(145deg, #1a1a1a 0%, #2a2a2a 100%);
+  border: 1px solid rgba(139, 115, 85, 0.2);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  transition: var(--transition);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(139, 115, 85, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.store-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 115, 85, 0.05) 0%,
+    rgba(201, 48, 44, 0.03) 100%
+  );
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
 .store-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(139, 115, 85, 0.2);
+  border-color: rgba(139, 115, 85, 0.4);
+}
+
+.store-card:hover::before {
+  opacity: 1;
 }
 
 .store-image {
@@ -614,6 +708,9 @@ body {
 
 .store-content {
   padding: var(--spacing-lg);
+  background: rgba(0, 0, 0, 0.02);
+  position: relative;
+  z-index: 1;
 }
 
 .store-name {
@@ -621,13 +718,347 @@ body {
   font-size: 1.75rem;
   font-weight: 500;
   margin-bottom: var(--spacing-md);
-  color: var(--primary-color);
+  color: #f8f8f8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .store-description {
   line-height: 1.8;
-  color: var(--text-light);
+  color: #d0d0d0;
   margin-bottom: var(--spacing-md);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.store-card .store-features ul {
+  color: #c0c0c0;
+}
+
+.store-card .store-features li {
+  color: #c0c0c0;
+}
+
+.store-card .store-contact p {
+  color: #c0c0c0;
+}
+
+/* ==========================================
+   ギャラリーセクション - 深いネイビー基調
+   ========================================== */
+.gallery.section {
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 30% 20%,
+      rgba(139, 115, 85, 0.06) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 70% 80%,
+      rgba(26, 26, 46, 0.4) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+
+.gallery .section-title .title-ja {
+  color: #f0f0f0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.gallery .section-title .title-en {
+  color: rgba(139, 115, 85, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================
+   メニュープレビューセクション - ダークグリーン基調
+   ========================================== */
+.menu-preview.section {
+  background: linear-gradient(135deg, #0f1419 0%, #1a2f1a 50%, #0d1f0d 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-preview.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 60%,
+      rgba(139, 115, 85, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(201, 48, 44, 0.03) 0%,
+      transparent 40%
+    );
+  pointer-events: none;
+}
+
+.menu-preview .section-title .title-ja {
+  color: #f5f5f5;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+.menu-preview .section-title .title-en {
+  color: rgba(139, 115, 85, 0.85);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================
+   アクセスセクション - ダークブラウン基調
+   ========================================== */
+.access.section {
+  background: linear-gradient(135deg, #1a1410 0%, #2d2218 50%, #1f1814 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.access.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 40% 70%,
+      rgba(139, 115, 85, 0.08) 0%,
+      transparent 55%
+    ),
+    linear-gradient(45deg, rgba(45, 34, 24, 0.3) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.access .section-title .title-ja {
+  color: #f8f5f0;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.access .section-title .title-en {
+  color: rgba(139, 115, 85, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* 全セクションの共通z-index調整 */
+.gallery .section-header,
+.menu-preview .section-header,
+.access .section-header {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================
+   ギャラリーアイテムのスタイル調整
+   ========================================== */
+.gallery-item .image-placeholder {
+  background: linear-gradient(145deg, #1a1a2e 0%, #2a2a4e 100%);
+  border: 1px solid rgba(139, 115, 85, 0.15);
+  color: #d0d0e0;
+}
+
+.gallery-store-title {
+  color: #f0f0f0 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================
+   メニューストアカードのスタイル調整
+   ========================================== */
+.menu-store-card {
+  background: linear-gradient(145deg, #1a2f1a 0%, #2a3f2a 100%) !important;
+  border: 1px solid rgba(139, 115, 85, 0.2) !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.menu-store-card h3 {
+  color: #f5f5f5 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.menu-store-card p {
+  color: #d0d0d0 !important;
+}
+
+.menu-store-icon {
+  background: rgba(139, 115, 85, 0.15) !important;
+  color: rgba(139, 115, 85, 0.9) !important;
+}
+
+.menu-link {
+  color: rgba(139, 115, 85, 0.9) !important;
+}
+
+.menu-link:hover {
+  color: #f5f5f5 !important;
+}
+
+/* ==========================================
+   アクセスカードのスタイル調整
+   ========================================== */
+.access-card {
+  background: linear-gradient(145deg, #2d2218 0%, #3d3228 100%) !important;
+  border: 1px solid rgba(139, 115, 85, 0.25) !important;
+  color: #f0f0f0 !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.access-card h3 {
+  font-family: var(--font-serif) !important;
+  font-size: 1.75rem !important;
+  font-weight: 500 !important;
+  color: #f8f5f0 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+  margin-bottom: 0 !important;
+  padding: var(--spacing-sm) 0 var(--spacing-sm) 0 !important;
+  position: relative !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.4 !important;
+  text-align: center !important;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 115, 85, 0.1) 0%,
+    rgba(139, 115, 85, 0.05) 100%
+  ) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(139, 115, 85, 0.2) !important;
+}
+
+.access-card h3::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139, 115, 85, 1),
+    transparent
+  );
+  border-radius: 1px;
+}
+
+.access-card h3::after {
+  content: "";
+  position: absolute;
+  left: var(--spacing-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: rgba(139, 115, 85, 0.7);
+  font-family: var(--font-sans);
+}
+
+.access-card .address,
+.access-card .phone {
+  color: #e0e0e0 !important;
+}
+
+/* アクセスセクション専用のボタンスタイル */
+.access.section .btn-minimal {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 115, 85, 0.9) 0%,
+    rgba(139, 115, 85, 1) 100%
+  ) !important;
+  color: #ffffff !important;
+  border: 2px solid rgba(139, 115, 85, 1) !important;
+  box-shadow: 0 4px 15px rgba(139, 115, 85, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  backdrop-filter: blur(10px) !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.access.section .btn-minimal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(201, 48, 44, 0.8) 0%,
+    rgba(139, 115, 85, 0.8) 100%
+  );
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.access.section .btn-minimal:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(201, 48, 44, 0.95) 0%,
+    rgba(139, 115, 85, 0.95) 100%
+  ) !important;
+  border-color: rgba(201, 48, 44, 1) !important;
+  color: #ffffff !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 25px rgba(201, 48, 44, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.access.section .btn-minimal:hover::before {
+  opacity: 1;
+}
+
+.access-detail-link {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--spacing-lg);
+}
+
+/* 店舗地図のスタイル */
+.store-map {
+  margin: var(--spacing-md) 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(139, 115, 85, 0.2);
+  position: relative;
+}
+
+.store-map::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid rgba(139, 115, 85, 0.3);
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.store-map iframe {
+  filter: contrast(1.1) brightness(0.9) sepia(0.1);
+  transition: filter 0.3s ease;
+}
+
+.store-map:hover iframe {
+  filter: contrast(1.2) brightness(1) sepia(0.05);
 }
 
 /* ==========================================
@@ -1013,7 +1444,7 @@ a.btn-japanese:hover::after {
    ページヘッダー（統一デザイン）
    ========================================== */
 .page-header {
-  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #f8f8f8 0%, #1a1a1a 100%);
   padding: var(--spacing-xxl) 0 var(--spacing-xl);
   margin-top: 80px;
   text-align: center;
@@ -1022,14 +1453,11 @@ a.btn-japanese:hover::after {
 }
 
 .page-header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M1200 0L0 0 0 120 1200 120z" fill="%23ffffff" opacity="0.1"/></svg>');
-  background-size: cover;
+  width: 100%;
+  height: 120px; /* ←高さは必ず確保 */
+  background: url("http://localhost/my_blog/wp-content/uploads/2025/08/f81fd2e4c52864042852c112ce927ae2.svg")
+    no-repeat;
+  background-size: 100% 100%;
 }
 
 .page-header-content {
@@ -1056,7 +1484,12 @@ a.btn-japanese:hover::after {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--secondary-color),
+    transparent
+  );
 }
 
 .page-title {
@@ -1449,12 +1882,13 @@ a.btn-japanese:hover::after {
   display: block;
 }
 
-.access-info {
-  background-color: var(--bg-white);
-  border: 1px solid var(--border-color);
+.access.section .access-info {
+  background: linear-gradient(135deg, rgba(26, 20, 16, 0.8) 0%, rgba(45, 34, 24, 0.6) 100%);
+  border: 1px solid rgba(139, 115, 85, 0.3);
   border-radius: 12px;
   padding: var(--spacing-lg);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(139, 115, 85, 0.1);
+  backdrop-filter: blur(5px);
 }
 
 .info-item {

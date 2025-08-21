@@ -233,25 +233,6 @@ get_header(); ?>
                 </h2>
             </div>
             <div class="access-grid">
-                <!-- 塩町店 -->
-                <div class="access-card">
-                    <h3>和招縁 塩町店</h3>
-                    <div class="access-info">
-                        <p class="address">
-                            <i class="fas fa-map-marker-alt"></i>
-                            〒670-0904<br>
-                            兵庫県姫路市塩町177 アールビル 1F
-                        </p>
-                        <p class="phone">
-                            <i class="fas fa-phone"></i>
-                            TEL: <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?>
-                        </p>
-                        <a href="https://maps.google.com/?q=兵庫県姫路市塩町177" target="_blank" rel="noopener" class="btn btn-elegant">
-                            <i class="fas fa-map"></i> Google Mapで見る
-                        </a>
-                    </div>
-                </div>
-
                 <!-- 福中店 -->
                 <div class="access-card">
                     <h3>和招縁 福中店</h3>
@@ -265,7 +246,48 @@ get_header(); ?>
                             <i class="fas fa-phone"></i>
                             TEL: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?>
                         </p>
+                        <div class="store-map">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.9189066509725!2d134.6840093770815!3d34.8331313760934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554e1717b78f897%3A0xf43add4da66fbd2f!2z5ZKM5oub57iB56aP5Lit5bqX!5e0!3m2!1sja!2sjp!4v1755791309900!5m2!1sja!2sjp"
+                                width="100%" 
+                                height="200" 
+                                style="border:0;border-radius:8px;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
                         <a href="https://maps.google.com/?q=兵庫県姫路市米田町15-1" target="_blank" rel="noopener" class="btn btn-elegant">
+                            <i class="fas fa-map"></i> Google Mapで見る
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 塩町店 -->
+                <div class="access-card">
+                    <h3>和招縁 塩町店</h3>
+                    <div class="access-info">
+                        <p class="address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            〒670-0904<br>
+                            兵庫県姫路市塩町177 アールビル 1F
+                        </p>
+                        <p class="phone">
+                            <i class="fas fa-phone"></i>
+                            TEL: <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?>
+                        </p>
+                        <div class="store-map">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6549.9611743424!2d134.68583184217326!3d34.83158060862831!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554e0138af315ed%3A0x1e77ee41b6aee837!2z5ZKM5oub57iBIOWhqeeUuuW6lw!5e0!3m2!1sja!2sjp!4v1755791268802!5m2!1sja!2sjp"
+                                width="100%" 
+                                height="200" 
+                                style="border:0;border-radius:8px;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                        <a href="https://maps.google.com/?q=兵庫県姫路市塩町177" target="_blank" rel="noopener" class="btn btn-elegant">
                             <i class="fas fa-map"></i> Google Mapで見る
                         </a>
                     </div>
