@@ -9,21 +9,29 @@
 get_header(); ?>
 
 <main class="main-content">
-    <section class="page-hero fukunaka-hero">
-        <div class="container">
+    <!-- ページヘッダー -->
+    <section class="page-header">
+        <div class="page-header-content">
             <h1 class="page-title">福中店 お品書き</h1>
-            <p class="page-subtitle">活魚・一品料理</p>
+            <p class="page-subtitle">FUKUNAKA MENU</p>
         </div>
     </section>
 
-    <section class="menu-introduction">
+    <!-- メインメッセージ -->
+    <section class="welcome-message section">
         <div class="container">
-            <div class="intro-content">
-                <h2>瀬戸内の恵みを、多彩な調理法で</h2>
-                <p class="lead-text">
-                    毎朝市場から仕入れる新鮮な活魚を、お客様のご要望に合わせて調理いたします。<br>
-                    お造り、焼き物、煮付け、唐揚げなど、素材の持ち味を最大限に活かした料理をお楽しみください。
-                </p>
+            <div class="welcome-content">
+                <h2 class="welcome-title">瀬戸内の恵みを、多彩な調理法で</h2>
+                <div class="welcome-text">
+                    <p>
+                        毎朝市場から仕入れる新鮮な活魚を、お客様のご要望に合わせて調理いたします。<br>
+                        お造り、焼き物、煮付け、唐揚げなど、素材の持ち味を最大限に活かした料理をお楽しみください。
+                    </p>
+                    <p>
+                        福中店では「生・焼・煮・揚・蒸・にぎり」の6つの調理法で、<br>
+                        天然魚の本当の旨みを色々な形でご堪能いただけます。
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -85,34 +93,26 @@ get_header(); ?>
 
                     <div class="menu-grid">
                         <?php while ($menu_items->have_posts()) : $menu_items->the_post(); ?>
-                            <div class="menu-item">
+                            <div class="menu-card">
                                 <?php if (has_post_thumbnail()) : ?>
-                                    <div class="menu-item-image">
-                                        <?php the_post_thumbnail('medium'); ?>
+                                    <div class="menu-card-image">
+                                        <?php the_post_thumbnail('medium', array('loading' => 'lazy', 'alt' => get_the_title())); ?>
                                     </div>
                                 <?php endif; ?>
-                                <div class="menu-item-content">
-                                    <div class="menu-item-header">
-                                        <h3 class="menu-item-name"><?php the_title(); ?></h3>
-                                        <?php 
-                                        $price = get_post_meta(get_the_ID(), '_menu_price', true);
-                                        if ($price) : ?>
-                                            <span class="menu-leader" aria-hidden="true"></span>
-                                            <span class="menu-item-price"><?php echo ($price === '時価') ? $price : '¥' . esc_html($price); ?></span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="menu-item-meta">
+                                <div class="menu-card-content">
+                                    <h3 class="menu-card-title"><?php the_title(); ?></h3>
+                                    <?php 
+                                    $description = get_post_meta(get_the_ID(), '_menu_description', true);
+                                    if ($description) : ?>
+                                        <p class="menu-card-description"><?php echo esc_html($description); ?></p>
+                                    <?php endif; ?>
+                                    <div class="menu-card-meta">
                                         <?php 
                                         $is_seasonal = get_post_meta(get_the_ID(), '_menu_is_seasonal', true);
                                         if ($is_seasonal == '1') : ?>
                                             <span class="menu-badge seasonal">季節限定</span>
                                         <?php endif; ?>
                                     </div>
-                                    <?php 
-                                    $description = get_post_meta(get_the_ID(), '_menu_description', true);
-                                    if ($description) : ?>
-                                        <p class="menu-item-description"><?php echo esc_html($description); ?></p>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endwhile; ?>
@@ -219,20 +219,30 @@ get_header(); ?>
         </div>
     </section>
 
-    <section class="reservation-cta">
+    <!-- CTA -->
+    <section class="cta section">
         <div class="container">
-            <h2>ご予約・お問い合わせ</h2>
-            <p>お電話でのご予約を承っております</p>
-            <div class="contact-info">
-                <p class="phone-number">
-                    <i class="fas fa-phone"></i>
-                    <?php echo get_theme_mod('fukunaka_phone', '086-XXX-XXXX'); ?>
+            <div class="cta-content">
+                <h2>福中店で、本格的な日本料理をお楽しみください</h2>
+                <p>
+                    新鮮な活魚と職人の技で、心を込めたお料理をご提供いたします。<br>
+                    ご予約・お問い合わせはお気軽にどうぞ。
                 </p>
-                <p class="business-hours">
-                    営業時間：<?php echo get_theme_mod('fukunaka_hours', '昼 11:30～14:00 / 夜 17:00～22:00'); ?>
-                </p>
+                <div class="contact-info" style="background: rgba(255, 255, 255, 0.2); padding: var(--spacing-lg); border-radius: 8px; margin: var(--spacing-lg) auto; max-width: 500px;">
+                    <p class="phone-number" style="font-size: 1.5rem; font-weight: 500; margin-bottom: var(--spacing-sm); display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); color: var(--bg-white);">
+                        <i class="fas fa-phone"></i>
+                        <?php echo get_theme_mod('fukunaka_phone', '079-222-5678'); ?>
+                    </p>
+                    <p class="business-hours" style="color: rgba(255, 255, 255, 0.9);">
+                        営業時間：<?php echo get_theme_mod('fukunaka_hours', '昼 11:30～14:00 / 夜 17:00～22:00'); ?>
+                    </p>
+                </div>
+                <div class="cta-buttons">
+                    <a href="<?php echo home_url('/access/'); ?>" class="btn btn-elegant">
+                        <i class="fas fa-map-marker-alt"></i> アクセス情報を見る
+                    </a>
+                </div>
             </div>
-            <a href="<?php echo home_url('/access/'); ?>" class="btn btn-outline-elegant">アクセス情報を見る</a>
         </div>
     </section>
 </main>

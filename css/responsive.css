@@ -428,6 +428,19 @@
         grid-template-columns: 1fr;
     }
     
+    /* メニューカード（レスポンシブ対応） */
+    .menu-card {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .menu-card-title {
+        font-size: 1.125rem;
+    }
+    
+    .menu-card-description {
+        font-size: 0.9rem;
+    }
+    
     .comparison-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-md);

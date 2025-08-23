@@ -9,21 +9,29 @@
 get_header(); ?>
 
 <main class="main-content">
-    <section class="page-hero shiomachi-hero">
-        <div class="container">
+    <!-- ページヘッダー -->
+    <section class="page-header">
+        <div class="page-header-content">
             <h1 class="page-title">塩町店 お品書き</h1>
-            <p class="page-subtitle">鮨</p>
+            <p class="page-subtitle">SHIOMACHI MENU</p>
         </div>
     </section>
 
-    <section class="menu-introduction">
+    <!-- メインメッセージ -->
+    <section class="welcome-message section">
         <div class="container">
-            <div class="intro-content">
-                <h2>伝統の技が光る、本格江戸前鮨</h2>
-                <p class="lead-text">
-                    厳選された旬の魚介を、熟練の職人が一貫一貫丁寧に握ります。<br>
-                    赤酢を使った伝統のシャリと、こだわりの海苔が織りなす至福の味わいをお楽しみください。
-                </p>
+            <div class="welcome-content">
+                <h2 class="welcome-title">伝統の技が光る、本格江戸前鮨</h2>
+                <div class="welcome-text">
+                    <p>
+                        厳選された旬の魚介を、熟練の職人が一貫一貫丁寧に握ります。<br>
+                        赤酢を使った伝統のシャリと、こだわりの海苔が織りなす至福の味わいをお楽しみください。
+                    </p>
+                    <p>
+                        塩町店では、築地・豊洲市場から毎日仕入れる新鮮な魚介を使用し、<br>
+                        職人の確かな技術で美味しい鮨をご提供いたします。
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -83,17 +91,17 @@ get_header(); ?>
                         <p class="category-description"><?php echo esc_html($category_info['description']); ?></p>
                     </div>
 
-                    <div class="menu-grid sushi-grid">
+                    <div class="menu-grid">
                         <?php while ($menu_items->have_posts()) : $menu_items->the_post(); ?>
-                            <div class="menu-item sushi-item">
+                            <div class="menu-card">
                                 <?php if (has_post_thumbnail()) : ?>
-                                    <div class="menu-item-image">
-                                        <?php the_post_thumbnail('medium'); ?>
+                                    <div class="menu-card-image">
+                                        <?php the_post_thumbnail('medium', array('loading' => 'lazy', 'alt' => get_the_title())); ?>
                                     </div>
                                 <?php endif; ?>
-                                <div class="menu-item-content">
+                                <div class="menu-card-content">
                                     <div class="menu-item-header">
-                                        <h3 class="menu-item-name"><?php the_title(); ?></h3>
+                                    <h3 class="menu-card-title"><?php the_title(); ?></h3>
                                         <?php 
                                         $price = get_post_meta(get_the_ID(), '_menu_price', true);
                                         if ($price) : ?>
@@ -101,7 +109,7 @@ get_header(); ?>
                                             <span class="menu-item-price"><?php echo ($price === '時価') ? $price : '¥' . esc_html($price); ?></span>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="menu-item-meta">
+                                    <div class="menu-card-meta">
                                         <?php 
                                         $origin = get_post_meta(get_the_ID(), '_menu_origin', true);
                                         if ($origin) : ?>
@@ -111,7 +119,7 @@ get_header(); ?>
                                     <?php 
                                     $description = get_post_meta(get_the_ID(), '_menu_description', true);
                                     if ($description) : ?>
-                                        <p class="menu-item-description"><?php echo esc_html($description); ?></p>
+                                        <p class="menu-card-description"><?php echo esc_html($description); ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -132,84 +140,84 @@ get_header(); ?>
             </div>
 
             <div class="menu-grid sushi-grid">
-                <div class="menu-item sushi-item">
-                    <div class="menu-item-content">
+                <div class="menu-card">
+                    <div class="menu-card-content">
                         <div class="menu-item-header">
-                            <h3 class="menu-item-name">大トロ</h3>
+                        <h3 class="menu-card-title">大トロ</h3>
                             <span class="menu-leader" aria-hidden="true"></span>
                             <span class="menu-item-price">時価</span>
                         </div>
-                        <p class="menu-item-description">本マグロの最上級部位</p>
+                        <p class="menu-card-description">本マグロの最上級部位</p>
                     </div>
                 </div>
-                <div class="menu-item sushi-item">
-                    <div class="menu-item-content">
+                <div class="menu-card">
+                    <div class="menu-card-content">
                         <div class="menu-item-header">
-                            <h3 class="menu-item-name">中トロ</h3>
+                        <h3 class="menu-card-title">中トロ</h3>
                             <span class="menu-leader" aria-hidden="true"></span>
                             <span class="menu-item-price">時価</span>
                         </div>
-                        <p class="menu-item-description">程よい脂のりの本マグロ</p>
+                        <p class="menu-card-description">程よい脂のりの本マグロ</p>
                     </div>
                 </div>
-                <div class="menu-item sushi-item">
-                    <div class="menu-item-content">
+                <div class="menu-card">
+                    <div class="menu-card-content">
                         <div class="menu-item-header">
-                            <h3 class="menu-item-name">赤身</h3>
+                        <h3 class="menu-card-title">赤身</h3>
                             <span class="menu-leader" aria-hidden="true"></span>
                             <span class="menu-item-price">時価</span>
                         </div>
-                        <p class="menu-item-description">マグロ本来の旨み</p>
+                        <p class="menu-card-description">マグロ本来の旨み</p>
                     </div>
                 </div>
-                <div class="menu-item sushi-item">
-                    <div class="menu-item-content">
+                <div class="menu-card">
+                    <div class="menu-card-content">
                         <div class="menu-item-header">
-                            <h3 class="menu-item-name">コハダ</h3>
+                        <h3 class="menu-card-title">コハダ</h3>
                             <span class="menu-leader" aria-hidden="true"></span>
                             <span class="menu-item-price">時価</span>
                         </div>
-                        <p class="menu-item-description">江戸前の伝統、〆物の逸品</p>
+                        <p class="menu-card-description">江戸前の伝統、〆物の逸品</p>
                     </div>
                 </div>
-                <div class="menu-item sushi-item">
-                    <div class="menu-item-content">
+                <div class="menu-card">
+                    <div class="menu-card-content">
                         <div class="menu-item-header">
-                            <h3 class="menu-item-name">車海老</h3>
+                        <h3 class="menu-card-title">車海老</h3>
                             <span class="menu-leader" aria-hidden="true"></span>
                             <span class="menu-item-price">時価</span>
                         </div>
-                        <p class="menu-item-description">活き〆の新鮮な海老</p>
+                        <p class="menu-card-description">活き〆の新鮮な海老</p>
                     </div>
                 </div>
-                <div class="menu-item sushi-item">
-                    <div class="menu-item-content">
+                <div class="menu-card">
+                    <div class="menu-card-content">
                         <div class="menu-item-header">
-                            <h3 class="menu-item-name">雲丹</h3>
+                        <h3 class="menu-card-title">雲丹</h3>
                             <span class="menu-leader" aria-hidden="true"></span>
                             <span class="menu-item-price">時価</span>
                         </div>
-                        <p class="menu-item-description">濃厚な甘みの北海道産</p>
+                        <p class="menu-card-description">濃厚な甘みの北海道産</p>
                     </div>
                 </div>
-                <div class="menu-item sushi-item">
-                    <div class="menu-item-content">
+                <div class="menu-card">
+                    <div class="menu-card-content">
                         <div class="menu-item-header">
-                            <h3 class="menu-item-name">穴子</h3>
+                        <h3 class="menu-card-title">穴子</h3>
                             <span class="menu-leader" aria-hidden="true"></span>
                             <span class="menu-item-price">時価</span>
                         </div>
-                        <p class="menu-item-description">ふっくら煮上げた江戸前穴子</p>
+                        <p class="menu-card-description">ふっくら煮上げた江戸前穴子</p>
                     </div>
                 </div>
-                <div class="menu-item sushi-item">
-                    <div class="menu-item-content">
+                <div class="menu-card">
+                    <div class="menu-card-content">
                         <div class="menu-item-header">
-                            <h3 class="menu-item-name">いくら</h3>
+                        <h3 class="menu-card-title">いくら</h3>
                             <span class="menu-leader" aria-hidden="true"></span>
                             <span class="menu-item-price">時価</span>
                         </div>
-                        <p class="menu-item-description">北海道産の醤油漬け</p>
+                        <p class="menu-card-description">北海道産の醤油漬け</p>
                     </div>
                 </div>
             </div>
@@ -263,22 +271,22 @@ get_header(); ?>
             </div>
 
             <div class="menu-grid">
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <h3 class="menu-item-name">日本酒各種</h3>
-                        <p class="menu-item-description">全国から厳選した銘酒を取り揃えております</p>
+                <div class="menu-card">
+                    <div class="menu-card-content">
+                        <h3 class="menu-card-title">日本酒各種</h3>
+                        <p class="menu-card-description">全国から厳選した銘酒を取り揃えております</p>
                     </div>
                 </div>
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <h3 class="menu-item-name">ワイン</h3>
-                        <p class="menu-item-description">鮨に合うワインをソムリエが選定</p>
+                <div class="menu-card">
+                    <div class="menu-card-content">
+                        <h3 class="menu-card-title">ワイン</h3>
+                        <p class="menu-card-description">鮨に合うワインをソムリエが選定</p>
                     </div>
                 </div>
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <h3 class="menu-item-name">ビール・ソフトドリンク</h3>
-                        <p class="menu-item-description">各種ご用意しております</p>
+                <div class="menu-card">
+                    <div class="menu-card-content">
+                        <h3 class="menu-card-title">ビール・ソフトドリンク</h3>
+                        <p class="menu-card-description">各種ご用意しております</p>
                     </div>
                 </div>
             </div>
@@ -323,20 +331,30 @@ get_header(); ?>
         </div>
     </section>
 
-    <section class="reservation-cta">
+    <!-- CTA -->
+    <section class="cta section">
         <div class="container">
-            <h2>ご予約・お問い合わせ</h2>
-            <p>カウンター席は予約をおすすめしております</p>
-            <div class="contact-info">
-                <p class="phone-number">
-                    <i class="fas fa-phone"></i>
-                    <?php echo get_theme_mod('shiomachi_phone', '079-223-6879'); ?>
+            <div class="cta-content">
+                <h2>塩町店で、本格江戸前鮨をご堪能ください</h2>
+                <p>
+                    熟練の職人が握る、伝統の味わいをお楽しみいただけます。<br>
+                    カウンター席では職人との会話も魅力の一つです。
                 </p>
-                <p class="business-hours">
-                    営業時間：<?php echo get_theme_mod('shiomachi_hours', '昼 11:30～14:00 / 夜 17:00～22:00'); ?>
-                </p>
+                <div class="contact-info" style="background: rgba(255, 255, 255, 0.2); padding: var(--spacing-lg); border-radius: 8px; margin: var(--spacing-lg) auto; max-width: 500px;">
+                    <p class="phone-number" style="font-size: 1.5rem; font-weight: 500; margin-bottom: var(--spacing-sm); display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); color: var(--bg-white);">
+                        <i class="fas fa-phone"></i>
+                        <?php echo get_theme_mod('shiomachi_phone', '079-223-6879'); ?>
+                    </p>
+                    <p class="business-hours" style="color: rgba(255, 255, 255, 0.9);">
+                        営業時間：<?php echo get_theme_mod('shiomachi_hours', '昼 11:30～14:00 / 夜 17:00～22:00'); ?>
+                    </p>
+                </div>
+                <div class="cta-buttons">
+                    <a href="<?php echo home_url('/access/'); ?>" class="btn btn-elegant">
+                        <i class="fas fa-map-marker-alt"></i> アクセス情報を見る
+                    </a>
+                </div>
             </div>
-            <a href="<?php echo home_url('/access/'); ?>" class="btn btn-outline-elegant">アクセス情報を見る</a>
         </div>
     </section>
 </main>
