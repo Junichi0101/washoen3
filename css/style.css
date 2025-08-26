@@ -234,7 +234,7 @@ body {
 .hero-visual {
   position: relative;
   height: 100%;
-  background: linear-gradient(135deg, #3a3a3a 0%, #5a5a5a 100%);
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -247,13 +247,13 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: transparent;
 }
 
 .hero-content {
   position: relative;
   text-align: center;
-  color: var(--bg-white);
+  color: #666666;
   z-index: 1;
   max-width: 1000px;
 }
@@ -298,6 +298,7 @@ body {
   font-size: 1.125rem;
   line-height: 2;
   margin-bottom: var(--spacing-sm);
+  color: #666666;
 }
 
 .hero-buttons {
@@ -406,7 +407,7 @@ body {
 .concept-text p {
   margin-bottom: var(--spacing-md);
   line-height: 2;
-  color: var(--text-light);
+  color: #666666;
 }
 
 .concept-image {
@@ -1065,8 +1066,8 @@ body {
    フッター
    ========================================== */
 .footer {
-  background-color: var(--primary-color);
-  color: var(--bg-white);
+  background-color: #f8f8f8;
+  color: #666666;
   padding: var(--spacing-xl) 0;
 }
 
@@ -1106,7 +1107,7 @@ body {
 }
 
 .footer-menu a {
-  color: var(--bg-white);
+  color: #666666;
   text-decoration: none;
   opacity: 0.8;
   transition: var(--transition);
@@ -1124,6 +1125,15 @@ body {
 .footer-bottom p {
   font-size: 0.875rem;
   opacity: 0.6;
+  color: #666666;
+}
+
+/* フッター内の本文テキスト色統一 */
+.footer .store-tel,
+.footer .store-address,
+.footer .store-hours p,
+.footer .holiday {
+  color: #666666;
 }
 
 /* ==========================================
@@ -1719,7 +1729,7 @@ a.btn-japanese:hover::after {
   font-size: 1.125rem;
   line-height: 2;
   margin-bottom: var(--spacing-md);
-  color: var(--text-light);
+  color: #666666;
 }
 
 .store-introduction {

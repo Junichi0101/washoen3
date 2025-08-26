@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/C:\\xampp\\htdocs\\my_blog\\wordpress\\wp-content\\themes/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
