@@ -1830,6 +1830,20 @@ a.btn-japanese:hover::after {
   direction: ltr;
 }
 
+/* アクセスページ: マップを縦方向の中央に配置 */
+body.page-template-page-access-php .store-detail-content .store-detail-images,
+body.page-template-page-access .store-detail-content .store-detail-images {
+  align-self: center;
+}
+
+/* アクセスページ: 店舗紹介内の和風ボタンを中央寄せ（強制上書き） */
+body.page-template-page-access-php .store-detail-info a.btn.btn-japanese,
+body.page-template-page-access .store-detail-info a.btn.btn-japanese {
+  display: block !important;
+  width: max-content;
+  margin: var(--spacing-md) auto 0 !important;
+}
+
 .store-detail-text h3 {
   font-family: var(--font-serif);
   font-size: 2rem;
@@ -2020,6 +2034,13 @@ a.btn-japanese:hover::after {
   overflow: hidden;
   border-radius: 8px;
 }
+
+/* 汎用Google Map埋め込み（レスポンシブ比率保持） */
+.map-embed { position: relative; padding-top: 56.25%; }
+.map-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* Map下のアクションボタン配置 */
+.map-actions { display: flex; justify-content: center; margin-top: var(--spacing-md); }
 
 /* アクションボタン（地図/電話） */
 .access-actions {
@@ -2574,8 +2595,8 @@ a.btn-japanese:hover::after {
 
 /* 予約CTAセクション強化 */
 .reservation-cta {
-  background: linear-gradient(135deg, #3a3531 0%, #2d2925 100%);
-  color: var(--bg-white);
+  background: linear-gradient(135deg, #1a1410 0%, #2d2218 50%, #1f1814 100%);
+  color: #ffffff;
   padding: var(--spacing-xxl) 0;
   text-align: center;
   position: relative;
@@ -2596,42 +2617,23 @@ a.btn-japanese:hover::after {
   font-family: var(--font-serif);
   font-size: 2.5rem;
   margin-bottom: var(--spacing-sm);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   color: #ffffff;
   font-weight: 400;
   letter-spacing: 0.08em;
 }
 
 /* 上品な下線アクセント */
-.reservation-cta h2::after {
-  content: "";
-  display: block;
-  width: 80px;
-  height: 2px;
-  margin: var(--spacing-sm) auto 0;
-  background: linear-gradient(90deg, transparent, rgba(212, 197, 179, 0.9), transparent);
-  border-radius: 1px;
-}
+.reservation-cta h2::after { content: none; }
 
 .reservation-cta > p,
 .reservation-cta .cta-content p {
   font-size: 1.125rem;
   margin-bottom: var(--spacing-lg);
-  opacity: 0.9;
+  color: #f0f0f0;
 }
 
 /* セクション背景にごく薄い和柄のテクスチャ */
-.reservation-cta::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(1200px 400px at 10% 0%, rgba(212, 197, 179, 0.06), transparent 60%),
-    radial-gradient(800px 300px at 90% 100%, rgba(201, 48, 44, 0.08), transparent 60%),
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" opacity="0.06"><g fill="none" stroke="%23d4c5b3" stroke-width="0.4"><path d="M60 10l10 20 22 3-16 15 4 22-20-11-20 11 4-22-16-15 22-3 10-20z"/></g></svg>') repeat;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
+.reservation-cta::after { content: none; }
 
 /* 余白とボタンのまとまりを少し強調 */
 .reservation-cta .cta-buttons { margin-top: var(--spacing-md); }
@@ -2659,9 +2661,7 @@ a.btn-japanese:hover::after {
   letter-spacing: 0.05em;
 }
 
-.phone-number i {
-  color: #d4c5b3;
-}
+.phone-number i { color: #d4c5b3; }
 
 .business-hours {
   font-size: 1rem;
@@ -2669,24 +2669,15 @@ a.btn-japanese:hover::after {
   letter-spacing: 0.03em;
 }
 
-.reservation-cta .btn {
+/* CTA内のアウトラインボタン専用（必要な場合のみ） */
+.reservation-cta .btn.btn-outline-elegant {
   font-size: 1.125rem;
   padding: var(--spacing-md) var(--spacing-xl);
-  background: #ffffff;
-  color: #2a2622;
-  border: 2px solid #ffffff;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
 }
 
-.reservation-cta .btn:hover {
-  background: transparent;
-  color: #ffffff;
-  border-color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+.reservation-cta .btn.btn-elegant {
+  font-size: 1.125rem;
+  padding: var(--spacing-md) var(--spacing-xl);
 }
 
   .access-detail-link {

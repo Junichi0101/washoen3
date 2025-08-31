@@ -52,19 +52,30 @@ get_header(); ?>
                     </div>
                     <div class="store-detail-images">
                         <?php 
-                        $fukunaka_map_url = get_theme_mod('fukunaka_map_url', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.7!2d133.88!3d34.66!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDM5JzM2LjAiTiAxMzPCsDUyJzQ4LjAiRQ!5e0!3m2!1sja!2sjp!4v1234567890');
+                        $fukunaka_raw = get_theme_mod('fukunaka_map_url', '');
+                        $fukunaka_src = washouen_get_map_embed_src($fukunaka_raw);
+                        // Fallback（念のため）
+                        if (!$fukunaka_src) {
+                            $fukunaka_src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.9189066509725!2d134.6840093770815!3d34.8331313760934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554e1717b78f897%3A0xf43add4da66fbd2f!2z5ZKM5oub57iB56aP5Lit5bqX!5e0!3m2!1sja!2sjp!4v1755791309900!5m2!1sja!2sjp';
+                        }
                         ?>
-                        <div class="store-map">
-                            <iframe 
-                                src="<?php echo esc_url($fukunaka_map_url); ?>"
-                                width="100%" 
-                                height="400" 
-                                style="border:0;" 
-                                allowfullscreen="" 
-                                loading="lazy" 
-                                title="福中店の位置"
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
+                        <div class="map-embed">
+                            <iframe
+                                src="<?php echo esc_url($fukunaka_src); ?>"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                allowfullscreen
+                                aria-label="Google Maps"
+                            ></iframe>
+                        </div>
+                        <?php 
+                        $fukunaka_addr = get_theme_mod('fukunaka_address', '兵庫県姫路市米田町15-1');
+                        $fukunaka_maps_link = 'https://maps.google.com/?q=' . rawurlencode($fukunaka_addr);
+                        ?>
+                        <div class="map-actions">
+                            <a href="<?php echo esc_url($fukunaka_maps_link); ?>" target="_blank" rel="noopener" class="btn btn-elegant customize-unpreviewable">
+                                <i class="fas fa-map"></i> Google Mapで確認する
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -95,19 +106,29 @@ get_header(); ?>
                     </div>
                     <div class="store-detail-images">
                         <?php 
-                        $shiomachi_map_url = get_theme_mod('shiomachi_map_url', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.7!2d133.89!3d34.67!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDQwJzEyLjAiTiAxMzPCsDUzJzI0LjAiRQ!5e0!3m2!1sja!2sjp!4v1234567890');
+                        $shiomachi_raw = get_theme_mod('shiomachi_map_url', '');
+                        $shiomachi_src = washouen_get_map_embed_src($shiomachi_raw);
+                        if (!$shiomachi_src) {
+                            $shiomachi_src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6549.9611743424!2d134.68583184217326!3d34.83158060862831!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554e0138af315ed%3A0x1e77ee41b6aee837!2z5ZKM5oub57iBIOWhqeeUuuW6lw!5e0!3m2!1sja!2sjp!4v1755791268802!5m2!1sja!2sjp';
+                        }
                         ?>
-                        <div class="store-map">
-                            <iframe 
-                                src="<?php echo esc_url($shiomachi_map_url); ?>"
-                                width="100%" 
-                                height="400" 
-                                style="border:0;" 
-                                allowfullscreen="" 
-                                loading="lazy" 
-                                title="塩町店の位置"
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
+                        <div class="map-embed">
+                            <iframe
+                                src="<?php echo esc_url($shiomachi_src); ?>"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                allowfullscreen
+                                aria-label="Google Maps"
+                            ></iframe>
+                        </div>
+                        <?php 
+                        $shiomachi_addr = get_theme_mod('shiomachi_address', '兵庫県姫路市塩町177');
+                        $shiomachi_maps_link = 'https://maps.google.com/?q=' . rawurlencode($shiomachi_addr);
+                        ?>
+                        <div class="map-actions">
+                            <a href="<?php echo esc_url($shiomachi_maps_link); ?>" target="_blank" rel="noopener" class="btn btn-elegant customize-unpreviewable">
+                                <i class="fas fa-map"></i> Google Mapで確認する
+                            </a>
                         </div>
                     </div>
                 </div>

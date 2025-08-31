@@ -494,3 +494,46 @@ function washouen_admin_style() {
     </style>';
 }
 add_action('admin_head', 'washouen_admin_style');
+
+/**
+ * Extract a safe Google Maps embed src from Customizer value.
+ * - Accepts either a full <iframe ...>...</iframe> string or a plain URL.
+ * - Only allows hosts: www.google.com, maps.google.com and path starting with /maps/embed
+ * - Forces https scheme.
+ *
+ * @param string $raw Input value from Customizer.
+ * @return string Sanitized embed src URL or empty string on failure.
+ */
+function washouen_get_map_embed_src($raw) {
+    $raw = is_string($raw) ? trim($raw) : '';
+    if ($raw === '') return '';
+
+    // If full iframe is provided, extract src
+    if (stripos($raw, '<iframe') !== false) {
+        if (preg_match('/<iframe[^>]*\s+src\s*=\s*["\']([^"\']+)["\']/i', $raw, $m)) {
+            $raw = $m[1];
+        } else {
+            return '';
+        }
+    }
+
+    // Basic URL cleanup
+    $url = esc_url_raw($raw);
+    if (!$url) return '';
+
+    $parts = wp_parse_url($url);
+    if (!$parts || empty($parts['host']) || empty($parts['path'])) return '';
+
+    $host = strtolower($parts['host']);
+    $path = $parts['path'];
+    $allowed_hosts = array('www.google.com', 'maps.google.com');
+    if (!in_array($host, $allowed_hosts, true)) return '';
+    if (strpos($path, '/maps/embed') !== 0) return '';
+
+    // Ensure https
+    $scheme = 'https';
+    $query  = isset($parts['query']) && $parts['query'] !== '' ? ('?' . $parts['query']) : '';
+    $final  = $scheme . '://' . $host . $path . $query;
+
+    return esc_url($final);
+}
