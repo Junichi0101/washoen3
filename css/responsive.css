@@ -342,6 +342,12 @@
     .store-card {
         margin-bottom: var(--spacing-md);
     }
+    /* 二店舗のご案内：ボタン中央配置 */
+    .store-card .store-contact a.menu-link {
+        display: block;
+        width: max-content;
+        margin: var(--spacing-sm) auto 0;
+    }
     
     .store-image {
         height: 200px;

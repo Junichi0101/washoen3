@@ -24,6 +24,9 @@ function washouen_setup() {
     add_image_size('washouen-featured', 1200, 600, true);
     add_image_size('washouen-gallery', 400, 400, true);
     add_image_size('washouen-menu', 600, 400, true);
+    // ホーム用の画像サイズ（推奨サイズに合わせる）
+    add_image_size('home-hero', 1920, 1080, true);
+    add_image_size('home-card', 1200, 800, true);
     
     // カスタムメニューの登録
     register_nav_menus(array(
@@ -189,6 +192,76 @@ add_action('widgets_init', 'washouen_widgets_init');
 
 // カスタマイザー設定
 function washouen_customize_register($wp_customize) {
+    // ホーム設定セクション
+    $wp_customize->add_section('home_settings', array(
+        'title'    => __('ホーム設定', 'washouen'),
+        'priority' => 25,
+        'description' => __('ホームに表示する画像を設定します。', 'washouen'),
+    ));
+
+    // ヒーロー画像（推奨: 1920x1080）
+    $wp_customize->add_setting('home_hero_image', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint', // 添付IDを保持
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'home_hero_image', array(
+            'label'       => __('ヒーロー画像', 'washouen'),
+            'description' => __('推奨サイズ: 1920×1080（16:9）', 'washouen'),
+            'section'     => 'home_settings',
+            'mime_type'   => 'image',
+        )));
+    }
+
+    // 店舗カード画像（福中店）推奨: 1200x800
+    $wp_customize->add_setting('home_fukunaka_image', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'home_fukunaka_image', array(
+            'label'       => __('店舗カード画像（福中店）', 'washouen'),
+            'description' => __('推奨サイズ: 1200×800', 'washouen'),
+            'section'     => 'home_settings',
+            'mime_type'   => 'image',
+        )));
+    }
+
+    // 店舗カード画像（塩町店）推奨: 1200x800
+    $wp_customize->add_setting('home_shiomachi_image', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'home_shiomachi_image', array(
+            'label'       => __('店舗カード画像（塩町店）', 'washouen'),
+            'description' => __('推奨サイズ: 1200×800', 'washouen'),
+            'section'     => 'home_settings',
+            'mime_type'   => 'image',
+        )));
+    }
+
+    // アクセス背景（任意）推奨: 1920x1080
+    $wp_customize->add_setting('home_access_bg_image', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'home_access_bg_image', array(
+            'label'       => __('アクセス背景（任意）', 'washouen'),
+            'description' => __('推奨サイズ: 1920×1080', 'washouen'),
+            'section'     => 'home_settings',
+            'mime_type'   => 'image',
+        )));
+    }
     // 店舗情報セクション
     $wp_customize->add_section('washouen_store_info', array(
         'title' => __('店舗情報', 'washouen'),

@@ -241,6 +241,19 @@ body {
   padding: var(--spacing-xl) var(--spacing-md);
 }
 
+/* ヒーロー背景画像（Customizer対応） */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .hero-overlay {
   position: absolute;
   top: 0;
@@ -579,11 +592,22 @@ body {
   text-decoration: none;
   font-weight: 500;
   transition: var(--transition);
+  padding: 0.5rem 0.875rem; /* タップ領域拡大 */
+  line-height: 1.25;
+  min-height: 44px; /* アクセシビリティ */
+  border-radius: 999px;
+  white-space: nowrap; /* 折り返し防止 */
 }
 
 .menu-link:hover {
   color: var(--accent-color);
   transform: translateX(5px);
+}
+
+.menu-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.35);
+  border-radius: 999px;
 }
 
 /* ==========================================
@@ -705,6 +729,13 @@ body {
 .store-image {
   height: 250px;
   overflow: hidden;
+}
+
+.store-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .store-content {
@@ -853,6 +884,19 @@ body {
 .access .section-title .title-en {
   color: rgba(139, 115, 85, 0.9);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* アクセス背景画像（Customizer対応） */
+.access.section .section-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.access.section .section-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* 全セクションの共通z-index調整 */
@@ -1029,6 +1073,15 @@ body {
   position: relative;
   z-index: 1;
   margin-top: var(--spacing-lg);
+}
+
+/* アクセス内 「Google Mapで見る」ボタンの中央配置 */
+.access .access-info > a.btn,
+.access .access-info > a.btn-elegant,
+.access .access-info > a.btn-minimal {
+  display: block;
+  width: max-content;
+  margin: var(--spacing-md) auto 0;
 }
 
 /* 店舗地図のスタイル */
@@ -2589,8 +2642,48 @@ a.btn-japanese:hover::after {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-.access-detail-link {
-  display: flex;
-  justify-content: center;
-  padding: 0.5em 1em;
+  .access-detail-link {
+    display: flex;
+    justify-content: center;
+    padding: 0.5em 1em;
+  }
+
+/* ==========================================
+   ホームのみ：画像ホバー時のアニメーション無効化
+   画像が浮き上がる（scale / transform）演出を抑止
+   - blog トップ: body.home
+   - 固定フロントページ: body.front-page
+   ========================================== */
+.home :hover img,
+.front-page :hover img {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* 画像や画像カード全体の浮き上がりを抑止（ホームのみ） */
+.home .menu-item:hover .menu-item-image img,
+.front-page .menu-item:hover .menu-item-image img,
+.home .menu-card:hover .menu-card-image img,
+.front-page .menu-card:hover .menu-card-image img {
+  transform: none !important;
+  transition: none !important;
+}
+
+.home .gallery-item:hover,
+.front-page .gallery-item:hover,
+.home .menu-store-card:hover,
+.front-page .menu-store-card:hover,
+.home .store-card:hover,
+.front-page .store-card:hover,
+.home .menu-grid .menu-item:hover,
+.front-page .menu-grid .menu-item:hover,
+.home .menu-card:hover,
+.front-page .menu-card:hover,
+.home .course-item:hover,
+.front-page .course-item:hover,
+.home .philosophy-item:hover,
+.front-page .philosophy-item:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  transition: none !important;
 }

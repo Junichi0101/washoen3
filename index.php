@@ -12,6 +12,12 @@ get_header(); ?>
     <!-- メインビジュアル -->
     <section class="hero" id="top">
         <div class="hero-visual">
+            <?php $home_hero_id = absint(get_theme_mod('home_hero_image', 0)); ?>
+            <?php if ($home_hero_id) : ?>
+                <div class="hero-bg">
+                    <?php echo wp_get_attachment_image($home_hero_id, 'home-hero', false, array('class' => 'hero-bg-img')); ?>
+                </div>
+            <?php endif; ?>
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <h2 class="hero-title">
@@ -48,18 +54,22 @@ get_header(); ?>
             <div class="stores-grid">
                 <!-- 福中店 -->
                 <div class="store-card">
-                    <?php if (has_post_thumbnail(get_page_by_path('fukunaka-store'))) : ?>
-                        <div class="store-image">
-                            <?php echo get_the_post_thumbnail(get_page_by_path('fukunaka-store'), 'washouen-featured'); ?>
-                        </div>
-                    <?php else : ?>
-                        <div class="store-image">
+                    <?php 
+                        $home_fukunaka_id = absint(get_theme_mod('home_fukunaka_image', 0));
+                        $fukunaka_page = get_page_by_path('fukunaka-store');
+                    ?>
+                    <div class="store-image">
+                        <?php if ($home_fukunaka_id) : ?>
+                            <?php echo wp_get_attachment_image($home_fukunaka_id, 'home-card', false, array('class' => 'store-image-img')); ?>
+                        <?php elseif ($fukunaka_page && has_post_thumbnail($fukunaka_page)) : ?>
+                            <?php echo get_the_post_thumbnail($fukunaka_page, 'washouen-featured'); ?>
+                        <?php else : ?>
                             <div class="image-placeholder">
-                                <i class="fas fa-store"></i>
+                                <i class="fas fa-store" aria-hidden="true"></i>
                                 <p>福中店外観</p>
                             </div>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
                     <div class="store-content">
                         <h3 class="store-name">福中店</h3>
                         <p class="store-description">
@@ -74,25 +84,29 @@ get_header(); ?>
                         </div>
                         <div class="store-contact">
                             <p><i class="fas fa-phone"></i> お電話: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?></p>
-                            <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="btn btn-outline-elegant">メニューを見る</a>
+                            <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="menu-link">メニューを見る <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- 塩町店 -->
                 <div class="store-card">
-                    <?php if (has_post_thumbnail(get_page_by_path('shiomachi-store'))) : ?>
-                        <div class="store-image">
-                            <?php echo get_the_post_thumbnail(get_page_by_path('shiomachi-store'), 'washouen-featured'); ?>
-                        </div>
-                    <?php else : ?>
-                        <div class="store-image">
+                    <?php 
+                        $home_shiomachi_id = absint(get_theme_mod('home_shiomachi_image', 0));
+                        $shiomachi_page = get_page_by_path('shiomachi-store');
+                    ?>
+                    <div class="store-image">
+                        <?php if ($home_shiomachi_id) : ?>
+                            <?php echo wp_get_attachment_image($home_shiomachi_id, 'home-card', false, array('class' => 'store-image-img')); ?>
+                        <?php elseif ($shiomachi_page && has_post_thumbnail($shiomachi_page)) : ?>
+                            <?php echo get_the_post_thumbnail($shiomachi_page, 'washouen-featured'); ?>
+                        <?php else : ?>
                             <div class="image-placeholder">
-                                <i class="fas fa-store"></i>
+                                <i class="fas fa-store" aria-hidden="true"></i>
                                 <p>塩町店外観</p>
                             </div>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
                     <div class="store-content">
                         <h3 class="store-name">塩町店</h3>
                         <p class="store-description">
@@ -106,7 +120,7 @@ get_header(); ?>
                         </div>
                         <div class="store-contact">
                             <p><i class="fas fa-phone"></i> お電話: <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?></p>
-                            <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="btn btn-outline-elegant">メニューを見る</a>
+                            <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="menu-link">メニューを見る <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                         </div>
                     </div>
                 </div>
@@ -225,6 +239,12 @@ get_header(); ?>
 
     <!-- アクセス -->
     <section class="access section" id="access">
+        <?php $home_access_bg_id = absint(get_theme_mod('home_access_bg_image', 0)); ?>
+        <?php if ($home_access_bg_id) : ?>
+            <div class="section-bg">
+                <?php echo wp_get_attachment_image($home_access_bg_id, 'home-hero', false, array('class' => 'section-bg-img')); ?>
+            </div>
+        <?php endif; ?>
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">
