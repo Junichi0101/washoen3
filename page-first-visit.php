@@ -77,22 +77,23 @@ get_header(); ?>
                     </div>
                     <div class="store-detail-images">
                         <div class="image-grid">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>福中店 外観</p>
-                            </div>
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>福中店 カウンター</p>
-                            </div>
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>福中店 個室</p>
-                            </div>
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>福中店 料理</p>
-                            </div>
+                            <?php
+                            $fukunaka_labels = array('外観', 'カウンター', '個室', '料理');
+                            for ($i = 1; $i <= 4; $i++):
+                                $img_id = get_theme_mod('first_visit_fukunaka_' . $i, 0);
+                                $label  = $fukunaka_labels[$i - 1];
+                                if ($img_id): ?>
+                                    <div class="store-image">
+                                        <?php echo wp_get_attachment_image($img_id, 'washouen-gallery', false, array('alt' => '福中店 ' . $label)); ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="image-placeholder">
+                                        <i class="fas fa-image"></i>
+                                        <p><?php echo esc_html('福中店 ' . $label); ?></p>
+                                    </div>
+                                <?php endif;
+                            endfor;
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -123,22 +124,23 @@ get_header(); ?>
                     </div>
                     <div class="store-detail-images">
                         <div class="image-grid">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>塩町店 外観</p>
-                            </div>
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>塩町店 カウンター</p>
-                            </div>
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>塩町店 握り</p>
-                            </div>
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>塩町店 料理</p>
-                            </div>
+                            <?php
+                            $shiomachi_labels = array('外観', 'カウンター', '握り', '料理');
+                            for ($i = 1; $i <= 4; $i++):
+                                $img_id = get_theme_mod('first_visit_shiomachi_' . $i, 0);
+                                $label  = $shiomachi_labels[$i - 1];
+                                if ($img_id): ?>
+                                    <div class="store-image">
+                                        <?php echo wp_get_attachment_image($img_id, 'washouen-gallery', false, array('alt' => '塩町店 ' . $label)); ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="image-placeholder">
+                                        <i class="fas fa-image"></i>
+                                        <p><?php echo esc_html('塩町店 ' . $label); ?></p>
+                                    </div>
+                                <?php endif;
+                            endfor;
+                            ?>
                         </div>
                     </div>
                 </div>

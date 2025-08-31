@@ -34,6 +34,9 @@
 
   /* トランジション */
   --transition: all 0.3s ease;
+
+  /* 固定ヘッダーの高さ */
+  --header-height: 80px;
 }
 
 html {
@@ -226,9 +229,8 @@ body {
    ========================================== */
 .hero {
   position: relative;
-  height: 100vh;
-  min-height: 600px;
-  margin-top: 80px;
+  height: calc(100vh - var(--header-height));
+  margin-top: var(--header-height);
 }
 
 .hero-visual {
@@ -539,6 +541,14 @@ body {
   transition: var(--transition);
 }
 
+/* 画像をコンテナにフィットさせる（Customizer対応） */
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .gallery-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
@@ -617,6 +627,14 @@ body {
   background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f0f0f 100%);
   position: relative;
   overflow: hidden;
+}
+
+/* ホーム各セクションを1画面にフィット */
+.home .stores.section,
+.home .gallery.section,
+.home .menu-preview.section,
+.home .access.section {
+  min-height: calc(100vh - var(--header-height));
 }
 
 .stores.section::before {
@@ -1079,9 +1097,9 @@ body {
 .access .access-info > a.btn,
 .access .access-info > a.btn-elegant,
 .access .access-info > a.btn-minimal {
-  display: block;
+  display: block !important;
   width: max-content;
-  margin: var(--spacing-md) auto 0;
+  margin: var(--spacing-md) auto 0 !important;
 }
 
 /* 店舗地図のスタイル */
@@ -2584,11 +2602,40 @@ a.btn-japanese:hover::after {
   letter-spacing: 0.08em;
 }
 
-.reservation-cta > p {
+/* 上品な下線アクセント */
+.reservation-cta h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  margin: var(--spacing-sm) auto 0;
+  background: linear-gradient(90deg, transparent, rgba(212, 197, 179, 0.9), transparent);
+  border-radius: 1px;
+}
+
+.reservation-cta > p,
+.reservation-cta .cta-content p {
   font-size: 1.125rem;
   margin-bottom: var(--spacing-lg);
   opacity: 0.9;
 }
+
+/* セクション背景にごく薄い和柄のテクスチャ */
+.reservation-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 400px at 10% 0%, rgba(212, 197, 179, 0.06), transparent 60%),
+    radial-gradient(800px 300px at 90% 100%, rgba(201, 48, 44, 0.08), transparent 60%),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" opacity="0.06"><g fill="none" stroke="%23d4c5b3" stroke-width="0.4"><path d="M60 10l10 20 22 3-16 15 4 22-20-11-20 11 4-22-16-15 22-3 10-20z"/></g></svg>') repeat;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* 余白とボタンのまとまりを少し強調 */
+.reservation-cta .cta-buttons { margin-top: var(--spacing-md); }
+.reservation-cta .cta-buttons .btn { min-width: 220px; }
 
 .contact-info {
   background: rgba(255, 255, 255, 0.1);

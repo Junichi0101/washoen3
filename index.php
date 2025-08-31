@@ -142,30 +142,27 @@ get_header(); ?>
                 <div class="gallery-store">
                     <h3 class="gallery-store-title">福中店</h3>
                     <div class="gallery-grid">
-                        <div class="gallery-item">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>福中店 カウンター</p>
+                        <?php 
+                            $fukunaka_gallery_ids = array(
+                                absint(get_theme_mod('home_gallery_fukunaka_1', 0)),
+                                absint(get_theme_mod('home_gallery_fukunaka_2', 0)),
+                                absint(get_theme_mod('home_gallery_fukunaka_3', 0)),
+                                absint(get_theme_mod('home_gallery_fukunaka_4', 0)),
+                            );
+                            $fukunaka_placeholders = array('福中店 カウンター', '福中店 個室', '福中店 活魚水槽', '福中店 料理');
+                            foreach ($fukunaka_gallery_ids as $idx => $img_id) :
+                        ?>
+                            <div class="gallery-item">
+                                <?php if ($img_id) : ?>
+                                    <?php echo wp_get_attachment_image($img_id, 'washouen-gallery'); ?>
+                                <?php else : ?>
+                                    <div class="image-placeholder">
+                                        <i class="fas fa-image"></i>
+                                        <p><?php echo esc_html($fukunaka_placeholders[$idx]); ?></p>
+                                    </div>
+                                <?php endif; ?>
                             </div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>福中店 個室</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>福中店 活魚水槽</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>福中店 料理</p>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
@@ -173,30 +170,27 @@ get_header(); ?>
                 <div class="gallery-store">
                     <h3 class="gallery-store-title">塩町店</h3>
                     <div class="gallery-grid">
-                        <div class="gallery-item">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>塩町店 カウンター</p>
+                        <?php 
+                            $shiomachi_gallery_ids = array(
+                                absint(get_theme_mod('home_gallery_shiomachi_1', 0)),
+                                absint(get_theme_mod('home_gallery_shiomachi_2', 0)),
+                                absint(get_theme_mod('home_gallery_shiomachi_3', 0)),
+                                absint(get_theme_mod('home_gallery_shiomachi_4', 0)),
+                            );
+                            $shiomachi_placeholders = array('塩町店 カウンター', '塩町店 座敷', '塩町店 握り', '塩町店 料理');
+                            foreach ($shiomachi_gallery_ids as $idx => $img_id) :
+                        ?>
+                            <div class="gallery-item">
+                                <?php if ($img_id) : ?>
+                                    <?php echo wp_get_attachment_image($img_id, 'washouen-gallery'); ?>
+                                <?php else : ?>
+                                    <div class="image-placeholder">
+                                        <i class="fas fa-image"></i>
+                                        <p><?php echo esc_html($shiomachi_placeholders[$idx]); ?></p>
+                                    </div>
+                                <?php endif; ?>
                             </div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>塩町店 座敷</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>塩町店 握り</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
-                                <p>塩町店 料理</p>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>

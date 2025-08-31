@@ -262,6 +262,98 @@ function washouen_customize_register($wp_customize) {
             'mime_type'   => 'image',
         )));
     }
+
+    // ホームギャラリー設定（店舗ごとに4枚ずつ）
+    $wp_customize->add_section('home_gallery_settings', array(
+        'title'       => __('ホームギャラリー', 'washouen'),
+        'priority'    => 26,
+        'description' => __('トップページの「店舗ギャラリー」に表示する画像を設定できます。推奨サイズ: 400×400（正方形）', 'washouen'),
+    ));
+
+    // 福中店ギャラリー（1〜4）
+    for ($i = 1; $i <= 4; $i++) {
+        $setting_id = 'home_gallery_fukunaka_' . $i;
+        $wp_customize->add_setting($setting_id, array(
+            'default'           => 0,
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+            'type'              => 'theme_mod',
+        ));
+        if (class_exists('WP_Customize_Media_Control')) {
+            $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, $setting_id, array(
+                'label'       => sprintf(__('福中店 ギャラリー画像 %d', 'washouen'), $i),
+                'description' => __('推奨サイズ: 400×400（正方形）', 'washouen'),
+                'section'     => 'home_gallery_settings',
+                'mime_type'   => 'image',
+            )));
+        }
+    }
+
+    // 初めての方へ ページ用画像設定
+    $wp_customize->add_section('first_visit_settings', array(
+        'title'       => __('初めての方へ', 'washouen'),
+        'priority'    => 27,
+        'description' => __('「初めての方へ」ページに表示する店舗画像を設定します。推奨サイズ: 400×400（正方形）', 'washouen'),
+    ));
+
+    // 福中店（外観・カウンター・個室・料理）
+    $first_visit_fukunaka_labels = array('外観', 'カウンター', '個室', '料理');
+    for ($i = 1; $i <= 4; $i++) {
+        $setting_id = 'first_visit_fukunaka_' . $i;
+        $wp_customize->add_setting($setting_id, array(
+            'default'           => 0,
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+            'type'              => 'theme_mod',
+        ));
+        if (class_exists('WP_Customize_Media_Control')) {
+            $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, $setting_id, array(
+                'label'       => sprintf(__('福中店 %s', 'washouen'), $first_visit_fukunaka_labels[$i - 1]),
+                'description' => __('推奨サイズ: 400×400（正方形）', 'washouen'),
+                'section'     => 'first_visit_settings',
+                'mime_type'   => 'image',
+            )));
+        }
+    }
+
+    // 塩町店（外観・カウンター・握り・料理）
+    $first_visit_shiomachi_labels = array('外観', 'カウンター', '握り', '料理');
+    for ($i = 1; $i <= 4; $i++) {
+        $setting_id = 'first_visit_shiomachi_' . $i;
+        $wp_customize->add_setting($setting_id, array(
+            'default'           => 0,
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+            'type'              => 'theme_mod',
+        ));
+        if (class_exists('WP_Customize_Media_Control')) {
+            $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, $setting_id, array(
+                'label'       => sprintf(__('塩町店 %s', 'washouen'), $first_visit_shiomachi_labels[$i - 1]),
+                'description' => __('推奨サイズ: 400×400（正方形）', 'washouen'),
+                'section'     => 'first_visit_settings',
+                'mime_type'   => 'image',
+            )));
+        }
+    }
+
+    // 塩町店ギャラリー（1〜4）
+    for ($i = 1; $i <= 4; $i++) {
+        $setting_id = 'home_gallery_shiomachi_' . $i;
+        $wp_customize->add_setting($setting_id, array(
+            'default'           => 0,
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+            'type'              => 'theme_mod',
+        ));
+        if (class_exists('WP_Customize_Media_Control')) {
+            $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, $setting_id, array(
+                'label'       => sprintf(__('塩町店 ギャラリー画像 %d', 'washouen'), $i),
+                'description' => __('推奨サイズ: 400×400（正方形）', 'washouen'),
+                'section'     => 'home_gallery_settings',
+                'mime_type'   => 'image',
+            )));
+        }
+    }
     // 店舗情報セクション
     $wp_customize->add_section('washouen_store_info', array(
         'title' => __('店舗情報', 'washouen'),

@@ -332,7 +332,7 @@ get_header(); ?>
     </section>
 
     <!-- CTA -->
-    <section class="cta section">
+    <section class="reservation-cta section">
         <div class="container">
             <div class="cta-content">
                 <h2>塩町店で、本格江戸前鮨をご堪能ください</h2>
@@ -340,12 +340,12 @@ get_header(); ?>
                     熟練の職人が握る、伝統の味わいをお楽しみいただけます。<br>
                     カウンター席では職人との会話も魅力の一つです。
                 </p>
-                <div class="contact-info" style="background: rgba(255, 255, 255, 0.2); padding: var(--spacing-lg); border-radius: 8px; margin: var(--spacing-lg) auto; max-width: 500px;">
-                    <p class="phone-number" style="font-size: 1.5rem; font-weight: 500; margin-bottom: var(--spacing-sm); display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); color: var(--bg-white);">
+                <div class="contact-info">
+                    <p class="phone-number">
                         <i class="fas fa-phone"></i>
                         <?php echo get_theme_mod('shiomachi_phone', '079-223-6879'); ?>
                     </p>
-                    <p class="business-hours" style="color: rgba(255, 255, 255, 0.9);">
+                    <p class="business-hours">
                         営業時間：<?php echo get_theme_mod('shiomachi_hours', '昼 11:30～14:00 / 夜 17:00～22:00'); ?>
                     </p>
                 </div>

@@ -220,7 +220,7 @@ get_header(); ?>
     </section>
 
     <!-- CTA -->
-    <section class="cta section">
+    <section class="reservation-cta section">
         <div class="container">
             <div class="cta-content">
                 <h2>福中店で、本格的な日本料理をお楽しみください</h2>
@@ -228,12 +228,12 @@ get_header(); ?>
                     新鮮な活魚と職人の技で、心を込めたお料理をご提供いたします。<br>
                     ご予約・お問い合わせはお気軽にどうぞ。
                 </p>
-                <div class="contact-info" style="background: rgba(255, 255, 255, 0.2); padding: var(--spacing-lg); border-radius: 8px; margin: var(--spacing-lg) auto; max-width: 500px;">
-                    <p class="phone-number" style="font-size: 1.5rem; font-weight: 500; margin-bottom: var(--spacing-sm); display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); color: var(--bg-white);">
+                <div class="contact-info">
+                    <p class="phone-number">
                         <i class="fas fa-phone"></i>
                         <?php echo get_theme_mod('fukunaka_phone', '079-222-5678'); ?>
                     </p>
-                    <p class="business-hours" style="color: rgba(255, 255, 255, 0.9);">
+                    <p class="business-hours">
                         営業時間：<?php echo get_theme_mod('fukunaka_hours', '昼 11:30～14:00 / 夜 17:00～22:00'); ?>
                     </p>
                 </div>
