@@ -542,6 +542,52 @@
     }
 }
 
+/* LINE等のインアプリブラウザ対策（object-fit未対応/不安定環境のフォールバック） */
+@supports not (object-fit: cover) {
+    /* 画像を無理に縦横100%で引き伸ばさない */
+    .hero-bg-img,
+    .section-bg-img,
+    .store-image img,
+    .menu-item-image img,
+    .gallery-item img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+    }
+
+    /* ラッパー側でトリミング（カバー）を再現 */
+    /* ラッパー側でトリミング（カバー）を再現 */
+    .store-image,
+    .menu-item-image,
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+    }
+    /* 背景用ラッパーは元のabsoluteを維持しつつはみ出しを隠す */
+    .hero-bg,
+    .section-bg {
+        overflow: hidden;
+    }
+
+    /* aspect-ratioが使えない環境向けの最低限の高さを付与 */
+    .gallery-item { height: 180px; }
+    @media screen and (min-width: 769px) {
+        .gallery-item { height: 220px; }
+    }
+}
+
+/* 追加の安全策：aspect-ratio未対応時のフォールバック */
+@supports not (aspect-ratio: 1) {
+    .gallery-item {
+        height: 180px; /* 正方形グリッドの見た目を維持 */
+    }
+}
+
 /* 横向き対応 */
 @media screen and (max-height: 500px) and (orientation: landscape) {
     .hero {
