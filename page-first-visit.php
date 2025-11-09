@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: 初めての方へ
+ * Template Name: ご挨拶
  * Description: First visit introduction page template
- * 
+ *
  * @package Washouen
  */
 
@@ -12,8 +12,8 @@ get_header(); ?>
     <!-- ページヘッダー -->
     <section class="page-header">
         <div class="page-header-content">
-            <h1 class="page-title">初めての方へ</h1>
-            <p class="page-subtitle">FIRST VISIT</p>
+            <h1 class="page-title">ご挨拶</h1>
+            <p class="page-subtitle">GREETING</p>
         </div>
     </section>
 
@@ -105,16 +105,12 @@ get_header(); ?>
                     <div class="store-detail-text">
                         <h3>塩町店</h3>
                         <p>
-                            塩町店は、本格江戸前鮨をメインに提供しております。<br>
-                            厳選された旬の魚介を、熟練の職人が一貫一貫丁寧に握ります。
+                            塩町店は、鮨をメインに提供しております。店主は瀬戸内海の離島(家島)で生まれ、
+                            島の豊かな海で獲れる新鮮な魚介に囲まれて育ちました。
                         </p>
                         <p>
-                            赤酢を使った伝統のシャリ、有明海の一番摘み海苔、<br>
-                            静岡産の本山葵など、素材の一つ一つにこだわっております。
-                        </p>
-                        <p>
-                            カウンター席では職人との会話を楽しみながら、<br>
-                            テーブル席ではゆったりとした時間をお過ごしいただけます。
+                            その地元の恵みを最大限に活かし、店主のひと手間を加えた熟練の技で、
+                            素材の旨みを引き出した握りを一貫ずつ、真心を込めてご提供いたします。
                         </p>
                         <div class="store-detail-info">
                             <p><i class="fas fa-map-marker-alt"></i> <?php echo esc_html(get_theme_mod('shiomachi_address', '〒670-0904 兵庫県姫路市塩町177 アールビル1F')); ?></p>

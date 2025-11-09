@@ -27,6 +27,8 @@ function washouen_setup() {
     // ホーム用の画像サイズ（推奨サイズに合わせる）
     add_image_size('home-hero', 1920, 1080, true);
     add_image_size('home-card', 1200, 800, true);
+    // ホーム メニューアイコン画像サイズ（240x85）
+    add_image_size('home-menu-icon', 240, 85, true);
     
     // カスタムメニューの登録
     register_nav_menus(array(
@@ -190,6 +192,18 @@ function washouen_widgets_init() {
 }
 add_action('widgets_init', 'washouen_widgets_init');
 
+// 小数点を含む数値のサニタイズ関数
+function washouen_sanitize_float($value, $min = 1.0, $max = 10.0) {
+    $value = floatval($value);
+    if ($value < $min) {
+        $value = $min;
+    }
+    if ($value > $max) {
+        $value = $max;
+    }
+    return round($value, 1); // 小数点第1位まで
+}
+
 // カスタマイザー設定
 function washouen_customize_register($wp_customize) {
     // ホーム設定セクション
@@ -263,11 +277,62 @@ function washouen_customize_register($wp_customize) {
         )));
     }
 
+    // お品書き セクションアイコン画像（福中店）
+    $wp_customize->add_setting('home_menu_icon_fukunaka', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'home_menu_icon_fukunaka', array(
+            'label'       => __('お品書き アイコン画像（福中店）', 'washouen'),
+            'description' => __('推奨サイズ: 48×48（正方形）。未設定時は既存のアイコンを表示します。', 'washouen'),
+            'section'     => 'home_settings',
+            'mime_type'   => 'image',
+        )));
+    }
+
+    // お品書き セクションアイコン画像（塩町店）
+    $wp_customize->add_setting('home_menu_icon_shiomachi', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'home_menu_icon_shiomachi', array(
+            'label'       => __('お品書き アイコン画像（塩町店）', 'washouen'),
+            'description' => __('推奨サイズ: 48×48（正方形）。未設定時は既存のアイコンを表示します。', 'washouen'),
+            'section'     => 'home_settings',
+            'mime_type'   => 'image',
+        )));
+    }
+
     // ホームギャラリー設定（店舗ごとに4枚ずつ）
     $wp_customize->add_section('home_gallery_settings', array(
         'title'       => __('ホームギャラリー', 'washouen'),
         'priority'    => 26,
         'description' => __('トップページの「店舗ギャラリー」に表示する画像を設定できます。推奨サイズ: 400×400（正方形）', 'washouen'),
+    ));
+
+    // ギャラリースライダーの切替秒数
+    $wp_customize->add_setting('gallery_slider_interval', array(
+        'default'           => 4.0,
+        'sanitize_callback' => 'washouen_sanitize_float',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('gallery_slider_interval', array(
+        'label'       => __('スライダー切替時間（秒）', 'washouen'),
+        'description' => __('画像が自動で切り替わる秒数を設定します（小数点第1位まで対応）', 'washouen'),
+        'section'     => 'home_gallery_settings',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1.0,
+            'max'  => 10.0,
+            'step' => 0.1,
+        ),
     ));
 
     // 福中店ギャラリー（1〜4）
@@ -289,11 +354,11 @@ function washouen_customize_register($wp_customize) {
         }
     }
 
-    // 初めての方へ ページ用画像設定
+    // ご挨拶 ページ用画像設定
     $wp_customize->add_section('first_visit_settings', array(
-        'title'       => __('初めての方へ', 'washouen'),
+        'title'       => __('ご挨拶', 'washouen'),
         'priority'    => 27,
-        'description' => __('「初めての方へ」ページに表示する店舗画像を設定します。推奨サイズ: 400×400（正方形）', 'washouen'),
+        'description' => __('「ご挨拶」ページに表示する店舗画像を設定します。推奨サイズ: 400×400（正方形）', 'washouen'),
     ));
 
     // 福中店（外観・カウンター・個室・料理）
@@ -475,9 +540,19 @@ function washouen_customize_register($wp_customize) {
 }
 add_action('customize_register', 'washouen_customize_register');
 
+// 管理画面: お品書きアイコンの推奨サイズ表記を上書き（240×85）
+add_action('customize_register', function($wp_customize) {
+    if (!($wp_customize instanceof WP_Customize_Manager)) return;
+    $desc = '推奨サイズ: 240×85。未設定時は既存のアイコンを表示します。';
+    $c1 = $wp_customize->get_control('home_menu_icon_fukunaka');
+    if ($c1) { $c1->description = $desc; }
+    $c2 = $wp_customize->get_control('home_menu_icon_shiomachi');
+    if ($c2) { $c2->description = $desc; }
+}, 20);
+
 // ページテンプレートの選択肢を追加
 function washouen_page_templates($templates) {
-    $templates['page-first-visit.php'] = '初めての方へ';
+    $templates['page-first-visit.php'] = 'ご挨拶';
     $templates['page-fukunaka-menu.php'] = '福中店メニュー';
     $templates['page-shiomachi-menu.php'] = '塩町店メニュー';
     $templates['page-access.php'] = 'アクセス';

@@ -71,7 +71,7 @@ function washouen_footer_menu() {
     ?>
     <ul class="footer-menu">
         <li><a href="<?php echo esc_url(home_url('/')); ?>">ホーム</a></li>
-        <li><a href="<?php echo esc_url(home_url('/first-visit/')); ?>">初めての方へ</a></li>
+        <li><a href="<?php echo esc_url(home_url('/first-visit/')); ?>">ご挨拶</a></li>
         <li><a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>">福中店メニュー</a></li>
         <li><a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>">塩町店メニュー</a></li>
         <li><a href="<?php echo esc_url(home_url('/access/')); ?>">当店への道案内</a></li>

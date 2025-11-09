@@ -272,9 +272,9 @@ body {
   z-index: 1;
   max-width: 1000px;
   /* ヒーロー全体の可読性向上のための背景 */
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.26); /* 半透明の黒。透明度を0.4〜0.7で調整 */
+  backdrop-filter: brightness(60%) blur(8px); /* 背景を暗く＋ぼかす */
+  -webkit-backdrop-filter: brightness(60%) blur(8px); /* Safari対策 */
   padding: var(--spacing-lg);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -516,52 +516,166 @@ body {
 }
 
 /* ==========================================
-   ギャラリー
+   ギャラリースライダー
    ========================================== */
-.gallery-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
-}
-
-.gallery-store {
-  margin-bottom: var(--spacing-lg);
-}
-
-.gallery-store-title {
-  font-family: var(--font-serif);
-  font-size: 1.75rem;
-  font-weight: 500;
-  text-align: center;
-  margin-bottom: var(--spacing-md);
-  color: var(--primary-color);
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-md);
-}
-
-.gallery-item {
-  aspect-ratio: 1;
-  border-radius: 8px;
+.gallery-slider-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: var(--transition);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* 画像をコンテナにフィットさせる（Customizer対応） */
-.gallery-item img {
+.gallery-slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.gallery-slide {
+  min-width: 100%;
+  height: 70vh; /* デフォルト: ビューポートの70% */
+  max-height: 800px; /* 最大高さを制限 */
+  min-height: 400px; /* 最小高さを確保 */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a2e;
+}
+
+.gallery-slide-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* 画像全体を表示（縦横比維持） */
   display: block;
 }
 
-.gallery-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+/* タブレット向け調整 (768px - 1023px) */
+@media (max-width: 1023px) {
+  .gallery-slider-wrapper {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  .gallery-slide {
+    height: 60vh;
+    max-height: 600px;
+    min-height: 350px;
+  }
+}
+
+/* モバイル向け調整 (767px以下) */
+@media (max-width: 767px) {
+  .gallery-slider-wrapper {
+    border-radius: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .gallery-slide {
+    height: 50vh;
+    max-height: 500px;
+    min-height: 300px;
+  }
+
+  .gallery-slide-img {
+    object-fit: cover; /* モバイルでは画像をフィットさせる */
+  }
+}
+
+.gallery-slide .image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #1a1a2e 0%, #2a2a4e 100%);
+  border: 1px solid rgba(139, 115, 85, 0.15);
+  color: #d0d0e0;
+}
+
+.gallery-slide .image-placeholder i {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.6;
+}
+
+.gallery-slide .image-placeholder p {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* モバイル向けプレースホルダー調整 */
+@media (max-width: 767px) {
+  .gallery-slide .image-placeholder i {
+    font-size: 3rem;
+  }
+
+  .gallery-slide .image-placeholder p {
+    font-size: 0.9rem;
+  }
+}
+
+.gallery-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.gallery-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.gallery-dot.active {
+  background: rgba(139, 115, 85, 1);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.3);
+}
+
+/* タブレット向けナビゲーション調整 */
+@media (max-width: 1023px) {
+  .gallery-dots {
+    bottom: 15px;
+  }
+
+  .gallery-dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* モバイル向けナビゲーション調整 */
+@media (max-width: 767px) {
+  .gallery-dots {
+    bottom: 12px;
+    padding: 6px 12px;
+    gap: 8px;
+  }
+
+  .gallery-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .gallery-dot.active {
+    transform: scale(1.2);
+  }
 }
 
 /* メニュープレビュー */
@@ -617,11 +731,30 @@ body {
   min-height: 44px; /* アクセシビリティ */
   border-radius: 999px;
   white-space: nowrap; /* 折り返し防止 */
+  border: 2px solid var(--secondary-color); /* ボタンの枠を追加 */
 }
 
 .menu-link:hover {
   color: var(--accent-color);
   transform: translateX(5px);
+}
+
+/* お品書きセクション専用：四角いボタンスタイル */
+.menu-preview .menu-link {
+  border-radius: 6px; /* 四角形（角を少し丸く） */
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  background-color: transparent;
+  box-shadow: 0 2px 8px rgba(139, 115, 85, 0.15);
+}
+
+.menu-preview .menu-link:hover {
+  background-color: var(--secondary-color);
+  color: var(--bg-white);
+  border-color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.25);
 }
 
 .menu-link:focus-visible {
@@ -755,7 +888,7 @@ body {
 }
 
 .store-image {
-  height: 250px;
+  height: 400px;
   overflow: hidden;
 }
 
@@ -973,12 +1106,15 @@ body {
   color: rgba(139, 115, 85, 0.9) !important;
 }
 
-.menu-link {
+.menu-preview .menu-link {
   color: rgba(139, 115, 85, 0.9) !important;
+  border-color: rgba(139, 115, 85, 0.7) !important;
 }
 
-.menu-link:hover {
+.menu-preview .menu-link:hover {
   color: #f5f5f5 !important;
+  background-color: rgba(139, 115, 85, 0.9) !important;
+  border-color: rgba(139, 115, 85, 0.9) !important;
 }
 
 /* ==========================================
@@ -1787,9 +1923,27 @@ a.btn-japanese:hover::after {
   margin-top: var(--spacing-xs);
 }
 
-/* 初めての方へページ */
+/* ご挨拶ページ */
 .welcome-message {
   background-color: var(--bg-white);
+}
+
+body.page-template-page-first-visit .welcome-message,
+body.page-template-page-first-visit-php .welcome-message {
+  position: relative;
+  transition: min-height 0.3s ease;
+}
+
+body.page-template-page-first-visit .welcome-message.first-visit-hero-active,
+body.page-template-page-first-visit-php .welcome-message.first-visit-hero-active {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg) 0;
+}
+
+body.page-template-page-first-visit .welcome-message.first-visit-hero-active .container,
+body.page-template-page-first-visit-php .welcome-message.first-visit-hero-active .container {
+  width: 100%;
 }
 
 .welcome-content {
@@ -2605,89 +2759,110 @@ body.page-template-page-access .store-detail-info a.btn.btn-japanese {
 
 /* 予約CTAセクション強化 */
 .reservation-cta {
-  background: linear-gradient(135deg, #1a1410 0%, #2d2218 50%, #1f1814 100%);
-  color: #ffffff;
-  padding: var(--spacing-xxl) 0;
-  text-align: center;
   position: relative;
+  padding: var(--spacing-xl) 0 var(--spacing-xxl);
+  background: linear-gradient(180deg, #f7f3ec 0%, #f0e7db 100%);
+  color: #3e352e;
+  text-align: center;
   overflow: hidden;
-  border-top: 1px solid rgba(139, 115, 85, 0.3);
+  border-top: 1px solid rgba(139, 115, 85, 0.28);
 }
 
 .reservation-cta::before {
-  content: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle at top center,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0) 60%
+    ),
+    linear-gradient(120deg, rgba(139, 115, 85, 0.08) 0%, transparent 45%);
+  pointer-events: none;
 }
 
 .reservation-cta .container {
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  max-width: 760px;
+}
+
+.reservation-cta .cta-content {
+  padding: calc(var(--spacing-lg) * 0.9) var(--spacing-xl);
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 22px;
+  border: 1px solid rgba(139, 115, 85, 0.18);
+  box-shadow: 0 18px 32px rgba(30, 24, 20, 0.08);
+  margin: 0 auto;
 }
 
 .reservation-cta h2 {
   font-family: var(--font-serif);
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   margin-bottom: var(--spacing-sm);
-  color: #ffffff;
-  font-weight: 400;
+  color: #2d2621;
+  font-weight: 500;
   letter-spacing: 0.08em;
 }
 
-/* 上品な下線アクセント */
-.reservation-cta h2::after { content: none; }
-
 .reservation-cta > p,
 .reservation-cta .cta-content p {
-  font-size: 1.125rem;
-  margin-bottom: var(--spacing-lg);
-  color: #f0f0f0;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  margin-bottom: var(--spacing-md);
+  color: #5a5047;
 }
 
-/* セクション背景にごく薄い和柄のテクスチャ */
-.reservation-cta::after { content: none; }
+.reservation-cta .cta-buttons {
+  margin-top: var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
 
-/* 余白とボタンのまとまりを少し強調 */
-.reservation-cta .cta-buttons { margin-top: var(--spacing-md); }
-.reservation-cta .cta-buttons .btn { min-width: 220px; }
+.reservation-cta .cta-buttons .btn {
+  min-width: 210px;
+}
+
+.reservation-cta .cta-buttons .btn.btn-elegant {
+  box-shadow: 0 12px 24px rgba(139, 115, 85, 0.22) !important;
+}
+
+.reservation-cta .cta-buttons .btn.btn-outline-elegant {
+  border-color: rgba(139, 115, 85, 0.35);
+  color: #433830;
+}
 
 .contact-info {
-  background: rgba(255, 255, 255, 0.1);
-  padding: var(--spacing-lg);
-  border-radius: 8px;
-  margin: 0 auto var(--spacing-lg);
-  max-width: 500px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  padding: var(--spacing-lg) 0;
+  border-radius: 0;
+  margin: 0 auto;
+  max-width: 520px;
+  border-top: 1px solid rgba(139, 115, 85, 0.18);
+  border-bottom: 1px solid rgba(139, 115, 85, 0.18);
 }
 
 .phone-number {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 500;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-sm);
-  color: #ffffff;
-  letter-spacing: 0.05em;
+  color: #2d2621;
+  letter-spacing: 0.06em;
 }
 
-.phone-number i { color: #d4c5b3; }
+.phone-number i {
+  color: #8b7355;
+}
 
 .business-hours {
-  font-size: 1rem;
-  color: #e0e0e0;
+  font-size: 0.95rem;
+  color: rgba(73, 64, 55, 0.75);
   letter-spacing: 0.03em;
-}
-
-/* CTA内のアウトラインボタン専用（必要な場合のみ） */
-.reservation-cta .btn.btn-outline-elegant {
-  font-size: 1.125rem;
-  padding: var(--spacing-md) var(--spacing-xl);
-}
-
-.reservation-cta .btn.btn-elegant {
-  font-size: 1.125rem;
-  padding: var(--spacing-md) var(--spacing-xl);
 }
 
   .access-detail-link {

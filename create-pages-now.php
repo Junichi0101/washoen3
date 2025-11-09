@@ -18,10 +18,10 @@ echo "<h1>和招縁 ページ作成スクリプト</h1>";
 // 作成するページの設定
 $pages = array(
     array(
-        'title' => '初めての方へ',
+        'title' => 'ご挨拶',
         'slug' => 'first-visit',
         'template' => 'page-first-visit.php',
-        'content' => '初めての方への案内ページです。和招縁の2つの店舗について詳しくご紹介いたします。'
+        'content' => 'ご挨拶ページです。和招縁の2つの店舗について詳しくご紹介いたします。'
     ),
     array(
         'title' => '福中店メニュー',

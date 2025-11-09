@@ -22,10 +22,10 @@ function setup_washouen_pages() {
     // 作成するページの設定
     $pages = array(
         array(
-            'title' => '初めての方へ',
+            'title' => 'ご挨拶',
             'slug' => 'first-visit',
             'template' => 'page-first-visit.php',
-            'content' => '初めての方への案内ページです。和招縁の2つの店舗について詳しくご紹介いたします。'
+            'content' => 'ご挨拶ページです。和招縁の2つの店舗について詳しくご紹介いたします。'
         ),
         array(
             'title' => '福中店メニュー',
@@ -122,7 +122,7 @@ function setup_washouen_pages() {
     
     echo "<p><strong>注意:</strong> WordPressがサブディレクトリ(/my_blog/)にインストールされている場合、URLは以下のようになります:</p>";
     echo "<ul>";
-    echo "<li>初めての方へ: <code>http://localhost/my_blog/first-visit/</code></li>";
+    echo "<li>ご挨拶: <code>http://localhost/my_blog/first-visit/</code></li>";
     echo "<li>福中店メニュー: <code>http://localhost/my_blog/fukunaka-menu/</code></li>";
     echo "<li>塩町店メニュー: <code>http://localhost/my_blog/shiomachi-menu/</code></li>";
     echo "<li>アクセス: <code>http://localhost/my_blog/access/</code></li>";
@@ -149,7 +149,7 @@ if (is_admin() && current_user_can('manage_options')) {
             function() {
                 echo "<div class='wrap'>";
                 echo "<h1>和招縁 ページセットアップ</h1>";
-                echo "<p>必要なページ（初めての方へ、福中店メニュー、塩町店メニュー、アクセス）を作成します。</p>";
+                echo "<p>必要なページ（ご挨拶、福中店メニュー、塩町店メニュー、アクセス）を作成します。</p>";
                 echo "<a href='" . admin_url('themes.php?page=washouen-setup&setup_pages=true') . "' class='button button-primary'>ページを作成/更新する</a>";
                 echo "</div>";
             }

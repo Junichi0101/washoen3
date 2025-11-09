@@ -13,9 +13,24 @@
 // DOM要素の取得
 // ==========================================
 document.addEventListener('DOMContentLoaded', function() {
+    // ==========================================
+    // iOS系インアプリの100vh問題: --vh を設定
+    // ==========================================
+    (function setupViewportFix() {
+        function setVhUnit() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        setVhUnit();
+        // リサイズやUI表示変化で更新
+        window.addEventListener('resize', setVhUnit);
+        window.addEventListener('orientationchange', setVhUnit);
+        window.addEventListener('pageshow', function(e){ if (e.persisted) setVhUnit(); });
+    })();
     const header = document.getElementById('header') || document.querySelector('.header');
     const hamburger = document.getElementById('hamburger') || document.querySelector('.hamburger');
     const navMenu = document.getElementById('navMenu') || document.querySelector('.nav-menu');
+    const adminBar = document.getElementById('wpadminbar');
     
     // ==========================================
     // ヘッダーのスクロール制御
@@ -137,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // ==========================================
     // WordPress管理バーの高さを考慮
     // ==========================================
-    const adminBar = document.getElementById('wpadminbar');
     if (adminBar && header) {
         const adminBarHeight = adminBar.offsetHeight;
         header.style.top = adminBarHeight + 'px';
@@ -166,6 +180,48 @@ document.addEventListener('DOMContentLoaded', function() {
     // ==========================================
     // ウィンドウリサイズ時の処理
     // ==========================================
+    function adjustFirstVisitIntroHeight() {
+        const body = document.body;
+        if (!body.classList.contains('page-template-page-first-visit') &&
+            !body.classList.contains('page-template-page-first-visit-php')) {
+            return;
+        }
+
+        const pageHeader = document.querySelector('.page-header');
+        const welcomeSection = document.querySelector('.welcome-message');
+        if (!pageHeader || !welcomeSection) return;
+
+        const headerHeight = header ? header.offsetHeight : 0;
+        const adminBarHeight = adminBar ? adminBar.offsetHeight : 0;
+        const viewportHeight = window.innerHeight;
+        const availableHeight = viewportHeight - headerHeight - adminBarHeight;
+        const pageHeaderStyles = window.getComputedStyle(pageHeader);
+        const pageHeaderMargins =
+            (parseFloat(pageHeaderStyles.marginTop) || 0) +
+            (parseFloat(pageHeaderStyles.marginBottom) || 0);
+        const pageHeaderHeight = pageHeader.offsetHeight + pageHeaderMargins;
+        const leftoverHeight = availableHeight - pageHeaderHeight;
+
+        if (leftoverHeight > 0) {
+            welcomeSection.classList.add('first-visit-hero-active');
+            const computedStyle = window.getComputedStyle(welcomeSection);
+            const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
+            const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
+            const verticalPadding = paddingTop + paddingBottom;
+            const contentHeight = leftoverHeight - verticalPadding;
+
+            if (contentHeight > 20) {
+                welcomeSection.style.minHeight = `${contentHeight}px`;
+            } else {
+                welcomeSection.style.removeProperty('min-height');
+                welcomeSection.classList.remove('first-visit-hero-active');
+            }
+        } else {
+            welcomeSection.style.removeProperty('min-height');
+            welcomeSection.classList.remove('first-visit-hero-active');
+        }
+    }
+
     let resizeTimer;
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
@@ -177,6 +233,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (navMenu) navMenu.classList.remove('active');
                 document.body.style.overflow = '';
             }
+
+            adjustFirstVisitIntroHeight();
         }, 250);
     });
     
@@ -186,8 +244,132 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('load', function() {
         // ローディングアニメーションなどがあればここで処理
         document.body.classList.add('loaded');
+
+        adjustFirstVisitIntroHeight();
     });
-    
+
+    // 初期実行
+    adjustFirstVisitIntroHeight();
+
+    // ==========================================
+    // ギャラリースライダー
+    // ==========================================
+    const gallerySliderWrapper = document.querySelector('.gallery-slider-wrapper');
+    const gallerySlider = document.querySelector('.gallery-slider');
+    const gallerySlides = document.querySelectorAll('.gallery-slide');
+    const galleryDotsContainer = document.querySelector('.gallery-dots');
+
+    if (gallerySlider && gallerySlides.length > 0) {
+        let currentSlide = 0;
+        const totalSlides = gallerySlides.length;
+        let autoPlayInterval;
+
+        // カスタマイザーから切替秒数を取得（デフォルト: 4.0秒）
+        let intervalSeconds = 4.0;
+        if (gallerySliderWrapper && gallerySliderWrapper.dataset.interval) {
+            intervalSeconds = parseFloat(gallerySliderWrapper.dataset.interval);
+            // 値の範囲チェック（1.0〜10.0秒）
+            if (isNaN(intervalSeconds) || intervalSeconds < 1.0 || intervalSeconds > 10.0) {
+                intervalSeconds = 4.0;
+            }
+        }
+        const intervalMs = Math.round(intervalSeconds * 1000); // ミリ秒に変換
+
+        // ドットナビゲーションを生成
+        if (galleryDotsContainer) {
+            galleryDotsContainer.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('span');
+                dot.classList.add('gallery-dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                galleryDotsContainer.appendChild(dot);
+            }
+        }
+
+        const galleryDots = document.querySelectorAll('.gallery-dot');
+
+        function updateSlider() {
+            const offset = -currentSlide * 100;
+            gallerySlider.style.transform = `translateX(${offset}%)`;
+
+            // ドットを更新
+            galleryDots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+            resetAutoPlay();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        // 自動再生
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(nextSlide, intervalMs); // カスタマイザーで設定した秒数で切り替え
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+        }
+
+        function resetAutoPlay() {
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        // スワイプ対応（タッチデバイス）
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        gallerySlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        gallerySlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold) {
+                // 左スワイプ（次へ）
+                nextSlide();
+                resetAutoPlay();
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                // 右スワイプ（前へ）
+                prevSlide();
+                resetAutoPlay();
+            }
+        }
+
+        // マウスホバーで自動再生を一時停止
+        gallerySlider.addEventListener('mouseenter', stopAutoPlay);
+        gallerySlider.addEventListener('mouseleave', startAutoPlay);
+
+        // 初期化
+        updateSlider();
+        startAutoPlay();
+    }
+
     // ==========================================
     // WordPress Contact Form 7 サポート
     // ==========================================

@@ -34,7 +34,7 @@ get_header(); ?>
                     </p>
                 </div>
                 <div class="hero-buttons">
-                    <a href="<?php echo esc_url(home_url('/first-visit/')); ?>" class="btn btn-elegant">初めての方へ</a>
+                    <a href="<?php echo esc_url(home_url('/first-visit/')); ?>" class="btn btn-elegant">ご挨拶</a>
                     <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="btn btn-japanese">福中店メニュー</a>
                     <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="btn btn-japanese">塩町店メニュー</a>
                 </div>
@@ -137,62 +137,58 @@ get_header(); ?>
                     <span class="title-en">GALLERY</span>
                 </h2>
             </div>
-            <div class="gallery-wrapper">
-                <!-- 福中店ギャラリー -->
-                <div class="gallery-store">
-                    <h3 class="gallery-store-title">福中店</h3>
-                    <div class="gallery-grid">
-                        <?php 
-                            $fukunaka_gallery_ids = array(
-                                absint(get_theme_mod('home_gallery_fukunaka_1', 0)),
-                                absint(get_theme_mod('home_gallery_fukunaka_2', 0)),
-                                absint(get_theme_mod('home_gallery_fukunaka_3', 0)),
-                                absint(get_theme_mod('home_gallery_fukunaka_4', 0)),
-                            );
-                            $fukunaka_placeholders = array('福中店 カウンター', '福中店 個室', '福中店 活魚水槽', '福中店 料理');
-                            foreach ($fukunaka_gallery_ids as $idx => $img_id) :
-                        ?>
-                            <div class="gallery-item">
-                                <?php if ($img_id) : ?>
-                                    <?php echo wp_get_attachment_image($img_id, 'washouen-gallery'); ?>
-                                <?php else : ?>
-                                    <div class="image-placeholder">
-                                        <i class="fas fa-image"></i>
-                                        <p><?php echo esc_html($fukunaka_placeholders[$idx]); ?></p>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
+            <div class="gallery-slider-wrapper" data-interval="<?php echo esc_attr(floatval(get_theme_mod('gallery_slider_interval', 4.0))); ?>">
+                <div class="gallery-slider">
+                    <?php
+                        // 全店舗の画像を統合（最大8枚）
+                        $all_gallery_ids = array(
+                            absint(get_theme_mod('home_gallery_fukunaka_1', 0)),
+                            absint(get_theme_mod('home_gallery_fukunaka_2', 0)),
+                            absint(get_theme_mod('home_gallery_fukunaka_3', 0)),
+                            absint(get_theme_mod('home_gallery_fukunaka_4', 0)),
+                            absint(get_theme_mod('home_gallery_shiomachi_1', 0)),
+                            absint(get_theme_mod('home_gallery_shiomachi_2', 0)),
+                            absint(get_theme_mod('home_gallery_shiomachi_3', 0)),
+                            absint(get_theme_mod('home_gallery_shiomachi_4', 0)),
+                        );
+                        $all_placeholders = array(
+                            '店舗写真 1', '店舗写真 2', '店舗写真 3', '店舗写真 4',
+                            '店舗写真 5', '店舗写真 6', '店舗写真 7', '店舗写真 8'
+                        );
 
-                <!-- 塩町店ギャラリー -->
-                <div class="gallery-store">
-                    <h3 class="gallery-store-title">塩町店</h3>
-                    <div class="gallery-grid">
-                        <?php 
-                            $shiomachi_gallery_ids = array(
-                                absint(get_theme_mod('home_gallery_shiomachi_1', 0)),
-                                absint(get_theme_mod('home_gallery_shiomachi_2', 0)),
-                                absint(get_theme_mod('home_gallery_shiomachi_3', 0)),
-                                absint(get_theme_mod('home_gallery_shiomachi_4', 0)),
-                            );
-                            $shiomachi_placeholders = array('塩町店 カウンター', '塩町店 座敷', '塩町店 握り', '塩町店 料理');
-                            foreach ($shiomachi_gallery_ids as $idx => $img_id) :
-                        ?>
-                            <div class="gallery-item">
-                                <?php if ($img_id) : ?>
-                                    <?php echo wp_get_attachment_image($img_id, 'washouen-gallery'); ?>
-                                <?php else : ?>
-                                    <div class="image-placeholder">
-                                        <i class="fas fa-image"></i>
-                                        <p><?php echo esc_html($shiomachi_placeholders[$idx]); ?></p>
-                                    </div>
-                                <?php endif; ?>
+                        // 有効な画像のみをフィルタリング
+                        $valid_images = array();
+                        foreach ($all_gallery_ids as $idx => $img_id) {
+                            if ($img_id) {
+                                $valid_images[] = array('id' => $img_id, 'placeholder' => $all_placeholders[$idx]);
+                            }
+                        }
+
+                        // 画像が存在する場合のみスライダーを表示
+                        if (!empty($valid_images)) :
+                            foreach ($valid_images as $img_data) :
+                    ?>
+                        <div class="gallery-slide">
+                            <?php echo wp_get_attachment_image($img_data['id'], 'full', false, array('class' => 'gallery-slide-img')); ?>
+                        </div>
+                    <?php
+                            endforeach;
+                        else :
+                            // 画像がない場合のプレースホルダー（最低6枚）
+                            for ($i = 0; $i < 6; $i++) :
+                    ?>
+                        <div class="gallery-slide">
+                            <div class="image-placeholder">
+                                <i class="fas fa-image"></i>
+                                <p><?php echo esc_html($all_placeholders[$i]); ?></p>
                             </div>
-                        <?php endforeach; ?>
-                    </div>
+                        </div>
+                    <?php
+                            endfor;
+                        endif;
+                    ?>
                 </div>
+                <div class="gallery-dots"></div>
             </div>
         </div>
     </section>
@@ -208,8 +204,24 @@ get_header(); ?>
             </div>
             <div class="menu-stores">
                 <div class="menu-store-card">
-                    <div class="menu-store-icon">
-                        <i class="fas fa-fish"></i>
+                    <?php 
+                        $fukunaka_icon_id = absint(get_theme_mod('home_menu_icon_fukunaka', 0)); 
+                        $fukunaka_style = '';
+                        $fukunaka_has_image = false;
+                        if ($fukunaka_icon_id) {
+                            // 240x85 専用サイズで取得（なければフルサイズにフォールバック）
+                            $fukunaka_icon_url = wp_get_attachment_image_url($fukunaka_icon_id, 'home-menu-icon');
+                            if (!$fukunaka_icon_url) {
+                                $fukunaka_icon_url = wp_get_attachment_image_url($fukunaka_icon_id, 'full');
+                            }
+                            if ($fukunaka_icon_url) {
+                                $fukunaka_has_image = true;
+                                $fukunaka_style = ' style="--msi: url(\'' . esc_url($fukunaka_icon_url) . '\');"';
+                            }
+                        }
+                    ?>
+                    <div class="menu-store-icon<?php echo $fukunaka_has_image ? ' has-image' : ''; ?>"<?php echo $fukunaka_style; ?>>
+                        <i class="fas fa-fire-burner"></i>
                     </div>
                     <h3>福中店 - 魚料理</h3>
                     <p>新鮮な魚介を使用した多彩な料理をご提供しております。</p>
@@ -218,7 +230,23 @@ get_header(); ?>
                     </a>
                 </div>
                 <div class="menu-store-card">
-                    <div class="menu-store-icon">
+                    <?php 
+                        $shiomachi_icon_id = absint(get_theme_mod('home_menu_icon_shiomachi', 0)); 
+                        $shiomachi_style = '';
+                        $shiomachi_has_image = false;
+                        if ($shiomachi_icon_id) {
+                            // 240x85 専用サイズで取得（なければフルサイズにフォールバック）
+                            $shiomachi_icon_url = wp_get_attachment_image_url($shiomachi_icon_id, 'home-menu-icon');
+                            if (!$shiomachi_icon_url) {
+                                $shiomachi_icon_url = wp_get_attachment_image_url($shiomachi_icon_id, 'full');
+                            }
+                            if ($shiomachi_icon_url) {
+                                $shiomachi_has_image = true;
+                                $shiomachi_style = ' style="--msi: url(\'' . esc_url($shiomachi_icon_url) . '\');"';
+                            }
+                        }
+                    ?>
+                    <div class="menu-store-icon<?php echo $shiomachi_has_image ? ' has-image' : ''; ?>"<?php echo $shiomachi_style; ?>>
                         <i class="fas fa-fish-fins"></i>
                     </div>
                     <h3>塩町店 - 寿司</h3>

@@ -45,7 +45,7 @@ echo "<p style='color: green;'><strong>パーマリンクフラッシュが完�
 
 echo "<h3>テストしてください</h3>";
 echo "<ul>";
-echo "<li><a href='" . home_url('/first-visit/') . "' target='_blank'>初めての方へ</a></li>";
+echo "<li><a href='" . home_url('/first-visit/') . "' target='_blank'>ご挨拶</a></li>";
 echo "<li><a href='" . home_url('/fukunaka-menu/') . "' target='_blank'>福中店メニュー</a></li>";
 echo "<li><a href='" . home_url('/shiomachi-menu/') . "' target='_blank'>塩町店メニュー</a></li>";
 echo "<li><a href='" . home_url('/access/') . "' target='_blank'>アクセス</a></li>";
