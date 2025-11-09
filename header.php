@@ -47,8 +47,8 @@ function washouen_default_menu() {
     <ul class="nav-menu-list">
         <li><a href="<?php echo esc_url(home_url('/')); ?>" <?php echo is_front_page() ? 'class="active"' : ''; ?>>ホーム</a></li>
         <li><a href="<?php echo esc_url(home_url('/first-visit/')); ?>" <?php echo (is_page('first-visit') || is_page_template('page-first-visit.php')) ? 'class="active"' : ''; ?>>ご挨拶</a></li>
-        <li><a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" <?php echo (is_page('fukunaka-menu') || is_page_template('page-fukunaka-menu.php')) ? 'class="active"' : ''; ?>>福中店メニュー</a></li>
-        <li><a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" <?php echo (is_page('shiomachi-menu') || is_page_template('page-shiomachi-menu.php')) ? 'class="active"' : ''; ?>>塩町店メニュー</a></li>
+        <li><a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" <?php echo (is_page('fukunaka-menu') || is_page_template('page-fukunaka-menu.php')) ? 'class="active"' : ''; ?>>福中店 お品書き</a></li>
+        <li><a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" <?php echo (is_page('shiomachi-menu') || is_page_template('page-shiomachi-menu.php')) ? 'class="active"' : ''; ?>>塩町店 お品書き</a></li>
         <li><a href="<?php echo esc_url(home_url('/access/')); ?>" <?php echo (is_page('access') || is_page_template('page-access.php')) ? 'class="active"' : ''; ?>>当店への道案内</a></li>
     </ul>
     <?php

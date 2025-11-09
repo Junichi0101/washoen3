@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: 塩町店メニュー
+ * Template Name: 塩町店 お品書き
  * Description: Shiomachi store menu page template
- * 
+ *
  * @package Washouen
  */
 
@@ -37,36 +37,57 @@ get_header(); ?>
     </section>
 
     <?php
-    // Get custom post type menu items for sushi
-    $sushi_categories = array(
+    // タクソノミーからカテゴリーを動的に取得
+    $terms = get_terms(array(
+        'taxonomy' => 'shiomachi_category',
+        'hide_empty' => false,
+    ));
+
+    // デフォルトカテゴリーのメタ情報（アイコンと説明）
+    $default_category_meta = array(
         'nigiri' => array(
-            'title' => '握り',
-            'description' => '職人が丁寧に握る逸品',
-            'icon' => '🍣'
+            'icon' => '🍣',
+            'description' => '職人が丁寧に握る逸品'
         ),
         'gunkan' => array(
-            'title' => '軍艦・巻物',
-            'description' => '海苔の香りと共に',
-            'icon' => '🍱'
+            'icon' => '🍱',
+            'description' => '海苔の香りと共に'
         ),
         'chirashi' => array(
-            'title' => 'ちらし・丼',
-            'description' => '彩り豊かな海の幸',
-            'icon' => '🍜'
+            'icon' => '🍜',
+            'description' => '彩り豊かな海の幸'
         ),
         'omakase' => array(
-            'title' => 'おまかせコース',
-            'description' => '季節の味覚を堪能',
-            'icon' => '⭐'
+            'icon' => '⭐',
+            'description' => '季節の味覚を堪能'
         ),
         'side' => array(
-            'title' => '一品料理',
-            'description' => '鮨と楽しむ逸品',
-            'icon' => '🥢'
+            'icon' => '🥢',
+            'description' => '鮨と楽しむ逸品'
+        ),
+        'drink' => array(
+            'icon' => '🍶',
+            'description' => '鮨と楽しむ厳選された日本酒'
         )
     );
 
-    foreach ($sushi_categories as $category_slug => $category_info) :
+    // タクソノミーからカテゴリー情報を構築
+    $menu_categories = array();
+    if (!empty($terms) && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            // 管理画面で設定した説明文を優先的に使用、なければデフォルトを使用
+            $custom_description = !empty($term->description) ? $term->description : '';
+            $default_description = isset($default_category_meta[$term->slug]['description']) ? $default_category_meta[$term->slug]['description'] : '';
+
+            $menu_categories[$term->slug] = array(
+                'title' => $term->name,
+                'description' => !empty($custom_description) ? $custom_description : $default_description,
+                'icon' => isset($default_category_meta[$term->slug]['icon']) ? $default_category_meta[$term->slug]['icon'] : '📋'
+            );
+        }
+    }
+
+    foreach ($menu_categories as $category_slug => $category_info) :
         $args = array(
             'post_type' => 'shiomachi_menu',
             'posts_per_page' => -1,
@@ -130,168 +151,6 @@ get_header(); ?>
         <?php endif;
         wp_reset_postdata();
     endforeach; ?>
-
-    <!-- Static menu items as examples -->
-    <section class="menu-category sushi-category">
-        <div class="container">
-            <div class="category-header">
-                <h2 class="category-title">本日のおすすめ握り</h2>
-                <p class="category-description">旬の素材を職人の技で</p>
-            </div>
-
-            <div class="menu-grid sushi-grid">
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <div class="menu-item-header">
-                        <h3 class="menu-card-title">大トロ</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-card-description">本マグロの最上級部位</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <div class="menu-item-header">
-                        <h3 class="menu-card-title">中トロ</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-card-description">程よい脂のりの本マグロ</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <div class="menu-item-header">
-                        <h3 class="menu-card-title">赤身</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-card-description">マグロ本来の旨み</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <div class="menu-item-header">
-                        <h3 class="menu-card-title">コハダ</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-card-description">江戸前の伝統、〆物の逸品</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <div class="menu-item-header">
-                        <h3 class="menu-card-title">車海老</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-card-description">活き〆の新鮮な海老</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <div class="menu-item-header">
-                        <h3 class="menu-card-title">雲丹</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-card-description">濃厚な甘みの北海道産</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <div class="menu-item-header">
-                        <h3 class="menu-card-title">穴子</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-card-description">ふっくら煮上げた江戸前穴子</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <div class="menu-item-header">
-                        <h3 class="menu-card-title">いくら</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-card-description">北海道産の醤油漬け</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="menu-category sushi-category">
-        <div class="container">
-            <div class="category-header">
-                <h2 class="category-title">おまかせコース</h2>
-                <p class="category-description">季節の味覚をコースで堪能</p>
-            </div>
-
-            <div class="course-menu">
-                <div class="course-item">
-                    <h3 class="course-name">松コース</h3>
-                    <p class="course-description">
-                        前菜3種、お造り、焼き物、握り10貫、椀物、デザート
-                    </p>
-                    <p class="course-detail">
-                        その日最高の素材を使用した特別コース
-                    </p>
-                </div>
-                <div class="course-item">
-                    <h3 class="course-name">竹コース</h3>
-                    <p class="course-description">
-                        前菜2種、お造り、握り8貫、椀物、デザート
-                    </p>
-                    <p class="course-detail">
-                        バランスの取れた人気のコース
-                    </p>
-                </div>
-                <div class="course-item">
-                    <h3 class="course-name">梅コース</h3>
-                    <p class="course-description">
-                        前菜、握り6貫、巻物、椀物
-                    </p>
-                    <p class="course-detail">
-                        お気軽にお楽しみいただけるコース
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="menu-category">
-        <div class="container">
-            <div class="category-header">
-                <h2 class="category-title">お飲み物</h2>
-                <p class="category-description">鮨と楽しむ厳選された日本酒</p>
-            </div>
-
-            <div class="menu-grid">
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <h3 class="menu-card-title">日本酒各種</h3>
-                        <p class="menu-card-description">全国から厳選した銘酒を取り揃えております</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <h3 class="menu-card-title">ワイン</h3>
-                        <p class="menu-card-description">鮨に合うワインをソムリエが選定</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-content">
-                        <h3 class="menu-card-title">ビール・ソフトドリンク</h3>
-                        <p class="menu-card-description">各種ご用意しております</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section class="sushi-philosophy">
         <div class="container">

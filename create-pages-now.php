@@ -24,16 +24,16 @@ $pages = array(
         'content' => 'ご挨拶ページです。和招縁の2つの店舗について詳しくご紹介いたします。'
     ),
     array(
-        'title' => '福中店メニュー',
+        'title' => '福中店 お品書き',
         'slug' => 'fukunaka-menu',
         'template' => 'page-fukunaka-menu.php',
-        'content' => '福中店のメニューページです。新鮮な活魚と一品料理をお楽しみください。'
+        'content' => '福中店のお品書きページです。新鮮な活魚と一品料理をお楽しみください。'
     ),
     array(
-        'title' => '塩町店メニュー',
+        'title' => '塩町店 お品書き',
         'slug' => 'shiomachi-menu',
         'template' => 'page-shiomachi-menu.php',
-        'content' => '塩町店のメニューページです。本格的な江戸前鮨をお楽しみください。'
+        'content' => '塩町店のお品書きページです。本格的な江戸前鮨をお楽しみください。'
     ),
     array(
         'title' => 'アクセス',

@@ -36,7 +36,7 @@ function washouen_fukunaka_sample_data_page() {
     }
     ?>
     <div class="wrap">
-        <h1>福中店メニュー - サンプルデータ生成</h1>
+        <h1>福中店 お品書き - サンプルデータ生成</h1>
         <p>サンプルメニューデータを生成します。既存のデータは削除されません。</p>
         <form method="post">
             <?php wp_nonce_field('generate_fukunaka_sample', 'sample_nonce'); ?>
@@ -56,7 +56,7 @@ function washouen_shiomachi_sample_data_page() {
     }
     ?>
     <div class="wrap">
-        <h1>塩町店メニュー - サンプルデータ生成</h1>
+        <h1>塩町店 お品書き - サンプルデータ生成</h1>
         <p>サンプル寿司メニューデータを生成します。既存のデータは削除されません。</p>
         <form method="post">
             <?php wp_nonce_field('generate_shiomachi_sample', 'sample_nonce'); ?>

@@ -28,16 +28,16 @@ function setup_washouen_pages() {
             'content' => 'ご挨拶ページです。和招縁の2つの店舗について詳しくご紹介いたします。'
         ),
         array(
-            'title' => '福中店メニュー',
+            'title' => '福中店 お品書き',
             'slug' => 'fukunaka-menu',
             'template' => 'page-fukunaka-menu.php',
-            'content' => '福中店のメニューページです。新鮮な活魚と一品料理をお楽しみください。'
+            'content' => '福中店のお品書きページです。新鮮な活魚と一品料理をお楽しみください。'
         ),
         array(
-            'title' => '塩町店メニュー',
+            'title' => '塩町店 お品書き',
             'slug' => 'shiomachi-menu',
             'template' => 'page-shiomachi-menu.php',
-            'content' => '塩町店のメニューページです。本格的な江戸前鮨をお楽しみください。'
+            'content' => '塩町店のお品書きページです。本格的な江戸前鮨をお楽しみください。'
         ),
         array(
             'title' => 'アクセス',
@@ -123,8 +123,8 @@ function setup_washouen_pages() {
     echo "<p><strong>注意:</strong> WordPressがサブディレクトリ(/my_blog/)にインストールされている場合、URLは以下のようになります:</p>";
     echo "<ul>";
     echo "<li>ご挨拶: <code>http://localhost/my_blog/first-visit/</code></li>";
-    echo "<li>福中店メニュー: <code>http://localhost/my_blog/fukunaka-menu/</code></li>";
-    echo "<li>塩町店メニュー: <code>http://localhost/my_blog/shiomachi-menu/</code></li>";
+    echo "<li>福中店 お品書き: <code>http://localhost/my_blog/fukunaka-menu/</code></li>";
+    echo "<li>塩町店 お品書き: <code>http://localhost/my_blog/shiomachi-menu/</code></li>";
     echo "<li>アクセス: <code>http://localhost/my_blog/access/</code></li>";
     echo "</ul>";
     echo "</div>";
@@ -149,7 +149,7 @@ if (is_admin() && current_user_can('manage_options')) {
             function() {
                 echo "<div class='wrap'>";
                 echo "<h1>和招縁 ページセットアップ</h1>";
-                echo "<p>必要なページ（ご挨拶、福中店メニュー、塩町店メニュー、アクセス）を作成します。</p>";
+                echo "<p>必要なページ（ご挨拶、福中店 お品書き、塩町店 お品書き、アクセス）を作成します。</p>";
                 echo "<a href='" . admin_url('themes.php?page=washouen-setup&setup_pages=true') . "' class='button button-primary'>ページを作成/更新する</a>";
                 echo "</div>";
             }

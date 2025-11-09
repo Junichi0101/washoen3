@@ -386,6 +386,120 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ==========================================
+    // ご挨拶ページのスライダー
+    // ==========================================
+    const greetingSliderWrapper = document.querySelector('.greeting-slider-wrapper');
+    const greetingSlider = document.querySelector('.greeting-slider');
+    const greetingSlides = document.querySelectorAll('.greeting-slide');
+    const greetingDotsContainer = document.querySelector('.greeting-slider-dots');
+
+    if (greetingSlider && greetingSlides.length > 0) {
+        let currentSlide = 0;
+        const totalSlides = greetingSlides.length;
+        let autoPlayInterval;
+
+        // カスタマイザーから切替秒数を取得（デフォルト: 4.0秒）
+        let intervalSeconds = 4.0;
+        if (greetingSliderWrapper && greetingSliderWrapper.dataset.interval) {
+            intervalSeconds = parseFloat(greetingSliderWrapper.dataset.interval);
+            if (isNaN(intervalSeconds) || intervalSeconds < 1.0 || intervalSeconds > 10.0) {
+                intervalSeconds = 4.0;
+            }
+        }
+        const intervalMs = Math.round(intervalSeconds * 1000);
+
+        // ドットナビゲーションを生成
+        if (greetingDotsContainer) {
+            greetingDotsContainer.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('span');
+                dot.classList.add('greeting-slider-dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                greetingDotsContainer.appendChild(dot);
+            }
+        }
+
+        const greetingDots = document.querySelectorAll('.greeting-slider-dot');
+
+        function updateSlider() {
+            const offset = -currentSlide * 100;
+            greetingSlider.style.transform = `translateX(${offset}%)`;
+
+            greetingDots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+            resetAutoPlay();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(nextSlide, intervalMs);
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+        }
+
+        function resetAutoPlay() {
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        // スワイプ対応
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        greetingSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        greetingSlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold) {
+                nextSlide();
+                resetAutoPlay();
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                prevSlide();
+                resetAutoPlay();
+            }
+        }
+
+        // マウスホバーで自動再生を一時停止
+        greetingSlider.addEventListener('mouseenter', stopAutoPlay);
+        greetingSlider.addEventListener('mouseleave', startAutoPlay);
+
+        // 初期化
+        updateSlider();
+        startAutoPlay();
+    }
+
+    // ==========================================
     // コンソールメッセージ
     // ==========================================
     console.log('%c和招縁へようこそ', 'font-size: 24px; font-weight: bold; color: #8b7355;');

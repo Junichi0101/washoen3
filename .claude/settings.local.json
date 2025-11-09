@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Read(/C:\\xampp\\htdocs\\my_blog\\wordpress\\wp-content\\themes/**)"
+      "Read(/C:\\xampp\\htdocs\\my_blog\\wordpress\\wp-content\\themes/**)",
+      "Bash(php:*)"
     ],
     "deny": [],
     "ask": []

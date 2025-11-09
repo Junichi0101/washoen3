@@ -35,8 +35,8 @@ get_header(); ?>
                 </div>
                 <div class="hero-buttons">
                     <a href="<?php echo esc_url(home_url('/first-visit/')); ?>" class="btn btn-elegant">ご挨拶</a>
-                    <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="btn btn-japanese">福中店メニュー</a>
-                    <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="btn btn-japanese">塩町店メニュー</a>
+                    <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="btn btn-japanese">福中店 お品書き</a>
+                    <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="btn btn-japanese">塩町店 お品書き</a>
                 </div>
             </div>
         </div>

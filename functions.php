@@ -108,75 +108,144 @@ require_once get_template_directory() . '/inc/menu-import-export.php';
 
 // カスタム投稿タイプ: メニュー
 function washouen_custom_post_types() {
-    // 福中店メニュー
+    // 福中店 お品書き
     register_post_type('fukunaka_menu', array(
         'labels' => array(
-            'name' => __('福中店メニュー', 'washouen'),
-            'singular_name' => __('福中店メニュー項目', 'washouen'),
+            'name' => __('福中店 お品書き', 'washouen'),
+            'singular_name' => __('福中店 お品書き項目', 'washouen'),
             'add_new' => __('新規追加', 'washouen'),
             'add_new_item' => __('新規メニュー項目を追加', 'washouen'),
             'edit_item' => __('メニュー項目を編集', 'washouen'),
+            'all_items' => __('お品書き一覧', 'washouen'),
             'featured_image' => __('メニュー画像', 'washouen'),
             'set_featured_image' => __('メニュー画像を設定', 'washouen'),
             'remove_featured_image' => __('メニュー画像を削除', 'washouen'),
             'use_featured_image' => __('メニュー画像として使用', 'washouen'),
         ),
         'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
         'has_archive' => true,
         'supports' => array('title', 'thumbnail', 'page-attributes'),
         'menu_icon' => 'dashicons-food',
+        'menu_position' => 20,
         'rewrite' => array('slug' => 'fukunaka-menu-items'),
+        'capability_type' => 'post',
     ));
-    
-    // 塩町店メニュー
+
+    // 塩町店 お品書き
     register_post_type('shiomachi_menu', array(
         'labels' => array(
-            'name' => __('塩町店メニュー', 'washouen'),
-            'singular_name' => __('塩町店メニュー項目', 'washouen'),
+            'name' => __('塩町店 お品書き', 'washouen'),
+            'singular_name' => __('塩町店 お品書き項目', 'washouen'),
             'add_new' => __('新規追加', 'washouen'),
             'add_new_item' => __('新規メニュー項目を追加', 'washouen'),
             'edit_item' => __('メニュー項目を編集', 'washouen'),
+            'all_items' => __('お品書き一覧', 'washouen'),
             'featured_image' => __('メニュー画像', 'washouen'),
             'set_featured_image' => __('メニュー画像を設定', 'washouen'),
             'remove_featured_image' => __('メニュー画像を削除', 'washouen'),
             'use_featured_image' => __('メニュー画像として使用', 'washouen'),
         ),
         'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
         'has_archive' => true,
         'supports' => array('title', 'thumbnail', 'page-attributes'),
         'menu_icon' => 'dashicons-food',
+        'menu_position' => 21,
         'rewrite' => array('slug' => 'shiomachi-menu-items'),
+        'capability_type' => 'post',
     ));
 }
 add_action('init', 'washouen_custom_post_types');
 
 // カスタムタクソノミー: メニューカテゴリー
 function washouen_custom_taxonomies() {
-    // 福中店メニューカテゴリー
+    // 福中店 お品書きカテゴリー
     register_taxonomy('fukunaka_category', 'fukunaka_menu', array(
         'labels' => array(
             'name' => __('メニューカテゴリー', 'washouen'),
             'singular_name' => __('カテゴリー', 'washouen'),
+            'search_items' => __('カテゴリーを検索', 'washouen'),
+            'all_items' => __('すべてのカテゴリー', 'washouen'),
+            'parent_item' => __('親カテゴリー', 'washouen'),
+            'parent_item_colon' => __('親カテゴリー:', 'washouen'),
+            'edit_item' => __('カテゴリーを編集', 'washouen'),
+            'update_item' => __('カテゴリーを更新', 'washouen'),
+            'add_new_item' => __('新規カテゴリーを追加', 'washouen'),
+            'new_item_name' => __('新しいカテゴリー名', 'washouen'),
+            'menu_name' => __('メニューカテゴリー', 'washouen'),
         ),
         'hierarchical' => true,
         'show_ui' => true,
+        'show_in_menu' => true,
         'show_admin_column' => true,
+        'query_var' => true,
         'rewrite' => array('slug' => 'fukunaka-category'),
     ));
-    
-    // 塩町店メニューカテゴリー
+
+    // 塩町店 お品書きカテゴリー
     register_taxonomy('shiomachi_category', 'shiomachi_menu', array(
         'labels' => array(
             'name' => __('メニューカテゴリー', 'washouen'),
             'singular_name' => __('カテゴリー', 'washouen'),
+            'search_items' => __('カテゴリーを検索', 'washouen'),
+            'all_items' => __('すべてのカテゴリー', 'washouen'),
+            'parent_item' => __('親カテゴリー', 'washouen'),
+            'parent_item_colon' => __('親カテゴリー:', 'washouen'),
+            'edit_item' => __('カテゴリーを編集', 'washouen'),
+            'update_item' => __('カテゴリーを更新', 'washouen'),
+            'add_new_item' => __('新規カテゴリーを追加', 'washouen'),
+            'new_item_name' => __('新しいカテゴリー名', 'washouen'),
+            'menu_name' => __('メニューカテゴリー', 'washouen'),
         ),
         'hierarchical' => true,
         'show_ui' => true,
+        'show_in_menu' => true,
         'show_admin_column' => true,
+        'query_var' => true,
         'rewrite' => array('slug' => 'shiomachi-category'),
     ));
 }
 add_action('init', 'washouen_custom_taxonomies');
+
+// デフォルトカテゴリーを作成
+function washouen_create_default_categories() {
+    // 福中店のデフォルトカテゴリー
+    $fukunaka_categories = array(
+        'course' => 'コース料理',
+        'sashimi' => 'お造り',
+        'grilled' => '焼き物',
+        'simmered' => '煮付け',
+        'fried' => '揚げ物',
+        'special' => '季節の特選料理',
+        'drink' => 'お飲み物'
+    );
+
+    foreach ($fukunaka_categories as $slug => $name) {
+        if (!term_exists($slug, 'fukunaka_category')) {
+            wp_insert_term($name, 'fukunaka_category', array('slug' => $slug));
+        }
+    }
+
+    // 塩町店のデフォルトカテゴリー
+    $shiomachi_categories = array(
+        'nigiri' => '握り',
+        'gunkan' => '軍艦・巻物',
+        'chirashi' => 'ちらし・丼',
+        'omakase' => 'おまかせコース',
+        'side' => '一品料理',
+        'drink' => 'お飲み物'
+    );
+
+    foreach ($shiomachi_categories as $slug => $name) {
+        if (!term_exists($slug, 'shiomachi_category')) {
+            wp_insert_term($name, 'shiomachi_category', array('slug' => $slug));
+        }
+    }
+}
+add_action('init', 'washouen_create_default_categories', 20);
 
 // ウィジェットエリアの登録
 function washouen_widgets_init() {
@@ -358,8 +427,24 @@ function washouen_customize_register($wp_customize) {
     $wp_customize->add_section('first_visit_settings', array(
         'title'       => __('ご挨拶', 'washouen'),
         'priority'    => 27,
-        'description' => __('「ご挨拶」ページに表示する店舗画像を設定します。推奨サイズ: 400×400（正方形）', 'washouen'),
+        'description' => __('「ご挨拶」ページに表示する画像を設定します。', 'washouen'),
     ));
+
+    // ご挨拶ページ背景画像（推奨: 1920x1080）
+    $wp_customize->add_setting('greeting_hero_image', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'greeting_hero_image', array(
+            'label'       => __('ご挨拶 背景画像', 'washouen'),
+            'description' => __('推奨サイズ: 1920×1080（16:9）', 'washouen'),
+            'section'     => 'first_visit_settings',
+            'mime_type'   => 'image',
+        )));
+    }
 
     // 福中店（外観・カウンター・個室・料理）
     $first_visit_fukunaka_labels = array('外観', 'カウンター', '個室', '料理');
@@ -553,8 +638,8 @@ add_action('customize_register', function($wp_customize) {
 // ページテンプレートの選択肢を追加
 function washouen_page_templates($templates) {
     $templates['page-first-visit.php'] = 'ご挨拶';
-    $templates['page-fukunaka-menu.php'] = '福中店メニュー';
-    $templates['page-shiomachi-menu.php'] = '塩町店メニュー';
+    $templates['page-fukunaka-menu.php'] = '福中店 お品書き';
+    $templates['page-shiomachi-menu.php'] = '塩町店 お品書き';
     $templates['page-access.php'] = 'アクセス';
     return $templates;
 }

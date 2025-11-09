@@ -1923,11 +1923,281 @@ a.btn-japanese:hover::after {
   margin-top: var(--spacing-xs);
 }
 
-/* ご挨拶ページ */
-.welcome-message {
-  background-color: var(--bg-white);
+/* ==========================================
+   ご挨拶ページ
+   ========================================== */
+
+/* ヒーローセクション */
+.greeting-hero {
+  position: relative;
+  height: 80vh;
+  min-height: 600px;
+  max-height: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
+.greeting-hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.greeting-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+.greeting-hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: var(--bg-white);
+  max-width: 900px;
+  padding: var(--spacing-xl);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+}
+
+.greeting-hero-title {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: 0.1em;
+  color: #ffffff;
+}
+
+.greeting-hero-text {
+  font-size: 1.125rem;
+  line-height: 2;
+  letter-spacing: 0.05em;
+  opacity: 0.95;
+  color: #ffffff;
+}
+
+/* ギャラリースライダー */
+.greeting-gallery {
+  background: var(--bg-light);
+}
+
+.greeting-slider-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.greeting-slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.greeting-slide {
+  min-width: 100%;
+  height: 70vh;
+  max-height: 800px;
+  min-height: 500px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a2e;
+}
+
+.greeting-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.greeting-slide-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--spacing-lg);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
+  color: var(--bg-white);
+  z-index: 5;
+}
+
+.caption-store-name {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  color: var(--bg-white);
+}
+
+.caption-label {
+  font-size: 1.125rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.caption-description {
+  font-size: 1rem;
+  margin-bottom: var(--spacing-sm);
+  opacity: 0.9;
+  letter-spacing: 0.05em;
+}
+
+.caption-info {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  line-height: 1.8;
+}
+
+.caption-info i {
+  margin-right: var(--spacing-xs);
+  color: rgba(139, 115, 85, 0.9);
+}
+
+.greeting-slider-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.greeting-slider-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.greeting-slider-dot.active {
+  background: rgba(139, 115, 85, 1);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.3);
+}
+
+/* CTAセクション */
+.greeting-cta {
+  background: var(--bg-white);
+  text-align: center;
+}
+
+.greeting-cta-content h2 {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-dark);
+}
+
+.greeting-cta-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1023px) {
+  .greeting-hero {
+    height: 70vh;
+    min-height: 500px;
+  }
+
+  .greeting-hero-title {
+    font-size: 2.25rem;
+  }
+
+  .greeting-hero-text {
+    font-size: 1rem;
+  }
+
+  .greeting-slide {
+    height: 60vh;
+    max-height: 600px;
+    min-height: 400px;
+  }
+
+  .caption-store-name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .greeting-hero {
+    height: 60vh;
+    min-height: 400px;
+  }
+
+  .greeting-hero-title {
+    font-size: 1.75rem;
+  }
+
+  .greeting-hero-text {
+    font-size: 0.9rem;
+  }
+
+  .greeting-slide {
+    height: 50vh;
+    max-height: 500px;
+    min-height: 350px;
+  }
+
+  .greeting-slide-caption {
+    padding: var(--spacing-md);
+  }
+
+  .caption-store-name {
+    font-size: 1.25rem;
+  }
+
+  .caption-description {
+    font-size: 0.9rem;
+  }
+
+  .caption-info {
+    font-size: 0.8rem;
+  }
+
+  .greeting-cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .greeting-cta-buttons .btn {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+/* 旧スタイルの削除用（後方互換性） */
 body.page-template-page-first-visit .welcome-message,
 body.page-template-page-first-visit-php .welcome-message {
   position: relative;
@@ -1957,7 +2227,7 @@ body.page-template-page-first-visit-php .welcome-message.first-visit-hero-active
   font-size: 2.5rem;
   font-weight: 500;
   margin-bottom: var(--spacing-lg);
-  color: var(--primary-color);
+  color: #2a2622;
 }
 
 .welcome-text p {
@@ -2315,20 +2585,23 @@ body.page-template-page-access .store-detail-info a.btn.btn-japanese {
 }
 
 .menu-card-image {
-    height: 200px;
+    height: 500px;
     overflow: hidden;
     border-radius: 12px 12px 0 0;
+    position: relative;
 }
 
 .menu-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: brightness(1.08) contrast(1.12) saturate(1.25);
 }
 
 .menu-card:hover .menu-card-image img {
-    transform: scale(1.05);
+    transform: none;
+    filter: brightness(1.08) contrast(1.12) saturate(1.25);
 }
 
 .menu-card-content {
@@ -2339,8 +2612,8 @@ body.page-template-page-access .store-detail-info a.btn.btn-japanese {
 
 .menu-card-title {
     font-family: var(--font-serif);
-    font-size: 1.25rem;
-    font-weight: 500;
+    font-size: 1.35rem;
+    font-weight: 600;
     color: #2a2622;
     margin-bottom: var(--spacing-sm);
     letter-spacing: 0.05em;
@@ -2447,6 +2720,11 @@ body.page-template-page-access .store-detail-info a.btn.btn-japanese {
 .page-template-page-fukunaka-menu-php .menu-category:nth-child(even),
 .page-template-page-shiomachi-menu-php .menu-category:nth-child(even) {
   background: linear-gradient(180deg, #f5f5f5 0%, #fafafa 100%);
+}
+
+/* デフォルトで非表示にするカテゴリー */
+.menu-category-hidden {
+  display: none;
 }
 
 /* メニュー紹介セクション（統一デザイン） */
@@ -2909,4 +3187,21 @@ body.page-template-page-access .store-detail-info a.btn.btn-japanese {
   transform: none !important;
   box-shadow: none !important;
   transition: none !important;
+}
+
+/* 料理画像のレスポンシブ対応 */
+@media (max-width: 1023px) {
+  .menu-card-image {
+    height: 400px;
+  }
+}
+
+@media (max-width: 767px) {
+  .menu-card-image {
+    height: 300px;
+  }
+
+  .menu-card-title {
+    font-size: 1.2rem;
+  }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: ご挨拶
- * Description: First visit introduction page template
+ * Description: Greeting page template with image-focused layout
  *
  * @package Washouen
  */
@@ -9,41 +9,28 @@
 get_header(); ?>
 
 <main class="main-content">
-    <!-- ページヘッダー -->
-    <section class="page-header">
-        <div class="page-header-content">
-            <h1 class="page-title">ご挨拶</h1>
-            <p class="page-subtitle">GREETING</p>
+    <!-- ヒーローセクション（背景画像＋簡潔なメッセージ） -->
+    <section class="greeting-hero">
+        <?php
+        $greeting_hero_id = get_theme_mod('greeting_hero_image', 0);
+        $greeting_hero_url = '';
+        if ($greeting_hero_id) {
+            $greeting_hero_url = wp_get_attachment_image_url($greeting_hero_id, 'full');
+        }
+        ?>
+        <div class="greeting-hero-bg" <?php if ($greeting_hero_url) echo 'style="background-image: url(' . esc_url($greeting_hero_url) . ');"'; ?>></div>
+        <div class="greeting-hero-overlay"></div>
+        <div class="greeting-hero-content">
+            <h1 class="greeting-hero-title">和招縁へようこそ</h1>
+            <p class="greeting-hero-text">
+                鮮度と真心を一貫に込めたお料理を通じて、皆さまに四季折々の豊かさを感じていただく。<br>
+                瀬戸内海の恵みと職人の技が織りなす、心のこもったおもてなしをお届けします。
+            </p>
         </div>
     </section>
 
-    <!-- メインメッセージ -->
-    <section class="welcome-message section">
-        <div class="container">
-            <div class="welcome-content">
-                <h2 class="welcome-title">和招縁へようこそ</h2>
-                <div class="welcome-text">
-                    <p>
-                        私たちの使命は、鮮度と真心を一貫に込めたお料理を通じて、<br>
-                        皆さまに四季折々の豊かさを感じていただくことです。
-                    </p>
-                    <p>
-                        瀬戸内海の恵みを中心に、その時期に最も美味しい旬の魚を厳選し、<br>
-                        丁寧な仕事をほどこしてご提供しております。
-                    </p>
-                    <p>
-                        一品一品に込める職人の技と愛情、そして心のこもったおもてなしで、<br>
-                        お客様に「また来たい」と思っていただける店を目指しています。<br>
-                        私たちは、お客様との信頼関係を大切にし、<br>
-                        常連としてお付き合いいただける、温かな店を創り続けます。
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 店舗紹介 -->
-    <section class="store-introduction section">
+    <!-- 店舗ギャラリースライダー -->
+    <section class="greeting-gallery section">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">
@@ -52,113 +39,94 @@ get_header(); ?>
                 </h2>
             </div>
 
-            <!-- 福中店 -->
-            <div class="store-detail">
-                <div class="store-detail-content">
-                    <div class="store-detail-text">
-                        <h3>福中店</h3>
-                        <p>
-                            福中店は、活魚・一品料理をメインに提供しております。<br>
-                            瀬戸内海の新鮮な活魚を水槽から直前に出し調理いたします。
-                        </p>
-                        <p>
-                            お客様のお好みの調理法「生・焼・煮・揚・蒸・にぎり」にて、<br>
-                            天然魚の本当の旨みを色々な形でご堪能いただけます。
-                        </p>
-                        <p>
-                            1階のカウンター席、2階の座敷、3階の完全個室と、<br>
-                            様々なシーンに対応できる空間をご用意しております。
-                        </p>
-                        <div class="store-detail-info">
-                            <p><i class="fas fa-map-marker-alt"></i> <?php echo esc_html(get_theme_mod('fukunaka_address', '〒670-0042 兵庫県姫路市米田町15-1 船場東ビル1F')); ?></p>
-                            <p><i class="fas fa-phone"></i> TEL: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?></p>
-                            <a href="<?php echo home_url('/fukunaka-menu/'); ?>" class="btn btn-japanese">福中店メニューを見る</a>
-                        </div>
-                    </div>
-                    <div class="store-detail-images">
-                        <div class="image-grid">
-                            <?php
-                            $fukunaka_labels = array('外観', 'カウンター', '個室', '料理');
-                            for ($i = 1; $i <= 4; $i++):
-                                $img_id = get_theme_mod('first_visit_fukunaka_' . $i, 0);
-                                $label  = $fukunaka_labels[$i - 1];
-                                if ($img_id): ?>
-                                    <div class="store-image">
-                                        <?php echo wp_get_attachment_image($img_id, 'washouen-gallery', false, array('alt' => '福中店 ' . $label)); ?>
-                                    </div>
-                                <?php else: ?>
-                                    <div class="image-placeholder">
-                                        <i class="fas fa-image"></i>
-                                        <p><?php echo esc_html('福中店 ' . $label); ?></p>
-                                    </div>
-                                <?php endif;
-                            endfor;
-                            ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="greeting-slider-wrapper" data-interval="<?php echo esc_attr(floatval(get_theme_mod('gallery_slider_interval', 4.0))); ?>">
+                <div class="greeting-slider">
+                    <?php
+                    // 福中店の画像データ
+                    $fukunaka_images = array();
+                    $fukunaka_labels = array('外観', 'カウンター', '個室', '料理');
+                    for ($i = 1; $i <= 4; $i++) {
+                        $img_id = get_theme_mod('first_visit_fukunaka_' . $i, 0);
+                        if ($img_id) {
+                            $fukunaka_images[] = array(
+                                'id' => $img_id,
+                                'store' => '福中店',
+                                'label' => $fukunaka_labels[$i - 1],
+                                'phone' => get_theme_mod('fukunaka_phone', '079-284-5355'),
+                                'address' => get_theme_mod('fukunaka_address', '〒670-0017 兵庫県姫路市福中町78'),
+                                'description' => '活魚・一品料理',
+                            );
+                        }
+                    }
 
-            <!-- 塩町店 -->
-            <div class="store-detail reverse">
-                <div class="store-detail-content">
-                    <div class="store-detail-text">
-                        <h3>塩町店</h3>
-                        <p>
-                            塩町店は、鮨をメインに提供しております。店主は瀬戸内海の離島(家島)で生まれ、
-                            島の豊かな海で獲れる新鮮な魚介に囲まれて育ちました。
-                        </p>
-                        <p>
-                            その地元の恵みを最大限に活かし、店主のひと手間を加えた熟練の技で、
-                            素材の旨みを引き出した握りを一貫ずつ、真心を込めてご提供いたします。
-                        </p>
-                        <div class="store-detail-info">
-                            <p><i class="fas fa-map-marker-alt"></i> <?php echo esc_html(get_theme_mod('shiomachi_address', '〒670-0904 兵庫県姫路市塩町177 アールビル1F')); ?></p>
-                            <p><i class="fas fa-phone"></i> TEL: <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?></p>
-                            <a href="<?php echo home_url('/shiomachi-menu/'); ?>" class="btn btn-japanese">塩町店メニューを見る</a>
+                    // 塩町店の画像データ
+                    $shiomachi_images = array();
+                    $shiomachi_labels = array('外観', 'カウンター', '握り', '料理');
+                    for ($i = 1; $i <= 4; $i++) {
+                        $img_id = get_theme_mod('first_visit_shiomachi_' . $i, 0);
+                        if ($img_id) {
+                            $shiomachi_images[] = array(
+                                'id' => $img_id,
+                                'store' => '塩町店',
+                                'label' => $shiomachi_labels[$i - 1],
+                                'phone' => get_theme_mod('shiomachi_phone', '079-223-6879'),
+                                'address' => get_theme_mod('shiomachi_address', '〒670-0904 兵庫県姫路市塩町177 アールビル1F'),
+                                'description' => '本格江戸前鮨',
+                            );
+                        }
+                    }
+
+                    // 全画像を統合
+                    $all_images = array_merge($fukunaka_images, $shiomachi_images);
+
+                    // 画像が存在する場合
+                    if (!empty($all_images)) :
+                        foreach ($all_images as $img_data) :
+                    ?>
+                        <div class="greeting-slide">
+                            <?php echo wp_get_attachment_image($img_data['id'], 'full', false, array('class' => 'greeting-slide-img')); ?>
+                            <div class="greeting-slide-caption">
+                                <h3 class="caption-store-name"><?php echo esc_html($img_data['store']); ?><span class="caption-label"> - <?php echo esc_html($img_data['label']); ?></span></h3>
+                                <p class="caption-description"><?php echo esc_html($img_data['description']); ?></p>
+                                <p class="caption-info">
+                                    <i class="fas fa-map-marker-alt"></i> <?php echo esc_html($img_data['address']); ?><br>
+                                    <i class="fas fa-phone"></i> TEL: <?php echo esc_html($img_data['phone']); ?>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="store-detail-images">
-                        <div class="image-grid">
-                            <?php
-                            $shiomachi_labels = array('外観', 'カウンター', '握り', '料理');
-                            for ($i = 1; $i <= 4; $i++):
-                                $img_id = get_theme_mod('first_visit_shiomachi_' . $i, 0);
-                                $label  = $shiomachi_labels[$i - 1];
-                                if ($img_id): ?>
-                                    <div class="store-image">
-                                        <?php echo wp_get_attachment_image($img_id, 'washouen-gallery', false, array('alt' => '塩町店 ' . $label)); ?>
-                                    </div>
-                                <?php else: ?>
-                                    <div class="image-placeholder">
-                                        <i class="fas fa-image"></i>
-                                        <p><?php echo esc_html('塩町店 ' . $label); ?></p>
-                                    </div>
-                                <?php endif;
-                            endfor;
-                            ?>
+                    <?php
+                        endforeach;
+                    else :
+                        // プレースホルダー
+                        for ($i = 0; $i < 6; $i++) :
+                    ?>
+                        <div class="greeting-slide">
+                            <div class="image-placeholder">
+                                <i class="fas fa-image"></i>
+                                <p>店舗画像 <?php echo $i + 1; ?></p>
+                            </div>
                         </div>
-                    </div>
+                    <?php
+                        endfor;
+                    endif;
+                    ?>
                 </div>
+                <div class="greeting-slider-dots"></div>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta section">
+    <!-- CTA（簡潔版） -->
+    <section class="greeting-cta section">
         <div class="container">
-            <div class="cta-content">
-                <h2>心を込めた、本物の味をお届けします</h2>
-                <p>
-                    お客様のご希望やシーンに合わせて、最適な店舗をお選びください。<br>
-                    スタッフ一同、心よりお待ちしております。
-                </p>
-                <div class="cta-buttons">
-                    <a href="<?php echo home_url('/fukunaka-menu/'); ?>" class="btn btn-elegant">
-                        <i class="fas fa-fish"></i> 福中店メニューを見る
+            <div class="greeting-cta-content">
+                <h2>お客様のシーンに合わせて、最適な店舗をお選びください</h2>
+                <div class="greeting-cta-buttons">
+                    <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="btn btn-elegant">
+                        <i class="fas fa-fire-burner"></i> 福中店 お品書きを見る
                     </a>
-                    <a href="<?php echo home_url('/shiomachi-menu/'); ?>" class="btn btn-elegant">
-                        <i class="fas fa-utensils"></i> 塩町店メニューを見る
+                    <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="btn btn-elegant">
+                        <i class="fas fa-fish"></i> 塩町店 お品書きを見る
                     </a>
                 </div>
             </div>

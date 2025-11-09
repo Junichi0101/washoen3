@@ -8,20 +8,20 @@
 
 // メニューアイテムのカスタムフィールドを追加
 function washouen_add_menu_meta_boxes() {
-    // 福中店メニュー用メタボックス
+    // 福中店お品書き用メタボックス
     add_meta_box(
         'fukunaka_menu_details',
-        '福中店メニュー詳細',
+        '福中店 お品書き詳細',
         'washouen_fukunaka_menu_meta_box',
         'fukunaka_menu',
         'normal',
         'high'
     );
-    
-    // 塩町店メニュー用メタボックス
+
+    // 塩町店お品書き用メタボックス
     add_meta_box(
         'shiomachi_menu_details',
-        '塩町店メニュー詳細',
+        '塩町店 お品書き詳細',
         'washouen_shiomachi_menu_meta_box',
         'shiomachi_menu',
         'normal',
@@ -30,7 +30,7 @@ function washouen_add_menu_meta_boxes() {
 }
 add_action('add_meta_boxes', 'washouen_add_menu_meta_boxes');
 
-// 福中店メニューメタボックスの内容
+// 福中店お品書きメタボックスの内容
 function washouen_fukunaka_menu_meta_box($post) {
     wp_nonce_field('washouen_save_menu_meta', 'washouen_menu_nonce');
     
@@ -85,13 +85,38 @@ function washouen_fukunaka_menu_meta_box($post) {
         <label for="menu_category">カテゴリー</label>
         <select id="menu_category" name="menu_category">
             <option value="">カテゴリーを選択</option>
-            <option value="sashimi" <?php selected($category, 'sashimi'); ?>>お造り</option>
-            <option value="grilled" <?php selected($category, 'grilled'); ?>>焼き物</option>
-            <option value="simmered" <?php selected($category, 'simmered'); ?>>煮付け</option>
-            <option value="fried" <?php selected($category, 'fried'); ?>>揚げ物</option>
-            <option value="special" <?php selected($category, 'special'); ?>>季節の特選料理</option>
-            <option value="drink" <?php selected($category, 'drink'); ?>>お飲み物</option>
+            <?php
+            // 福中店のカテゴリータクソノミーから動的に取得
+            $terms = get_terms(array(
+                'taxonomy' => 'fukunaka_category',
+                'hide_empty' => false,
+            ));
+
+            // デフォルトカテゴリーの定義（タクソノミーに登録されていない場合のフォールバック）
+            $default_categories = array(
+                'course' => 'コース料理',
+                'sashimi' => 'お造り',
+                'grilled' => '焼き物',
+                'simmered' => '煮付け',
+                'fried' => '揚げ物',
+                'special' => '季節の特選料理',
+                'drink' => 'お飲み物'
+            );
+
+            // タクソノミーからカテゴリーを表示
+            if (!empty($terms) && !is_wp_error($terms)) {
+                foreach ($terms as $term) {
+                    echo '<option value="' . esc_attr($term->slug) . '" ' . selected($category, $term->slug, false) . '>' . esc_html($term->name) . '</option>';
+                }
+            } else {
+                // タクソノミーが空の場合はデフォルトカテゴリーを表示
+                foreach ($default_categories as $slug => $name) {
+                    echo '<option value="' . esc_attr($slug) . '" ' . selected($category, $slug, false) . '>' . esc_html($name) . '</option>';
+                }
+            }
+            ?>
         </select>
+        <p class="menu-help">カテゴリーは「福中店 お品書き」→「メニューカテゴリー」から追加・編集できます。</p>
     </div>
     
     <div class="menu-meta-field">
@@ -104,7 +129,7 @@ function washouen_fukunaka_menu_meta_box($post) {
     <?php
 }
 
-// 塩町店メニューメタボックスの内容
+// 塩町店お品書きメタボックスの内容
 function washouen_shiomachi_menu_meta_box($post) {
     wp_nonce_field('washouen_save_menu_meta', 'washouen_menu_nonce');
     
@@ -162,13 +187,37 @@ function washouen_shiomachi_menu_meta_box($post) {
         <label for="menu_category">カテゴリー</label>
         <select id="menu_category" name="menu_category">
             <option value="">カテゴリーを選択</option>
-            <option value="nigiri" <?php selected($category, 'nigiri'); ?>>握り</option>
-            <option value="gunkan" <?php selected($category, 'gunkan'); ?>>軍艦・巻物</option>
-            <option value="chirashi" <?php selected($category, 'chirashi'); ?>>ちらし・丼</option>
-            <option value="omakase" <?php selected($category, 'omakase'); ?>>おまかせコース</option>
-            <option value="side" <?php selected($category, 'side'); ?>>一品料理</option>
-            <option value="drink" <?php selected($category, 'drink'); ?>>お飲み物</option>
+            <?php
+            // 塩町店のカテゴリータクソノミーから動的に取得
+            $terms = get_terms(array(
+                'taxonomy' => 'shiomachi_category',
+                'hide_empty' => false,
+            ));
+
+            // デフォルトカテゴリーの定義（タクソノミーに登録されていない場合のフォールバック）
+            $default_categories = array(
+                'nigiri' => '握り',
+                'gunkan' => '軍艦・巻物',
+                'chirashi' => 'ちらし・丼',
+                'omakase' => 'おまかせコース',
+                'side' => '一品料理',
+                'drink' => 'お飲み物'
+            );
+
+            // タクソノミーからカテゴリーを表示
+            if (!empty($terms) && !is_wp_error($terms)) {
+                foreach ($terms as $term) {
+                    echo '<option value="' . esc_attr($term->slug) . '" ' . selected($category, $term->slug, false) . '>' . esc_html($term->name) . '</option>';
+                }
+            } else {
+                // タクソノミーが空の場合はデフォルトカテゴリーを表示
+                foreach ($default_categories as $slug => $name) {
+                    echo '<option value="' . esc_attr($slug) . '" ' . selected($category, $slug, false) . '>' . esc_html($name) . '</option>';
+                }
+            }
+            ?>
         </select>
+        <p class="menu-help">カテゴリーは「塩町店 お品書き」→「メニューカテゴリー」から追加・編集できます。</p>
     </div>
     <?php
 }
@@ -248,6 +297,7 @@ function washouen_show_menu_columns($column, $post_id) {
         case 'category':
             $category = get_post_meta($post_id, '_menu_category', true);
             $categories = array(
+                'course' => 'コース料理',
                 'sashimi' => 'お造り',
                 'grilled' => '焼き物',
                 'simmered' => '煮付け',

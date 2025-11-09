@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: 福中店メニュー
+ * Template Name: 福中店 お品書き
  * Description: Fukunaka store menu page template
- * 
+ *
  * @package Washouen
  */
 
@@ -37,36 +37,64 @@ get_header(); ?>
     </section>
 
     <?php
-    // Get custom post type menu items
-    $menu_categories = array(
+    // タクソノミーからカテゴリーを動的に取得
+    $terms = get_terms(array(
+        'taxonomy' => 'fukunaka_category',
+        'hide_empty' => false,
+    ));
+
+    // デフォルトカテゴリーのメタ情報（アイコンと説明）
+    $default_category_meta = array(
+        'course' => array(
+            'icon' => '🍱',
+            'description' => '旬の食材を活かした本格会席'
+        ),
         'sashimi' => array(
-            'title' => 'お造り',
-            'description' => '新鮮な魚介を職人の技で',
-            'icon' => '🐟'
+            'icon' => '🐟',
+            'description' => '新鮮な魚介を職人の技で'
         ),
         'grilled' => array(
-            'title' => '焼き物',
-            'description' => '素材の旨みを凝縮',
-            'icon' => '🔥'
+            'icon' => '🔥',
+            'description' => '素材の旨みを凝縮'
         ),
         'simmered' => array(
-            'title' => '煮付け',
-            'description' => '出汁の効いた優しい味わい',
-            'icon' => '🍲'
+            'icon' => '🍲',
+            'description' => '出汁の効いた優しい味わい'
         ),
         'fried' => array(
-            'title' => '揚げ物',
-            'description' => 'サクッと香ばしく',
-            'icon' => '🍤'
+            'icon' => '🍤',
+            'description' => 'サクッと香ばしく'
         ),
         'special' => array(
-            'title' => '季節の特選料理',
-            'description' => '旬の味覚をお楽しみください',
-            'icon' => '🌸'
+            'icon' => '🌸',
+            'description' => '旬の味覚をお楽しみください'
+        ),
+        'drink' => array(
+            'icon' => '🍶',
+            'description' => '料理に合う厳選されたお飲み物'
         )
     );
 
+    // タクソノミーからカテゴリー情報を構築
+    $menu_categories = array();
+    if (!empty($terms) && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            // 管理画面で設定した説明文を優先的に使用、なければデフォルトを使用
+            $custom_description = !empty($term->description) ? $term->description : '';
+            $default_description = isset($default_category_meta[$term->slug]['description']) ? $default_category_meta[$term->slug]['description'] : '';
+
+            $menu_categories[$term->slug] = array(
+                'title' => $term->name,
+                'description' => !empty($custom_description) ? $custom_description : $default_description,
+                'icon' => isset($default_category_meta[$term->slug]['icon']) ? $default_category_meta[$term->slug]['icon'] : '📋'
+            );
+        }
+    }
+
     foreach ($menu_categories as $category_slug => $category_info) :
+        // すべてのカテゴリーを表示
+        $is_default_hidden = false;
+
         $args = array(
             'post_type' => 'fukunaka_menu',
             'posts_per_page' => -1,
@@ -83,7 +111,7 @@ get_header(); ?>
         $menu_items = new WP_Query($args);
 
         if ($menu_items->have_posts()) : ?>
-            <section class="menu-category" id="<?php echo esc_attr($category_slug); ?>">
+            <section class="menu-category<?php echo $is_default_hidden ? ' menu-category-hidden' : ''; ?>" id="<?php echo esc_attr($category_slug); ?>">
                 <div class="container">
                     <div class="category-header">
                         <span class="category-icon"><?php echo $category_info['icon']; ?></span>
@@ -96,18 +124,18 @@ get_header(); ?>
                             <div class="menu-card">
                                 <?php if (has_post_thumbnail()) : ?>
                                     <div class="menu-card-image">
-                                        <?php the_post_thumbnail('medium', array('loading' => 'lazy', 'alt' => get_the_title())); ?>
+                                        <?php the_post_thumbnail('large', array('loading' => 'lazy', 'alt' => get_the_title())); ?>
                                     </div>
                                 <?php endif; ?>
                                 <div class="menu-card-content">
                                     <h3 class="menu-card-title"><?php the_title(); ?></h3>
-                                    <?php 
+                                    <?php
                                     $description = get_post_meta(get_the_ID(), '_menu_description', true);
                                     if ($description) : ?>
                                         <p class="menu-card-description"><?php echo esc_html($description); ?></p>
                                     <?php endif; ?>
                                     <div class="menu-card-meta">
-                                        <?php 
+                                        <?php
                                         $is_seasonal = get_post_meta(get_the_ID(), '_menu_is_seasonal', true);
                                         if ($is_seasonal == '1') : ?>
                                             <span class="menu-badge seasonal">季節限定</span>
@@ -124,6 +152,7 @@ get_header(); ?>
     endforeach; ?>
 
     <!-- Static menu items as fallback or examples -->
+    <?php /*
     <section class="menu-category" id="static-menu">
         <div class="container">
             <div class="category-header">
@@ -205,6 +234,7 @@ get_header(); ?>
             </div>
         </div>
     </section>
+    */ ?>
 
     <section class="menu-notice">
         <div class="container">

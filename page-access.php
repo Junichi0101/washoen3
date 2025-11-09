@@ -47,7 +47,7 @@ get_header(); ?>
                         <div class="store-detail-info">
                             <p><i class="fas fa-map-marker-alt"></i> <?php echo esc_html(get_theme_mod('fukunaka_address', '〒670-0042 兵庫県姫路市米田町15-1 船場東ビル1F')); ?></p>
                             <p><i class="fas fa-phone"></i> TEL: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?></p>
-                            <a href="<?php echo home_url('/fukunaka-menu/'); ?>" class="btn btn-japanese">福中店メニューを見る</a>
+                            <a href="<?php echo home_url('/fukunaka-menu/'); ?>" class="btn btn-japanese">福中店 お品書きを見る</a>
                         </div>
                     </div>
                     <div class="store-detail-images">
@@ -98,7 +98,7 @@ get_header(); ?>
                         <div class="store-detail-info">
                             <p><i class="fas fa-map-marker-alt"></i> <?php echo esc_html(get_theme_mod('shiomachi_address', '〒670-0904 兵庫県姫路市塩町177 アールビル1F')); ?></p>
                             <p><i class="fas fa-phone"></i> TEL: <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?></p>
-                            <a href="<?php echo home_url('/shiomachi-menu/'); ?>" class="btn btn-japanese">塩町店メニューを見る</a>
+                            <a href="<?php echo home_url('/shiomachi-menu/'); ?>" class="btn btn-japanese">塩町店 お品書きを見る</a>
                         </div>
                     </div>
                     <div class="store-detail-images">
@@ -144,10 +144,10 @@ get_header(); ?>
                 </p>
                 <div class="cta-buttons">
                     <a href="<?php echo home_url('/fukunaka-menu/'); ?>" class="btn btn-elegant">
-                        <i class="fas fa-fish"></i> 福中店メニューを見る
+                        <i class="fas fa-fish"></i> 福中店 お品書きを見る
                     </a>
                     <a href="<?php echo home_url('/shiomachi-menu/'); ?>" class="btn btn-elegant">
-                        <i class="fas fa-utensils"></i> 塩町店メニューを見る
+                        <i class="fas fa-utensils"></i> 塩町店 お品書きを見る
                     </a>
                 </div>
             </div>
