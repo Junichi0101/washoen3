@@ -8,9 +8,16 @@
 
 get_header(); ?>
 
-<main class="main-content">
+<main class="main-content shiomachi-menu-page">
     <!-- ページヘッダー -->
-    <section class="page-header">
+    <?php
+    // ヘッダー背景画像の取得
+    $header_bg_id = get_theme_mod('shiomachi_menu_bg_image', 0);
+    $header_bg_url = $header_bg_id ? wp_get_attachment_image_url($header_bg_id, 'full') : '';
+    $header_bg_style = $header_bg_url ? ' style="background-image: url(' . esc_url($header_bg_url) . ');"' : '';
+    ?>
+    <section class="page-header shiomachi-menu-header"<?php echo $header_bg_style; ?>>
+        <div class="page-header-overlay"></div>
         <div class="page-header-content">
             <h1 class="page-title">塩町店 お品書き</h1>
             <p class="page-subtitle">SHIOMACHI MENU</p>
@@ -21,20 +28,69 @@ get_header(); ?>
     <section class="welcome-message section">
         <div class="container">
             <div class="welcome-content">
-                <h2 class="welcome-title">伝統の技が光る、本格江戸前鮨</h2>
+                <h2 class="welcome-title">家島育ちの店主が紡ぐ、瀬戸内・島の鮨</h2>
                 <div class="welcome-text">
                     <p>
-                        厳選された旬の魚介を、熟練の職人が一貫一貫丁寧に握ります。<br>
-                        赤酢を使った伝統のシャリと、こだわりの海苔が織りなす至福の味わいをお楽しみください。
+                        瀬戸内海の島・家島で育った店主が、島の恵みと熟練の技を大切に、一貫一貫、心を込めて鮨を握っております。
                     </p>
                     <p>
-                        塩町店では、築地・豊洲市場から毎日仕入れる新鮮な魚介を使用し、<br>
-                        職人の確かな技術で美味しい鮨をご提供いたします。
+                        気取らず、しかし本格的。そんな“島の鮨”の魅力を、塩町にてゆっくりとご堪能ください。
                     </p>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- 料理画像ギャラリースライダー -->
+    <?php
+    // ギャラリー画像を取得
+    $gallery_images = array();
+    for ($i = 1; $i <= 6; $i++) {
+        $image_id = get_theme_mod('shiomachi_menu_gallery_' . $i, 0);
+        if ($image_id) {
+            $image_url = wp_get_attachment_image_url($image_id, 'full');
+            $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+            if ($image_url) {
+                $gallery_images[] = array(
+                    'url' => $image_url,
+                    'alt' => $image_alt ? $image_alt : '塩町店の料理'
+                );
+            }
+        }
+    }
+
+    if (!empty($gallery_images)) :
+        $slider_interval = get_theme_mod('shiomachi_menu_slider_interval', 4.0);
+    ?>
+        <section class="menu-gallery-slider shiomachi-slider">
+            <div class="slider-container">
+                <?php foreach ($gallery_images as $index => $image) : ?>
+                    <div class="slider-slide <?php echo $index === 0 ? 'active' : ''; ?>">
+                        <img src="<?php echo esc_url($image['url']); ?>"
+                             alt="<?php echo esc_attr($image['alt']); ?>"
+                             loading="<?php echo $index === 0 ? 'eager' : 'lazy'; ?>">
+                    </div>
+                <?php endforeach; ?>
+
+                <?php if (count($gallery_images) > 1) : ?>
+                    <div class="slider-dots">
+                        <?php foreach ($gallery_images as $index => $image) : ?>
+                            <button class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>"
+                                    data-slide="<?php echo $index; ?>"
+                                    aria-label="画像<?php echo $index + 1; ?>へ"></button>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <script>
+                // スライダーの初期化（インライン設定）
+                if (typeof window.shiomachiSliderSettings === 'undefined') {
+                    window.shiomachiSliderSettings = {};
+                }
+                window.shiomachiSliderSettings.interval = <?php echo floatval($slider_interval) * 1000; ?>;
+            </script>
+        </section>
+    <?php endif; ?>
 
     <?php
     // タクソノミーからカテゴリーを動的に取得
@@ -152,30 +208,6 @@ get_header(); ?>
         wp_reset_postdata();
     endforeach; ?>
 
-    <section class="sushi-philosophy">
-        <div class="container">
-            <h2>鮨へのこだわり</h2>
-            <div class="philosophy-grid">
-                <div class="philosophy-item">
-                    <h3>シャリ</h3>
-                    <p>赤酢を使用した伝統の味。人肌の温度で提供</p>
-                </div>
-                <div class="philosophy-item">
-                    <h3>ネタ</h3>
-                    <p>築地・豊洲市場から毎日仕入れる新鮮な魚介</p>
-                </div>
-                <div class="philosophy-item">
-                    <h3>海苔</h3>
-                    <p>有明海産の一番摘み海苔を使用</p>
-                </div>
-                <div class="philosophy-item">
-                    <h3>山葵</h3>
-                    <p>静岡産の本山葵をその都度おろして提供</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="menu-notice">
         <div class="container">
             <div class="notice-content">
@@ -184,35 +216,7 @@ get_header(); ?>
                     <li>仕入れ状況により、ネタが変更になる場合がございます</li>
                     <li>アレルギーをお持ちの方は、事前にお申し付けください</li>
                     <li>カウンター席は予約制となっております</li>
-                    <li>お子様用の握りセットもご用意できます</li>
                 </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="reservation-cta section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>塩町店で、本格江戸前鮨をご堪能ください</h2>
-                <p>
-                    熟練の職人が握る、伝統の味わいをお楽しみいただけます。<br>
-                    カウンター席では職人との会話も魅力の一つです。
-                </p>
-                <div class="contact-info">
-                    <p class="phone-number">
-                        <i class="fas fa-phone"></i>
-                        <?php echo get_theme_mod('shiomachi_phone', '079-223-6879'); ?>
-                    </p>
-                    <p class="business-hours">
-                        営業時間：<?php echo get_theme_mod('shiomachi_hours', '昼 11:30～14:00 / 夜 17:00～22:00'); ?>
-                    </p>
-                </div>
-                <div class="cta-buttons">
-                    <a href="<?php echo home_url('/access/'); ?>" class="btn btn-elegant">
-                        <i class="fas fa-map-marker-alt"></i> アクセス情報を見る
-                    </a>
-                </div>
             </div>
         </div>
     </section>

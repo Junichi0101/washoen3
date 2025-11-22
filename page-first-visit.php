@@ -23,13 +23,15 @@ get_header(); ?>
         <div class="greeting-hero-content">
             <h1 class="greeting-hero-title">和招縁へようこそ</h1>
             <p class="greeting-hero-text">
-                鮮度と真心を一貫に込めたお料理を通じて、皆さまに四季折々の豊かさを感じていただく。<br>
-                瀬戸内海の恵みと職人の技が織りなす、心のこもったおもてなしをお届けします。
+                一貫に込めた"旬"と"ご縁"の心。<br>
+                四季折々の味わいを大切に、<br>
+                お客様とのご縁が深まるひとときをお届けします。<br>
+                <span class="greeting-hero-tagline">― 和み、招き、縁を結ぶ ―</span>
             </p>
         </div>
     </section>
 
-    <!-- 店舗ギャラリースライダー -->
+    <!-- 御料理スライダー -->
     <section class="greeting-gallery section">
         <div class="container">
             <div class="section-header">
@@ -111,9 +113,10 @@ get_header(); ?>
                     endif;
                     ?>
                 </div>
-                <div class="greeting-slider-dots"></div>
+                
             </div>
         </div>
+        <div class="greeting-slider-dots"></div>
     </section>
 
     <!-- CTA（簡潔版） -->

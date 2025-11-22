@@ -9,7 +9,12 @@
 <?php wp_body_open(); ?>
 
     <!-- ヘッダー -->
-    <header class="header" id="header">
+    <?php
+    // ヘッダー表示設定を取得
+    $header_display = get_theme_mod('header_display', true);
+    $header_class = $header_display ? 'header' : 'header header-hidden';
+    ?>
+    <header class="<?php echo esc_attr($header_class); ?>" id="header">
         <div class="header-inner">
             <div class="logo">
                 <?php if (has_custom_logo()) : ?>

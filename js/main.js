@@ -500,6 +500,210 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ==========================================
+    // 福中店・塩町店お品書きギャラリースライダー
+    // ==========================================
+    const menuSlider = document.querySelector('.menu-gallery-slider:not(.shiomachi-slider)');
+    if (menuSlider) {
+        const slides = menuSlider.querySelectorAll('.slider-slide');
+        const dots = menuSlider.querySelectorAll('.slider-dot');
+
+        if (slides.length > 0) {
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            let autoPlayInterval;
+
+            // 設定された切替時間を取得（デフォルト4000ms）
+            const intervalMs = window.menuSliderSettings?.interval || 4000;
+
+            function updateSlider() {
+                // すべてのスライドから active クラスを削除
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+
+                // 現在のスライドに active クラスを追加
+                slides[currentSlide].classList.add('active');
+                if (dots[currentSlide]) {
+                    dots[currentSlide].classList.add('active');
+                }
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }
+
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlider();
+            }
+
+            function goToSlide(index) {
+                currentSlide = index;
+                updateSlider();
+            }
+
+            function startAutoPlay() {
+                autoPlayInterval = setInterval(nextSlide, intervalMs);
+            }
+
+            function stopAutoPlay() {
+                if (autoPlayInterval) {
+                    clearInterval(autoPlayInterval);
+                }
+            }
+
+            function resetAutoPlay() {
+                stopAutoPlay();
+                startAutoPlay();
+            }
+
+            // ドットのイベントリスナー
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                    resetAutoPlay();
+                });
+            });
+
+            // スワイプ対応（タッチデバイス）
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            menuSlider.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            menuSlider.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                if (touchStartX - touchEndX > swipeThreshold) {
+                    nextSlide();
+                    resetAutoPlay();
+                } else if (touchEndX - touchStartX > swipeThreshold) {
+                    prevSlide();
+                    resetAutoPlay();
+                }
+            }
+
+            // マウスホバーで自動再生を一時停止
+            menuSlider.addEventListener('mouseenter', stopAutoPlay);
+            menuSlider.addEventListener('mouseleave', startAutoPlay);
+
+            // 初期化
+            updateSlider();
+            if (totalSlides > 1) {
+                startAutoPlay();
+            }
+        }
+    }
+
+    // ==========================================
+    // 塩町店お品書きギャラリースライダー
+    // ==========================================
+    const shiomachiSlider = document.querySelector('.shiomachi-slider');
+    if (shiomachiSlider) {
+        const slides = shiomachiSlider.querySelectorAll('.slider-slide');
+        const dots = shiomachiSlider.querySelectorAll('.slider-dot');
+
+        if (slides.length > 0) {
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            let autoPlayInterval;
+
+            // 設定された切替時間を取得（デフォルト4000ms）
+            const intervalMs = window.shiomachiSliderSettings?.interval || 4000;
+
+            function updateSlider() {
+                // すべてのスライドから active クラスを削除
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+
+                // 現在のスライドに active クラスを追加
+                slides[currentSlide].classList.add('active');
+                if (dots[currentSlide]) {
+                    dots[currentSlide].classList.add('active');
+                }
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }
+
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlider();
+            }
+
+            function goToSlide(index) {
+                currentSlide = index;
+                updateSlider();
+            }
+
+            function startAutoPlay() {
+                autoPlayInterval = setInterval(nextSlide, intervalMs);
+            }
+
+            function stopAutoPlay() {
+                if (autoPlayInterval) {
+                    clearInterval(autoPlayInterval);
+                }
+            }
+
+            function resetAutoPlay() {
+                stopAutoPlay();
+                startAutoPlay();
+            }
+
+            // ドットのイベントリスナー
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                    resetAutoPlay();
+                });
+            });
+
+            // スワイプ対応（タッチデバイス）
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            shiomachiSlider.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            shiomachiSlider.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                if (touchStartX - touchEndX > swipeThreshold) {
+                    nextSlide();
+                    resetAutoPlay();
+                } else if (touchEndX - touchStartX > swipeThreshold) {
+                    prevSlide();
+                    resetAutoPlay();
+                }
+            }
+
+            // マウスホバーで自動再生を一時停止
+            shiomachiSlider.addEventListener('mouseenter', stopAutoPlay);
+            shiomachiSlider.addEventListener('mouseleave', startAutoPlay);
+
+            // 初期化
+            updateSlider();
+            if (totalSlides > 1) {
+                startAutoPlay();
+            }
+        }
+    }
+
+    // ==========================================
     // コンソールメッセージ
     // ==========================================
     console.log('%c和招縁へようこそ', 'font-size: 24px; font-weight: bold; color: #8b7355;');

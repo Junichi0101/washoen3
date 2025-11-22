@@ -97,6 +97,120 @@ function washouen_scripts() {
 }
 add_action('wp_enqueue_scripts', 'washouen_scripts');
 
+// ==========================================
+// 画像最適化
+// ==========================================
+
+// すべての画像に遅延読み込みを追加（ヒーロー画像以外）
+add_filter('wp_get_attachment_image_attributes', 'washouen_add_lazy_loading', 10, 3);
+function washouen_add_lazy_loading($attr, $attachment, $size) {
+    // ヒーロー画像（home-hero）は遅延読み込みしない
+    if ($size === 'home-hero' || (isset($attr['fetchpriority']) && $attr['fetchpriority'] === 'high')) {
+        $attr['loading'] = 'eager';
+    } elseif (!isset($attr['loading'])) {
+        $attr['loading'] = 'lazy';
+    }
+    return $attr;
+}
+
+// WebP形式への自動変換を有効化
+add_filter('wp_generate_attachment_metadata', 'washouen_create_webp_versions', 10, 2);
+function washouen_create_webp_versions($metadata, $attachment_id) {
+    $file = get_attached_file($attachment_id);
+
+    // JPG、JPEG、PNGファイルのみ処理
+    if (preg_match('/\.(jpg|jpeg|png)$/i', $file)) {
+        $image = wp_get_image_editor($file);
+
+        if (!is_wp_error($image)) {
+            // WebPファイルパスを生成
+            $webp_file = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $file);
+
+            // WebP形式で保存
+            $saved = $image->save($webp_file, 'image/webp');
+
+            // すべてのサイズについてもWebP版を作成
+            if (isset($metadata['sizes']) && is_array($metadata['sizes'])) {
+                $upload_dir = wp_upload_dir();
+                $base_dir = dirname($file);
+
+                foreach ($metadata['sizes'] as $size => $size_data) {
+                    $size_file = $base_dir . '/' . $size_data['file'];
+
+                    if (file_exists($size_file)) {
+                        $size_image = wp_get_image_editor($size_file);
+
+                        if (!is_wp_error($size_image)) {
+                            $size_webp_file = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $size_file);
+                            $size_image->save($size_webp_file, 'image/webp');
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return $metadata;
+}
+
+// レスポンシブ画像の最適化: srcset と sizes 属性を強化
+add_filter('wp_calculate_image_srcset', 'washouen_optimize_srcset', 10, 5);
+function washouen_optimize_srcset($sources, $size_array, $image_src, $image_meta, $attachment_id) {
+    // WebP版が存在する場合は、そちらを優先
+    foreach ($sources as $width => $source) {
+        $webp_url = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $source['url']);
+        $webp_path = str_replace(wp_upload_dir()['baseurl'], wp_upload_dir()['basedir'], $webp_url);
+
+        if (file_exists($webp_path)) {
+            $sources[$width]['url'] = $webp_url;
+        }
+    }
+
+    return $sources;
+}
+
+// <picture>タグを使ってWebPを優先的に読み込む
+// EWWW Image OptimizerのWebP配信機能を使用する場合は、この関数をコメントアウト
+// add_filter('wp_get_attachment_image', 'washouen_webp_picture_tag', 10, 5);
+function washouen_webp_picture_tag($html, $attachment_id, $size, $icon, $attr) {
+    // 画像URLを取得
+    $image = wp_get_attachment_image_src($attachment_id, $size);
+    if (!$image) {
+        return $html;
+    }
+
+    $image_url = $image[0];
+    $upload_dir = wp_upload_dir();
+
+    // EWWW Image Optimizer形式: example.jpg.webp
+    $webp_url = $image_url . '.webp';
+    $webp_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $webp_url);
+
+    // WebPファイルが存在しない場合、標準形式も試す: example.webp
+    if (!file_exists($webp_path)) {
+        $webp_url = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $image_url);
+        $webp_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $webp_url);
+    }
+
+    // WebPファイルが存在する場合のみ<picture>タグに変換
+    if (file_exists($webp_path)) {
+        // 既存の<img>タグから属性を抽出
+        preg_match('/<img([^>]+)>/i', $html, $matches);
+        $img_attributes = isset($matches[1]) ? $matches[1] : '';
+
+        // <picture>タグを生成
+        $picture_html = '<picture>';
+        // data-srcsetとsrcsetの両方を設定（遅延読み込み対応）
+        $picture_html .= '<source type="image/webp" srcset="' . esc_url($webp_url) . '" data-srcset="' . esc_url($webp_url) . '">';
+        $picture_html .= '<img' . $img_attributes . '>';
+        $picture_html .= '</picture>';
+
+        return $picture_html;
+    }
+
+    return $html;
+}
+
 // メニュー編集機能を読み込む
 require_once get_template_directory() . '/inc/menu-editor.php';
 
@@ -282,6 +396,103 @@ function washouen_customize_register($wp_customize) {
         'description' => __('ホームに表示する画像を設定します。', 'washouen'),
     ));
 
+    // ヒーローメッセージ設定セクション
+    $wp_customize->add_section('hero_message_settings', array(
+        'title'       => __('ヒーローメッセージ設定', 'washouen'),
+        'priority'    => 24,
+        'description' => __('トップページのメインビジュアルに表示されるメッセージとアニメーション速度を設定します。', 'washouen'),
+    ));
+
+    // アニメーション実行時間（デフォルト1.2秒）
+    $wp_customize->add_setting('hero_animation_duration', array(
+        'default'           => 1.2,
+        'sanitize_callback' => 'washouen_sanitize_float',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('hero_animation_duration', array(
+        'label'       => __('アニメーション実行時間（秒）', 'washouen'),
+        'description' => __('各テキストが表示される時の動きの速さ（1.0〜5.0秒）', 'washouen'),
+        'section'     => 'hero_message_settings',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1.0,
+            'max'  => 5.0,
+            'step' => 0.1,
+        ),
+    ));
+
+    // 各テキスト間の表示間隔（デフォルト1.0秒）
+    $wp_customize->add_setting('hero_animation_interval', array(
+        'default'           => 1.0,
+        'sanitize_callback' => 'washouen_sanitize_float',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('hero_animation_interval', array(
+        'label'       => __('テキスト表示間隔（秒）', 'washouen'),
+        'description' => __('次のテキストが表示されるまでの待ち時間（0.5〜3.0秒）', 'washouen'),
+        'section'     => 'hero_message_settings',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 0.5,
+            'max'  => 3.0,
+            'step' => 0.1,
+        ),
+    ));
+
+    // ヒーローテキスト1
+    $wp_customize->add_setting('hero_text_1', array(
+        'default'           => '数ある店舗の中から「和招縁」にご関心頂き誠にありがとうございます。',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('hero_text_1', array(
+        'label'       => __('メッセージ 1行目', 'washouen'),
+        'section'     => 'hero_message_settings',
+        'type'        => 'textarea',
+    ));
+
+    // ヒーローテキスト2
+    $wp_customize->add_setting('hero_text_2', array(
+        'default'           => '安全で身体に良い物を吟味し、四季「旬」を大切に、',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('hero_text_2', array(
+        'label'       => __('メッセージ 2行目', 'washouen'),
+        'section'     => 'hero_message_settings',
+        'type'        => 'textarea',
+    ));
+
+    // ヒーローテキスト3
+    $wp_customize->add_setting('hero_text_3', array(
+        'default'           => 'お客様に和みながら美味しく料理を食べて頂きたい。',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('hero_text_3', array(
+        'label'       => __('メッセージ 3行目', 'washouen'),
+        'section'     => 'hero_message_settings',
+        'type'        => 'textarea',
+    ));
+
+    // ヒーローテキスト4
+    $wp_customize->add_setting('hero_text_4', array(
+        'default'           => 'そんな思いを込めて和招縁を開業いたしました。',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('hero_text_4', array(
+        'label'       => __('メッセージ 4行目', 'washouen'),
+        'section'     => 'hero_message_settings',
+        'type'        => 'textarea',
+    ));
+
     // ヒーロー画像（推奨: 1920x1080）
     $wp_customize->add_setting('home_hero_image', array(
         'default'           => 0,
@@ -346,43 +557,11 @@ function washouen_customize_register($wp_customize) {
         )));
     }
 
-    // お品書き セクションアイコン画像（福中店）
-    $wp_customize->add_setting('home_menu_icon_fukunaka', array(
-        'default'           => 0,
-        'sanitize_callback' => 'absint',
-        'transport'         => 'refresh',
-        'type'              => 'theme_mod',
-    ));
-    if (class_exists('WP_Customize_Media_Control')) {
-        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'home_menu_icon_fukunaka', array(
-            'label'       => __('お品書き アイコン画像（福中店）', 'washouen'),
-            'description' => __('推奨サイズ: 48×48（正方形）。未設定時は既存のアイコンを表示します。', 'washouen'),
-            'section'     => 'home_settings',
-            'mime_type'   => 'image',
-        )));
-    }
-
-    // お品書き セクションアイコン画像（塩町店）
-    $wp_customize->add_setting('home_menu_icon_shiomachi', array(
-        'default'           => 0,
-        'sanitize_callback' => 'absint',
-        'transport'         => 'refresh',
-        'type'              => 'theme_mod',
-    ));
-    if (class_exists('WP_Customize_Media_Control')) {
-        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'home_menu_icon_shiomachi', array(
-            'label'       => __('お品書き アイコン画像（塩町店）', 'washouen'),
-            'description' => __('推奨サイズ: 48×48（正方形）。未設定時は既存のアイコンを表示します。', 'washouen'),
-            'section'     => 'home_settings',
-            'mime_type'   => 'image',
-        )));
-    }
-
     // ホームギャラリー設定（店舗ごとに4枚ずつ）
     $wp_customize->add_section('home_gallery_settings', array(
         'title'       => __('ホームギャラリー', 'washouen'),
         'priority'    => 26,
-        'description' => __('トップページの「店舗ギャラリー」に表示する画像を設定できます。推奨サイズ: 400×400（正方形）', 'washouen'),
+        'description' => __('トップページの「御料理」に表示する画像を設定できます。推奨サイズ: 400×400（正方形）', 'washouen'),
     ));
 
     // ギャラリースライダーの切替秒数
@@ -622,18 +801,151 @@ function washouen_customize_register($wp_customize) {
         'section' => 'washouen_store_info',
         'type' => 'url',
     ));
+
+    // ヘッダー設定
+    $wp_customize->add_section('header_settings', array(
+        'title'       => __('ヘッダー設定', 'washouen'),
+        'priority'    => 27,
+        'description' => __('ヘッダーの表示設定', 'washouen'),
+    ));
+
+    // ヘッダー表示オンオフ
+    $wp_customize->add_setting('header_display', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('header_display', array(
+        'label'       => __('ヘッダーを表示', 'washouen'),
+        'description' => __('チェックを外すとヘッダー全体が非表示になります（ハンバーガーメニューは常に表示されます）', 'washouen'),
+        'section'     => 'header_settings',
+        'type'        => 'checkbox',
+    ));
+
+    // 福中店お品書き設定
+    $wp_customize->add_section('fukunaka_menu_settings', array(
+        'title'       => __('福中店お品書き設定', 'washouen'),
+        'priority'    => 28,
+        'description' => __('福中店お品書きページの背景画像とギャラリースライダーの設定', 'washouen'),
+    ));
+
+    // ヘッダー背景画像
+    $wp_customize->add_setting('fukunaka_menu_bg_image', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'fukunaka_menu_bg_image', array(
+            'label'       => __('ヘッダー背景画像', 'washouen'),
+            'description' => __('「福中店 お品書き」ヘッダー部分の背景画像（推奨: 1920×800）', 'washouen'),
+            'section'     => 'fukunaka_menu_settings',
+            'mime_type'   => 'image',
+        )));
+    }
+
+    // スライダー切替時間
+    $wp_customize->add_setting('fukunaka_menu_slider_interval', array(
+        'default'           => 4.0,
+        'sanitize_callback' => 'washouen_sanitize_float',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('fukunaka_menu_slider_interval', array(
+        'label'       => __('スライダー切替時間（秒）', 'washouen'),
+        'description' => __('画像が自動で切り替わる秒数（1.0〜10.0）', 'washouen'),
+        'section'     => 'fukunaka_menu_settings',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1.0,
+            'max'  => 10.0,
+            'step' => 0.1,
+        ),
+    ));
+
+    // ギャラリー画像（最大6枚）
+    for ($i = 1; $i <= 6; $i++) {
+        $setting_id = 'fukunaka_menu_gallery_' . $i;
+        $wp_customize->add_setting($setting_id, array(
+            'default'           => 0,
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+            'type'              => 'theme_mod',
+        ));
+        if (class_exists('WP_Customize_Media_Control')) {
+            $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, $setting_id, array(
+                'label'       => sprintf(__('料理画像 %d', 'washouen'), $i),
+                'description' => __('推奨サイズ: 1920×800（横長）', 'washouen'),
+                'section'     => 'fukunaka_menu_settings',
+                'mime_type'   => 'image',
+            )));
+        }
+    }
+
+    // 塩町店お品書き設定
+    $wp_customize->add_section('shiomachi_menu_settings', array(
+        'title'       => __('塩町店お品書き設定', 'washouen'),
+        'priority'    => 29,
+        'description' => __('塩町店お品書きページの背景画像とギャラリースライダーの設定', 'washouen'),
+    ));
+
+    // ヘッダー背景画像
+    $wp_customize->add_setting('shiomachi_menu_bg_image', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    if (class_exists('WP_Customize_Media_Control')) {
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'shiomachi_menu_bg_image', array(
+            'label'       => __('ヘッダー背景画像', 'washouen'),
+            'description' => __('「塩町店 お品書き」ヘッダー部分の背景画像（推奨: 1920×800）', 'washouen'),
+            'section'     => 'shiomachi_menu_settings',
+            'mime_type'   => 'image',
+        )));
+    }
+
+    // スライダー切替時間
+    $wp_customize->add_setting('shiomachi_menu_slider_interval', array(
+        'default'           => 4.0,
+        'sanitize_callback' => 'washouen_sanitize_float',
+        'transport'         => 'refresh',
+        'type'              => 'theme_mod',
+    ));
+    $wp_customize->add_control('shiomachi_menu_slider_interval', array(
+        'label'       => __('スライダー切替時間（秒）', 'washouen'),
+        'description' => __('画像が自動で切り替わる秒数（1.0〜10.0）', 'washouen'),
+        'section'     => 'shiomachi_menu_settings',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1.0,
+            'max'  => 10.0,
+            'step' => 0.1,
+        ),
+    ));
+
+    // ギャラリー画像（最大6枚）
+    for ($i = 1; $i <= 6; $i++) {
+        $setting_id = 'shiomachi_menu_gallery_' . $i;
+        $wp_customize->add_setting($setting_id, array(
+            'default'           => 0,
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+            'type'              => 'theme_mod',
+        ));
+        if (class_exists('WP_Customize_Media_Control')) {
+            $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, $setting_id, array(
+                'label'       => sprintf(__('料理画像 %d', 'washouen'), $i),
+                'description' => __('推奨サイズ: 1920×800（横長）', 'washouen'),
+                'section'     => 'shiomachi_menu_settings',
+                'mime_type'   => 'image',
+            )));
+        }
+    }
 }
 add_action('customize_register', 'washouen_customize_register');
-
-// 管理画面: お品書きアイコンの推奨サイズ表記を上書き（240×85）
-add_action('customize_register', function($wp_customize) {
-    if (!($wp_customize instanceof WP_Customize_Manager)) return;
-    $desc = '推奨サイズ: 240×85。未設定時は既存のアイコンを表示します。';
-    $c1 = $wp_customize->get_control('home_menu_icon_fukunaka');
-    if ($c1) { $c1->description = $desc; }
-    $c2 = $wp_customize->get_control('home_menu_icon_shiomachi');
-    if ($c2) { $c2->description = $desc; }
-}, 20);
 
 // ページテンプレートの選択肢を追加
 function washouen_page_templates($templates) {

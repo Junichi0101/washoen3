@@ -8,9 +8,16 @@
 
 get_header(); ?>
 
-<main class="main-content">
+<main class="main-content fukunaka-menu-page">
     <!-- ページヘッダー -->
-    <section class="page-header">
+    <?php
+    // ヘッダー背景画像の取得
+    $header_bg_id = get_theme_mod('fukunaka_menu_bg_image', 0);
+    $header_bg_url = $header_bg_id ? wp_get_attachment_image_url($header_bg_id, 'full') : '';
+    $header_bg_style = $header_bg_url ? ' style="background-image: url(' . esc_url($header_bg_url) . ');"' : '';
+    ?>
+    <section class="page-header fukunaka-menu-header"<?php echo $header_bg_style; ?>>
+        <div class="page-header-overlay"></div>
         <div class="page-header-content">
             <h1 class="page-title">福中店 お品書き</h1>
             <p class="page-subtitle">FUKUNAKA MENU</p>
@@ -28,13 +35,65 @@ get_header(); ?>
                         お造り、焼き物、煮付け、唐揚げなど、素材の持ち味を最大限に活かした料理をお楽しみください。
                     </p>
                     <p>
-                        福中店では「生・焼・煮・揚・蒸・にぎり」の6つの調理法で、<br>
-                        天然魚の本当の旨みを色々な形でご堪能いただけます。
+                        福中店では<br>
+                        「生・焼・煮・揚・蒸・にぎり」の6つの調理法で、<br>
+                        魚の本来の旨みを様々な形でご堪能いただけます。
                     </p>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- 料理画像ギャラリースライダー -->
+    <?php
+    // ギャラリー画像を取得
+    $gallery_images = array();
+    for ($i = 1; $i <= 6; $i++) {
+        $image_id = get_theme_mod('fukunaka_menu_gallery_' . $i, 0);
+        if ($image_id) {
+            $image_url = wp_get_attachment_image_url($image_id, 'full');
+            $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+            if ($image_url) {
+                $gallery_images[] = array(
+                    'url' => $image_url,
+                    'alt' => $image_alt ? $image_alt : '福中店の料理'
+                );
+            }
+        }
+    }
+
+    if (!empty($gallery_images)) :
+        $slider_interval = get_theme_mod('fukunaka_menu_slider_interval', 4.0);
+    ?>
+        <section class="menu-gallery-slider">
+            <div class="slider-container">
+                <?php foreach ($gallery_images as $index => $image) : ?>
+                    <div class="slider-slide <?php echo $index === 0 ? 'active' : ''; ?>">
+                        <img src="<?php echo esc_url($image['url']); ?>"
+                             alt="<?php echo esc_attr($image['alt']); ?>"
+                             loading="<?php echo $index === 0 ? 'eager' : 'lazy'; ?>">
+                    </div>
+                <?php endforeach; ?>
+
+                <?php if (count($gallery_images) > 1) : ?>
+                    <div class="slider-dots">
+                        <?php foreach ($gallery_images as $index => $image) : ?>
+                            <button class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>"
+                                    data-slide="<?php echo $index; ?>"
+                                    aria-label="画像<?php echo $index + 1; ?>へ"></button>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <script>
+                // スライダーの初期化（インライン設定）
+                if (typeof window.menuSliderSettings === 'undefined') {
+                    window.menuSliderSettings = {};
+                }
+                window.menuSliderSettings.interval = <?php echo floatval($slider_interval) * 1000; ?>;
+            </script>
+        </section>
+    <?php endif; ?>
 
     <?php
     // タクソノミーからカテゴリーを動的に取得
@@ -128,7 +187,15 @@ get_header(); ?>
                                     </div>
                                 <?php endif; ?>
                                 <div class="menu-card-content">
+                                    <div class="menu-item-header">
                                     <h3 class="menu-card-title"><?php the_title(); ?></h3>
+                                        <?php
+                                        $price = get_post_meta(get_the_ID(), '_menu_price', true);
+                                        if ($price) : ?>
+                                            <span class="menu-leader" aria-hidden="true"></span>
+                                            <span class="menu-item-price"><?php echo ($price === '時価') ? $price : '¥' . esc_html($price); ?></span>
+                                        <?php endif; ?>
+                                    </div>
                                     <?php
                                     $description = get_post_meta(get_the_ID(), '_menu_description', true);
                                     if ($description) : ?>
@@ -245,33 +312,6 @@ get_header(); ?>
                     <li>アレルギーをお持ちの方は、事前にスタッフまでお申し付けください</li>
                     <li>コース料理も承っております。詳しくはお問い合わせください</li>
                 </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="reservation-cta section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>福中店で、本格的な日本料理をお楽しみください</h2>
-                <p>
-                    新鮮な活魚と職人の技で、心を込めたお料理をご提供いたします。<br>
-                    ご予約・お問い合わせはお気軽にどうぞ。
-                </p>
-                <div class="contact-info">
-                    <p class="phone-number">
-                        <i class="fas fa-phone"></i>
-                        <?php echo get_theme_mod('fukunaka_phone', '079-222-5678'); ?>
-                    </p>
-                    <p class="business-hours">
-                        営業時間：<?php echo get_theme_mod('fukunaka_hours', '昼 11:30～14:00 / 夜 17:00～22:00'); ?>
-                    </p>
-                </div>
-                <div class="cta-buttons">
-                    <a href="<?php echo home_url('/access/'); ?>" class="btn btn-elegant">
-                        <i class="fas fa-map-marker-alt"></i> アクセス情報を見る
-                    </a>
-                </div>
             </div>
         </div>
     </section>

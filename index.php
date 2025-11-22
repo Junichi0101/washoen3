@@ -19,18 +19,34 @@ get_header(); ?>
                 </div>
             <?php endif; ?>
             <div class="hero-overlay"></div>
+            <?php
+                // ヒーローメッセージのアニメーション設定を取得
+                $animation_duration = floatval(get_theme_mod('hero_animation_duration', 1.2));
+                $animation_interval = floatval(get_theme_mod('hero_animation_interval', 1.0));
+
+                // ヒーローメッセージテキストを取得
+                $hero_texts = array(
+                    get_theme_mod('hero_text_1', '数ある店舗の中から「和招縁」にご関心頂き誠にありがとうございます。'),
+                    get_theme_mod('hero_text_2', '安全で身体に良い物を吟味し、四季「旬」を大切に、'),
+                    get_theme_mod('hero_text_3', 'お客様に和みながら美味しく料理を食べて頂きたい。'),
+                    get_theme_mod('hero_text_4', 'そんな思いを込めて和招縁を開業いたしました。')
+                );
+            ?>
             <div class="hero-content">
                 <h2 class="hero-title">
-                    <span class="hero-title-main">和招縁の思い</span>
-                    <span class="hero-title-sub">心を込めた、本物の味をお届けします</span>
+                    <span class="hero-title-main">和招縁</span>
+                    <span class="hero-title-sub"></span>
                 </h2>
                 <div class="hero-message">
                     <p>
-                        数ある店舗の中から「和招縁」にご関心頂き誠にありがとうございます。<br>
-                        安全で身体に良い物を吟味し、四季「旬」を大切に、<br>
-                        お客様に和みながら美味しく料理を食べて頂きたい。<br>
-                        和招縁でお会いする方々に素敵なご縁が出来る場所であってほしい。<br>
-                        そんな思いを込めて和招縁を開業いたしました。
+                        <?php
+                        $initial_delay = 0.5;
+                        foreach ($hero_texts as $index => $text) :
+                            if (empty(trim($text))) continue; // 空のテキストはスキップ
+                            $delay = $initial_delay + ($index * $animation_interval);
+                        ?>
+                        <span class="hero-text-line fade-in-text" style="animation-delay: <?php echo esc_attr($delay); ?>s; animation-duration: <?php echo esc_attr($animation_duration); ?>s;"><?php echo esc_html($text); ?></span><?php if ($index < count($hero_texts) - 1) : ?><br><br><?php endif; ?>
+                        <?php endforeach; ?>
                     </p>
                 </div>
                 <div class="hero-buttons">
@@ -128,12 +144,12 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- 店舗ギャラリー -->
+    <!-- 御料理 -->
     <section class="gallery section" id="gallery">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">
-                    <span class="title-ja">店舗ギャラリー</span>
+                    <span class="title-ja">御料理</span>
                     <span class="title-en">GALLERY</span>
                 </h2>
             </div>
@@ -204,53 +220,15 @@ get_header(); ?>
             </div>
             <div class="menu-stores">
                 <div class="menu-store-card">
-                    <?php 
-                        $fukunaka_icon_id = absint(get_theme_mod('home_menu_icon_fukunaka', 0)); 
-                        $fukunaka_style = '';
-                        $fukunaka_has_image = false;
-                        if ($fukunaka_icon_id) {
-                            // 240x85 専用サイズで取得（なければフルサイズにフォールバック）
-                            $fukunaka_icon_url = wp_get_attachment_image_url($fukunaka_icon_id, 'home-menu-icon');
-                            if (!$fukunaka_icon_url) {
-                                $fukunaka_icon_url = wp_get_attachment_image_url($fukunaka_icon_id, 'full');
-                            }
-                            if ($fukunaka_icon_url) {
-                                $fukunaka_has_image = true;
-                                $fukunaka_style = ' style="--msi: url(\'' . esc_url($fukunaka_icon_url) . '\');"';
-                            }
-                        }
-                    ?>
-                    <div class="menu-store-icon<?php echo $fukunaka_has_image ? ' has-image' : ''; ?>"<?php echo $fukunaka_style; ?>>
-                        <i class="fas fa-fire-burner"></i>
-                    </div>
-                    <h3>福中店 - 魚料理</h3>
-                    <p>新鮮な魚介を使用した多彩な料理をご提供しております。</p>
+                    <h3>福中店 - 御料理</h3>
+                    <p>旬の活魚と季節の一品を、想いを込めてご用意しました。</p>
                     <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="menu-link">
                         メニューを見る <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 <div class="menu-store-card">
-                    <?php 
-                        $shiomachi_icon_id = absint(get_theme_mod('home_menu_icon_shiomachi', 0)); 
-                        $shiomachi_style = '';
-                        $shiomachi_has_image = false;
-                        if ($shiomachi_icon_id) {
-                            // 240x85 専用サイズで取得（なければフルサイズにフォールバック）
-                            $shiomachi_icon_url = wp_get_attachment_image_url($shiomachi_icon_id, 'home-menu-icon');
-                            if (!$shiomachi_icon_url) {
-                                $shiomachi_icon_url = wp_get_attachment_image_url($shiomachi_icon_id, 'full');
-                            }
-                            if ($shiomachi_icon_url) {
-                                $shiomachi_has_image = true;
-                                $shiomachi_style = ' style="--msi: url(\'' . esc_url($shiomachi_icon_url) . '\');"';
-                            }
-                        }
-                    ?>
-                    <div class="menu-store-icon<?php echo $shiomachi_has_image ? ' has-image' : ''; ?>"<?php echo $shiomachi_style; ?>>
-                        <i class="fas fa-fish-fins"></i>
-                    </div>
                     <h3>塩町店 - 寿司</h3>
-                    <p>職人の技術が光る、本格的な寿司をお楽しみください。</p>
+                    <p>瀬戸内の恵みと職人の技が織りなす一貫。家島生まれの店主が握る、真心の鮨。</p>
                     <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="menu-link">
                         メニューを見る <i class="fas fa-arrow-right"></i>
                     </a>
@@ -281,25 +259,25 @@ get_header(); ?>
                     <div class="access-info">
                         <p class="address">
                             <i class="fas fa-map-marker-alt"></i>
-                            〒670-0042<br>
-                            兵庫県姫路市米田町15-1 船場東ビル1F
+                            〒670-0017<br>
+                            兵庫県姫路市福中町７８
                         </p>
                         <p class="phone">
                             <i class="fas fa-phone"></i>
                             TEL: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?>
                         </p>
                         <div class="store-map">
-                            <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.9189066509725!2d134.6840093770815!3d34.8331313760934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554e1717b78f897%3A0xf43add4da66fbd2f!2z5ZKM5oub57iB56aP5Lit5bqX!5e0!3m2!1sja!2sjp!4v1755791309900!5m2!1sja!2sjp"
-                                width="100%" 
-                                height="200" 
-                                style="border:0;border-radius:8px;" 
-                                allowfullscreen="" 
-                                loading="lazy" 
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d409.3645983297917!2d134.68632179727203!3d34.83318467623548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554e1717b78f897%3A0xf43add4da66fbd2f!2z5ZKM5oub57iB56aP5Lit5bqX!5e0!3m2!1sja!2sjp!4v1763206350675!5m2!1sja!2sjp"
+                                width="100%"
+                                height="200"
+                                style="border:0;border-radius:8px;"
+                                allowfullscreen=""
+                                loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade">
                             </iframe>
                         </div>
-                        <a href="https://maps.google.com/?q=兵庫県姫路市米田町15-1" target="_blank" rel="noopener" class="btn btn-elegant">
+                        <a href="https://maps.google.com/?q=兵庫県姫路市福中町７８" target="_blank" rel="noopener" class="btn btn-elegant">
                             <i class="fas fa-map"></i> Google Mapで見る
                         </a>
                     </div>
@@ -336,7 +314,7 @@ get_header(); ?>
                 </div>
             </div>
             <div class="access-detail-link">
-                <a href="<?php echo esc_url(home_url('/access/')); ?>" class="btn btn-minimal">詳しい道案内を見る</a>
+                <a href="<?php echo esc_url(home_url('/access/')); ?>" class="menu-link">詳しい道案内を見る</a>
             </div>
         </div>
     </section>

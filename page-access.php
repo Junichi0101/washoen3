@@ -137,7 +137,7 @@ get_header(); ?>
     <section class="cta section">
         <div class="container">
             <div class="cta-content">
-                <h2>心を込めた、本物の味をお届けします</h2>
+                <h2></h2>
                 <p>
                     お客様のご希望やシーンに合わせて、最適な店舗をお選びください。<br>
                     スタッフ一同、心よりお待ちしております。
