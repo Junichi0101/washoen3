@@ -1716,12 +1716,14 @@ a.btn-japanese:hover {
    ページヘッダー（統一デザイン）
    ========================================== */
 .page-header {
-  background: linear-gradient(135deg, #f8f8f8 0%, #1a1a1a 100%);
+  background: linear-gradient(135deg, #f0ebe5 0%, #e8e3db 100%);
   padding: var(--spacing-xxl) 0 var(--spacing-xl);
   margin-top: 80px;
   text-align: center;
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid rgba(139, 115, 85, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .page-header::before {
@@ -1767,16 +1769,18 @@ a.btn-japanese:hover {
 .page-title {
   font-family: var(--font-serif);
   font-size: 3rem;
-  font-weight: 500;
-  color: var(--primary-color);
+  font-weight: 400;
+  color: #3a2f26;
   margin-bottom: var(--spacing-sm);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5),
+               0 2px 4px rgba(58, 47, 38, 0.1);
 }
 
 .page-subtitle {
   font-size: 0.875rem;
   letter-spacing: 0.3em;
-  color: var(--secondary-color);
+  color: rgba(139, 115, 85, 0.75);
   text-transform: uppercase;
   font-weight: 400;
 }
@@ -1799,7 +1803,7 @@ a.btn-japanese:hover {
 
 .main-content {
   min-height: 80vh;
-  background-color: #f8f8f8;
+  background: linear-gradient(180deg, #f0ebe5 0%, #ede8e2 100%);
 }
 
 /* メニューグリッド */
@@ -2340,17 +2344,56 @@ body.page-template-page-first-visit-php
 }
 
 .store-introduction {
-  background-color: var(--bg-light);
+  background: linear-gradient(180deg, #ede8e2 0%, #f0ebe5 100%);
+  position: relative;
+}
+
+.store-introduction::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(157, 139, 112, 0.04) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
 }
 
 .store-detail {
   margin-bottom: var(--spacing-xxl);
+  padding: var(--spacing-xl);
+  background: linear-gradient(145deg, #f5f2ed 0%, #ebe6df 100%);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(90, 74, 58, 0.12),
+              0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(139, 115, 85, 0.2);
+  position: relative;
+}
+
+.store-detail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 70% 30%,
+    rgba(157, 139, 112, 0.03) 0%,
+    transparent 60%
+  );
+  border-radius: 12px;
+  pointer-events: none;
 }
 
 .store-detail-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-xl);
+  gap: calc(var(--spacing-xl) * 1.5);
   align-items: start;
 }
 
@@ -2382,26 +2425,63 @@ body.page-template-page-access .store-detail-info a.btn.btn-japanese {
 
 .store-detail-text h3 {
   font-family: var(--font-serif);
-  font-size: 2rem;
-  font-weight: 500;
-  margin-bottom: var(--spacing-md);
-  color: var(--primary-color);
+  font-size: 2.25rem;
+  font-weight: 400;
+  margin-bottom: var(--spacing-lg);
+  color: #6b5b4a;
+  letter-spacing: 0.12em;
+  text-align: center;
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid rgba(107, 91, 74, 0.25);
+  position: relative;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+.store-detail-text h3::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(107, 91, 74, 0.7),
+    transparent
+  );
 }
 
 .store-detail-text p {
   line-height: 2;
   margin-bottom: var(--spacing-md);
-  color: var(--text-light);
+  color: #3a2f26;
+  font-size: 1.05rem;
 }
 
 .store-detail-info {
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-md);
-  border-top: 2px solid var(--secondary-color);
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: linear-gradient(
+    135deg,
+    rgba(107, 91, 74, 0.08) 0%,
+    rgba(107, 91, 74, 0.04) 100%
+  );
+  border-radius: 8px;
+  border: 1px solid rgba(107, 91, 74, 0.2);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .store-detail-info p {
   margin-bottom: var(--spacing-sm);
+  color: #3a2f26;
+  font-size: 1.05rem;
+}
+
+.store-detail-info p i {
+  color: rgba(107, 91, 74, 0.75);
+  margin-right: var(--spacing-xs);
 }
 
 .store-detail-btn {
@@ -2427,22 +2507,50 @@ body.page-template-page-access .store-detail-info a.btn.btn-japanese {
 
 /* CTA */
 .cta {
-  background: linear-gradient(135deg, #1a1410 0%, #2d2218 50%, #1f1814 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #ebe6df 0%, #e8e3db 100%);
+  color: #3a2f26;
   text-align: center;
+  border-top: 1px solid rgba(107, 91, 74, 0.25);
+  border-bottom: 1px solid rgba(107, 91, 74, 0.25);
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.cta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(107, 91, 74, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
 }
 
 .cta-content h2 {
   font-family: var(--font-serif);
   font-size: 2rem;
   margin-bottom: var(--spacing-sm);
-  color: #ffffff;
+  color: #6b5b4a;
+  letter-spacing: 0.12em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
 }
 
 .cta-content p {
   margin-bottom: var(--spacing-lg);
-  color: #f0f0f0;
+  color: #3a2f26;
   opacity: 1;
+  font-size: 1.05rem;
+  line-height: 1.8;
 }
 
 .cta-buttons {
@@ -2601,6 +2709,83 @@ body.page-template-page-access .store-detail-info a.btn.btn-japanese {
 
 .access-actions .btn {
   min-width: 180px;
+}
+
+/* ==========================================
+   page-access専用スタイル（他ページに影響なし）
+   ========================================== */
+/* 「店舗のご紹介」セクションタイトルの色 */
+body.page-template-page-access-php .store-introduction .section-title .title-ja,
+body.page-template-page-access .store-introduction .section-title .title-ja {
+  color: #3a2f26 !important;
+}
+
+/* 店舗名の色：ダークブラウンで見やすく */
+body.page-template-page-access-php .store-detail-text h3,
+body.page-template-page-access .store-detail-text h3 {
+  color: #5a4a3a !important;
+}
+
+/* 店舗情報ボックス：より濃い背景でコントラスト強化 */
+body.page-template-page-access-php .store-detail-info,
+body.page-template-page-access .store-detail-info {
+  background: linear-gradient(
+    135deg,
+    rgba(90, 74, 58, 0.15) 0%,
+    rgba(90, 74, 58, 0.08) 100%
+  ) !important;
+  border: 1px solid rgba(90, 74, 58, 0.3) !important;
+}
+
+/* Google Mapボタン：濃い茶色背景に白文字で見やすく */
+body.page-template-page-access-php .map-actions .btn-elegant,
+body.page-template-page-access .map-actions .btn-elegant {
+  background-color: #5a4a3a !important;
+  color: #ffffff !important;
+  border: 1px solid #5a4a3a !important;
+}
+
+body.page-template-page-access-php .map-actions .btn-elegant:hover,
+body.page-template-page-access .map-actions .btn-elegant:hover {
+  background-color: #6b5b4a !important;
+  border-color: #6b5b4a !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(90, 74, 58, 0.3) !important;
+}
+
+/* CTAセクションのボタンも同様に調整 */
+body.page-template-page-access-php .cta-buttons .btn-elegant,
+body.page-template-page-access .cta-buttons .btn-elegant {
+  background-color: #5a4a3a !important;
+  color: #ffffff !important;
+  border: 1px solid #5a4a3a !important;
+}
+
+body.page-template-page-access-php .cta-buttons .btn-elegant:hover,
+body.page-template-page-access .cta-buttons .btn-elegant:hover {
+  background-color: #6b5b4a !important;
+  border-color: #6b5b4a !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(90, 74, 58, 0.3) !important;
+}
+
+/* お品書きボタン（btn-japanese）：スマホ版で黄色背景を付ける */
+@media (max-width: 767px) {
+  body.page-template-page-access-php .store-detail-info .btn-japanese,
+  body.page-template-page-access .store-detail-info .btn-japanese {
+    background-color: var(--secondary-color) !important;
+    color: var(--bg-white) !important;
+    border-color: var(--secondary-color) !important;
+  }
+
+  body.page-template-page-access-php .store-detail-info .btn-japanese:hover,
+  body.page-template-page-access .store-detail-info .btn-japanese:hover {
+    background-color: var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
+    transform: translateY(-2px) !important;
+  }
 }
 
 /* 交通案内セクション */
