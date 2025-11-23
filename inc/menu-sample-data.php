@@ -199,6 +199,40 @@ function washouen_generate_fukunaka_sample_data() {
             'description' => '脂の乗った寒ブリを贅沢にしゃぶしゃぶで。ポン酢と紅葉おろしでどうぞ。',
             'is_seasonal' => true,
             'order' => 15
+        ),
+
+        // お飲み物
+        array(
+            'title' => '地酒各種',
+            'category' => 'drink',
+            'price' => '',
+            'description' => '兵庫の地酒を中心に取り揃えております',
+            'is_seasonal' => false,
+            'order' => 16
+        ),
+        array(
+            'title' => 'プレミアム焼酎',
+            'category' => 'drink',
+            'price' => '',
+            'description' => '芋、麦、米焼酎各種',
+            'is_seasonal' => false,
+            'order' => 17
+        ),
+        array(
+            'title' => 'ビール',
+            'category' => 'drink',
+            'price' => '600',
+            'description' => '各種ご用意しております',
+            'is_seasonal' => false,
+            'order' => 18
+        ),
+        array(
+            'title' => 'ソフトドリンク',
+            'category' => 'drink',
+            'price' => '400',
+            'description' => 'ウーロン茶、オレンジジュース、コーラなど',
+            'is_seasonal' => false,
+            'order' => 19
         )
     );
     
@@ -399,6 +433,40 @@ function washouen_generate_shiomachi_sample_data() {
             'description' => '塩茹でした枝豆。お酒のお供に。',
             'origin' => '',
             'order' => 21
+        ),
+
+        // お飲み物
+        array(
+            'title' => '地酒各種',
+            'category' => 'drink',
+            'price' => '',
+            'description' => '鮨に合う兵庫の地酒を中心に取り揃えております',
+            'origin' => '',
+            'order' => 22
+        ),
+        array(
+            'title' => 'プレミアム焼酎',
+            'category' => 'drink',
+            'price' => '',
+            'description' => '芋、麦、米焼酎各種',
+            'origin' => '',
+            'order' => 23
+        ),
+        array(
+            'title' => 'ビール',
+            'category' => 'drink',
+            'price' => '600',
+            'description' => '各種ご用意しております',
+            'origin' => '',
+            'order' => 24
+        ),
+        array(
+            'title' => 'ソフトドリンク',
+            'category' => 'drink',
+            'price' => '400',
+            'description' => 'ウーロン茶、オレンジジュース、コーラなど',
+            'origin' => '',
+            'order' => 25
         )
     );
     

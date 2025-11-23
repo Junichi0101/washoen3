@@ -1,0 +1,91 @@
+<?php
+/**
+ * 既存カテゴリーの順序を初期化するスクリプト
+ *
+ * このファイルを一度だけ実行して、既存のカテゴリーに順序を設定します。
+ * 実行後は削除するか、コメントアウトしてください。
+ *
+ * 実行方法: ブラウザで以下のURLにアクセス
+ * http://yoursite.com/wp-content/themes/washoen3/init-category-order.php
+ *
+ * @package Washouen
+ */
+
+// WordPressを読み込む
+require_once('../../../wp-load.php');
+
+// 管理者権限チェック
+if (!current_user_can('manage_options')) {
+    die('権限がありません。');
+}
+
+echo '<h1>カテゴリー順序の初期化</h1>';
+echo '<p>既存のカテゴリーに順序を設定します...</p>';
+
+// 福中店のカテゴリー順序
+$fukunaka_orders = array(
+    'course' => 10,
+    'sashimi' => 20,
+    'grilled' => 30,
+    'simmered' => 40,
+    'fried' => 50,
+    'special' => 60,
+    'drink' => 70
+);
+
+echo '<h2>福中店カテゴリー</h2>';
+echo '<ul>';
+
+$fukunaka_terms = get_terms(array(
+    'taxonomy' => 'fukunaka_category',
+    'hide_empty' => false,
+));
+
+if (!empty($fukunaka_terms) && !is_wp_error($fukunaka_terms)) {
+    foreach ($fukunaka_terms as $term) {
+        $order = isset($fukunaka_orders[$term->slug]) ? $fukunaka_orders[$term->slug] : 100;
+        update_term_meta($term->term_id, 'category_order', $order);
+        echo '<li>' . esc_html($term->name) . ' (順序: ' . $order . ') - 更新しました</li>';
+    }
+}
+
+echo '</ul>';
+
+// 塩町店のカテゴリー順序
+$shiomachi_orders = array(
+    'nigiri' => 10,
+    'gunkan' => 20,
+    'chirashi' => 30,
+    'omakase' => 40,
+    'side' => 50,
+    'drink' => 60
+);
+
+echo '<h2>塩町店カテゴリー</h2>';
+echo '<ul>';
+
+$shiomachi_terms = get_terms(array(
+    'taxonomy' => 'shiomachi_category',
+    'hide_empty' => false,
+));
+
+if (!empty($shiomachi_terms) && !is_wp_error($shiomachi_terms)) {
+    foreach ($shiomachi_terms as $term) {
+        $order = isset($shiomachi_orders[$term->slug]) ? $shiomachi_orders[$term->slug] : 100;
+        update_term_meta($term->term_id, 'category_order', $order);
+        echo '<li>' . esc_html($term->name) . ' (順序: ' . $order . ') - 更新しました</li>';
+    }
+}
+
+echo '</ul>';
+
+echo '<h2>完了しました！</h2>';
+echo '<p>カテゴリーの順序を管理画面から変更するには:</p>';
+echo '<ol>';
+echo '<li>WordPress管理画面にログイン</li>';
+echo '<li>「福中店 お品書き」→「メニューカテゴリー」または「塩町店 お品書き」→「メニューカテゴリー」をクリック</li>';
+echo '<li>変更したいカテゴリーをクリック</li>';
+echo '<li>「表示順序」フィールドで順序番号を変更</li>';
+echo '<li>「更新」ボタンをクリック</li>';
+echo '</ol>';
+echo '<p style="color: red;"><strong>注意:</strong> このスクリプトは一度だけ実行してください。実行後はこのファイルを削除するか、リネームしてください。</p>';

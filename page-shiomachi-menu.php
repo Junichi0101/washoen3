@@ -99,6 +99,9 @@ get_header(); ?>
         'hide_empty' => false,
     ));
 
+    // カテゴリーを順序でソート
+    $terms = washouen_sort_terms_by_order($terms);
+
     // デフォルトカテゴリーのメタ情報（アイコンと説明）
     $default_category_meta = array(
         'nigiri' => array(

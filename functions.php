@@ -76,10 +76,10 @@ function washouen_scripts() {
     wp_enqueue_style('washouen-theme', get_stylesheet_uri(), array('washouen-google-fonts', 'font-awesome'), wp_get_theme()->get('Version'));
     
     // メインスタイルシート
-    wp_enqueue_style('washouen-main', get_template_directory_uri() . '/css/style.css', array('washouen-theme'), '1.0.0');
-    
+    wp_enqueue_style('washouen-main', get_template_directory_uri() . '/css/style.css', array('washouen-theme'), '1.0.2');
+
     // レスポンシブスタイルシート
-    wp_enqueue_style('washouen-responsive', get_template_directory_uri() . '/css/responsive.css', array('washouen-main'), '1.0.0');
+    wp_enqueue_style('washouen-responsive', get_template_directory_uri() . '/css/responsive.css', array('washouen-main'), '1.0.2');
     
     // JavaScriptファイル（jQueryに依存しない）
     wp_enqueue_script('washouen-main', get_template_directory_uri() . '/js/main.js', array(), '1.0.0', true);
@@ -219,6 +219,9 @@ require_once get_template_directory() . '/inc/menu-sample-data.php';
 
 // インポート/エクスポート機能を読み込む
 require_once get_template_directory() . '/inc/menu-import-export.php';
+
+// カテゴリー順序管理機能を読み込む
+require_once get_template_directory() . '/inc/category-order.php';
 
 // カスタム投稿タイプ: メニュー
 function washouen_custom_post_types() {

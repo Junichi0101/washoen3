@@ -50,9 +50,40 @@ get_header(); ?>
                     </p>
                 </div>
                 <div class="hero-buttons">
-                    <a href="<?php echo esc_url(home_url('/first-visit/')); ?>" class="btn btn-elegant">ご挨拶</a>
+                    <a href="<?php echo esc_url(home_url('/first-visit/')); ?>" class="btn btn-japanese">ご挨拶</a>
                     <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="btn btn-japanese">福中店 お品書き</a>
                     <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="btn btn-japanese">塩町店 お品書き</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ご予約 -->
+    <section class="reservation section" id="reservation">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-ja">ご予約</span>
+                    <span class="title-en">RESERVATION</span>
+                </h2>
+                <p class="section-description">お電話にてご予約を承っております</p>
+            </div>
+            <div class="reservation-cards">
+                <div class="reservation-card">
+                    <h3 class="reservation-store-name">福中店</h3>
+                    <div class="reservation-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <a href="tel:0792225678" class="phone-number"><?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?></a>
+                    </div>
+                    <p class="reservation-note">お気軽にお電話ください</p>
+                </div>
+                <div class="reservation-card">
+                    <h3 class="reservation-store-name">塩町店</h3>
+                    <div class="reservation-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <a href="tel:0792236879" class="phone-number"><?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?></a>
+                    </div>
+                    <p class="reservation-note">お気軽にお電話ください</p>
                 </div>
             </div>
         </div>
@@ -99,7 +130,10 @@ get_header(); ?>
                             </ul>
                         </div>
                         <div class="store-contact">
-                            <p><i class="fas fa-phone"></i> お電話: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?></p>
+                            <div class="store-reservation-info">
+                                <p class="reservation-label"><i class="fas fa-phone-alt"></i> ご予約・お問い合わせ</p>
+                                <a href="tel:0792225678" class="store-phone-number"><?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?></a>
+                            </div>
                             <a href="<?php echo esc_url(home_url('/fukunaka-menu/')); ?>" class="menu-link">メニューを見る <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                         </div>
                     </div>
@@ -135,7 +169,10 @@ get_header(); ?>
                             </ul>
                         </div>
                         <div class="store-contact">
-                            <p><i class="fas fa-phone"></i> お電話: <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?></p>
+                            <div class="store-reservation-info">
+                                <p class="reservation-label"><i class="fas fa-phone-alt"></i> ご予約・お問い合わせ</p>
+                                <a href="tel:0792236879" class="store-phone-number"><?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?></a>
+                            </div>
                             <a href="<?php echo esc_url(home_url('/shiomachi-menu/')); ?>" class="menu-link">メニューを見る <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                         </div>
                     </div>

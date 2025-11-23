@@ -102,6 +102,9 @@ get_header(); ?>
         'hide_empty' => false,
     ));
 
+    // カテゴリーを順序でソート
+    $terms = washouen_sort_terms_by_order($terms);
+
     // デフォルトカテゴリーのメタ情報（アイコンと説明）
     $default_category_meta = array(
         'course' => array(
@@ -217,91 +220,6 @@ get_header(); ?>
         <?php endif;
         wp_reset_postdata();
     endforeach; ?>
-
-    <!-- Static menu items as fallback or examples -->
-    <?php /*
-    <section class="menu-category" id="static-menu">
-        <div class="container">
-            <div class="category-header">
-                <h2 class="category-title">本日のおすすめ</h2>
-                <p class="category-description">市場直送の新鮮な魚介類</p>
-            </div>
-
-            <div class="menu-grid">
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <div class="menu-item-header">
-                            <h3 class="menu-item-name">瀬戸内産 天然鯛</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-item-description">お造り、焼き物、煮付けからお選びいただけます</p>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <div class="menu-item-header">
-                            <h3 class="menu-item-name">活きアワビ</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-item-description">踊り焼き、またはお造りで</p>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <div class="menu-item-header">
-                            <h3 class="menu-item-name">天然ヒラメ</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-item-description">薄造り、または昆布締め</p>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <div class="menu-item-header">
-                            <h3 class="menu-item-name">車海老</h3>
-                            <span class="menu-leader" aria-hidden="true"></span>
-                            <span class="menu-item-price">時価</span>
-                        </div>
-                        <p class="menu-item-description">活き造り、塩焼き、天ぷら</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="menu-category">
-        <div class="container">
-            <div class="category-header">
-                <h2 class="category-title">お飲み物</h2>
-                <p class="category-description">料理に合う厳選された日本酒・焼酎</p>
-            </div>
-
-            <div class="menu-grid">
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <h3 class="menu-item-name">地酒各種</h3>
-                        <p class="menu-item-description">兵庫の地酒を中心に取り揃えております</p>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <h3 class="menu-item-name">プレミアム焼酎</h3>
-                        <p class="menu-item-description">芋、麦、米焼酎各種</p>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-item-content">
-                        <h3 class="menu-item-name">ビール・ソフトドリンク</h3>
-                        <p class="menu-item-description">各種ご用意しております</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    */ ?>
 
     <section class="menu-notice">
         <div class="container">

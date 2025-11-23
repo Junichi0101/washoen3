@@ -61,6 +61,69 @@
         </div>
     </footer>
 
+    <!-- フローティング予約ボタン -->
+    <div class="floating-reservation">
+        <button class="floating-reservation-btn" id="floatingReservationBtn" aria-label="予約する">
+            <i class="fas fa-phone-alt"></i>
+            <span>ご予約</span>
+        </button>
+        <div class="floating-reservation-menu" id="floatingReservationMenu">
+            <div class="floating-reservation-header">
+                <h3>ご予約</h3>
+                <button class="close-btn" id="closeReservationMenu" aria-label="閉じる">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="floating-reservation-options">
+                <a href="tel:0792225678" class="reservation-option">
+                    <div class="reservation-option-store">福中店</div>
+                    <div class="reservation-option-phone">
+                        <i class="fas fa-phone"></i>
+                        <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?>
+                    </div>
+                </a>
+                <a href="tel:0792236879" class="reservation-option">
+                    <div class="reservation-option-store">塩町店</div>
+                    <div class="reservation-option-phone">
+                        <i class="fas fa-phone"></i>
+                        <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // フローティング予約ボタンの制御
+    (function() {
+        const floatingBtn = document.getElementById('floatingReservationBtn');
+        const floatingMenu = document.getElementById('floatingReservationMenu');
+        const closeBtn = document.getElementById('closeReservationMenu');
+
+        if (floatingBtn && floatingMenu) {
+            floatingBtn.addEventListener('click', function() {
+                floatingMenu.classList.toggle('active');
+                floatingBtn.classList.toggle('active');
+            });
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    floatingMenu.classList.remove('active');
+                    floatingBtn.classList.remove('active');
+                });
+            }
+
+            // メニュー外をクリックしたら閉じる
+            document.addEventListener('click', function(e) {
+                if (!floatingBtn.contains(e.target) && !floatingMenu.contains(e.target)) {
+                    floatingMenu.classList.remove('active');
+                    floatingBtn.classList.remove('active');
+                }
+            });
+        }
+    })();
+    </script>
+
     <?php wp_footer(); ?>
 </body>
 </html>

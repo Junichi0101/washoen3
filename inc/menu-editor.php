@@ -126,6 +126,12 @@ function washouen_fukunaka_menu_meta_box($post) {
         </label>
         <p class="menu-help">季節限定の場合はチェックしてください。</p>
     </div>
+
+    <div class="menu-meta-field">
+        <label for="menu_order">表示順序</label>
+        <input type="number" id="menu_order" name="menu_order" value="<?php echo esc_attr($post->menu_order); ?>" min="0" step="1" style="max-width: 100px;">
+        <p class="menu-help">数字が小さいほど上に表示されます。一覧画面でドラッグ&ドロップでも変更できます。</p>
+    </div>
     <?php
 }
 
@@ -219,6 +225,12 @@ function washouen_shiomachi_menu_meta_box($post) {
         </select>
         <p class="menu-help">カテゴリーは「塩町店 お品書き」→「メニューカテゴリー」から追加・編集できます。</p>
     </div>
+
+    <div class="menu-meta-field">
+        <label for="menu_order">表示順序</label>
+        <input type="number" id="menu_order" name="menu_order" value="<?php echo esc_attr($post->menu_order); ?>" min="0" step="1" style="max-width: 100px;">
+        <p class="menu-help">数字が小さいほど上に表示されます。一覧画面でドラッグ&ドロップでも変更できます。</p>
+    </div>
     <?php
 }
 
@@ -268,6 +280,24 @@ function washouen_save_menu_meta($post_id) {
     if (isset($_POST['menu_origin'])) {
         update_post_meta($post_id, '_menu_origin', sanitize_text_field($_POST['menu_origin']));
     }
+
+    // 表示順序を保存
+    if (isset($_POST['menu_order'])) {
+        $order = intval($_POST['menu_order']);
+
+        // 無限ループを防ぐため、一時的にフックを削除
+        remove_action('save_post_fukunaka_menu', 'washouen_save_menu_meta');
+        remove_action('save_post_shiomachi_menu', 'washouen_save_menu_meta');
+
+        wp_update_post(array(
+            'ID' => $post_id,
+            'menu_order' => $order
+        ));
+
+        // フックを再度追加
+        add_action('save_post_fukunaka_menu', 'washouen_save_menu_meta');
+        add_action('save_post_shiomachi_menu', 'washouen_save_menu_meta');
+    }
 }
 add_action('save_post_fukunaka_menu', 'washouen_save_menu_meta');
 add_action('save_post_shiomachi_menu', 'washouen_save_menu_meta');
@@ -278,6 +308,7 @@ function washouen_add_menu_columns($columns) {
     foreach ($columns as $key => $value) {
         $new_columns[$key] = $value;
         if ($key == 'title') {
+            $new_columns['menu_order'] = '順序';
             $new_columns['price'] = '価格';
             $new_columns['category'] = 'カテゴリー';
         }
@@ -290,6 +321,10 @@ add_filter('manage_shiomachi_menu_posts_columns', 'washouen_add_menu_columns');
 // カスタムカラムにデータを表示
 function washouen_show_menu_columns($column, $post_id) {
     switch ($column) {
+        case 'menu_order':
+            $post = get_post($post_id);
+            echo esc_html($post->menu_order);
+            break;
         case 'price':
             $price = get_post_meta($post_id, '_menu_price', true);
             echo $price ? '¥' . esc_html($price) : '—';
@@ -319,6 +354,7 @@ add_action('manage_shiomachi_menu_posts_custom_column', 'washouen_show_menu_colu
 
 // ソート可能にする
 function washouen_sortable_menu_columns($columns) {
+    $columns['menu_order'] = 'menu_order';
     $columns['price'] = 'price';
     $columns['category'] = 'category';
     return $columns;
@@ -331,13 +367,20 @@ function washouen_menu_orderby($query) {
     if (!is_admin() || !$query->is_main_query()) {
         return;
     }
-    
-    if ($query->get('orderby') == 'price') {
+
+    $orderby = $query->get('orderby');
+
+    if ($orderby == 'menu_order') {
+        $query->set('orderby', 'menu_order');
+        $query->set('order', 'ASC');
+    }
+
+    if ($orderby == 'price') {
         $query->set('meta_key', '_menu_price');
         $query->set('orderby', 'meta_value_num');
     }
-    
-    if ($query->get('orderby') == 'category') {
+
+    if ($orderby == 'category') {
         $query->set('meta_key', '_menu_category');
         $query->set('orderby', 'meta_value');
     }

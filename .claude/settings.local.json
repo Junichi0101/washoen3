@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Read(/C:\\xampp\\htdocs\\my_blog\\wordpress\\wp-content\\themes/**)",
-      "Bash(php:*)"
+      "Bash(php:*)",
+      "Bash(dir:*)",
+      "Bash(ren:*)"
     ],
     "deny": [],
     "ask": []

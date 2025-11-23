@@ -53,11 +53,15 @@ jQuery(document).ready(function($) {
         
         // ヘルプテキストを追加
         if ($('.tablenav.top').length && !$('#sort-help').length) {
-            $('.tablenav.top').before(
-                '<div id="sort-help" class="notice notice-info" style="margin: 10px 0;">' +
-                '<p><strong>ヒント:</strong> タイトル列をドラッグ&ドロップして、メニューの表示順序を変更できます。</p>' +
-                '</div>'
-            );
+            var helpText = '<div id="sort-help" class="notice notice-info" style="margin: 10px 0;">' +
+                '<p><strong>ヒント:</strong></p>' +
+                '<ul style="margin-left: 20px;">' +
+                '<li>タイトル列をドラッグ&ドロップして、メニューの表示順序を変更できます。</li>' +
+                '<li>カテゴリーでフィルタリングすると、そのカテゴリー内での順序を変更できます。</li>' +
+                '<li>各メニュー項目の編集画面で、順序番号を直接入力することもできます。</li>' +
+                '</ul>' +
+                '</div>';
+            $('.tablenav.top').before(helpText);
         }
     }
 });
