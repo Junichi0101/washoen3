@@ -28,13 +28,13 @@ get_header(); ?>
     <section class="welcome-message section">
         <div class="container">
             <div class="welcome-content">
-                <h2 class="welcome-title">家島育ちの店主が紡ぐ、瀬戸内・島の鮨</h2>
+                <h2 class="welcome-title">気取らない鮨の魅力を、ゆっくりと</h2>
                 <div class="welcome-text">
                     <p>
-                        瀬戸内海の島・家島で育った店主が、島の恵みと熟練の技を大切に、一貫一貫、心を込めて鮨を握っております。
+                        敷居を低く、肩肘張らずに本格的な鮨を楽しんでいただきたい。
                     </p>
                     <p>
-                        気取らず、しかし本格的。そんな“島の鮨”の魅力を、塩町にてゆっくりとご堪能ください。
+                        瀬戸内の恵みを活かした握りを、落ち着いた空間でゆっくりとご堪能ください。
                     </p>
                 </div>
             </div>
@@ -162,48 +162,194 @@ get_header(); ?>
         );
         $menu_items = new WP_Query($args);
 
-        if ($menu_items->have_posts()) : ?>
+        if ($menu_items->have_posts()) :
+            // メニューアイテムをグループ別に整理
+            $grouped_items = array();
+            $ungrouped_items = array();
+
+            while ($menu_items->have_posts()) : $menu_items->the_post();
+                $group_id = get_post_meta(get_the_ID(), '_menu_group_id', true);
+                $item_data = array(
+                    'id' => get_the_ID(),
+                    'title' => get_the_title(),
+                    'price' => get_post_meta(get_the_ID(), '_menu_price', true),
+                    'description' => get_post_meta(get_the_ID(), '_menu_description', true),
+                    'origin' => get_post_meta(get_the_ID(), '_menu_origin', true),
+                    'seasonal_type' => get_post_meta(get_the_ID(), '_menu_seasonal_type', true),
+                    'is_seasonal' => get_post_meta(get_the_ID(), '_menu_is_seasonal', true),
+                    'is_group_image' => get_post_meta(get_the_ID(), '_menu_is_group_image', true),
+                    'has_thumbnail' => has_post_thumbnail(),
+                    'thumbnail' => has_post_thumbnail() ? get_the_post_thumbnail(get_the_ID(), 'medium', array('loading' => 'lazy', 'alt' => get_the_title())) : '',
+                    'menu_order' => get_post_field('menu_order', get_the_ID())
+                );
+
+                if (!empty($group_id)) {
+                    if (!isset($grouped_items[$group_id])) {
+                        $grouped_items[$group_id] = array(
+                            'items' => array(),
+                            'min_order' => $item_data['menu_order']
+                        );
+                    }
+                    $grouped_items[$group_id]['items'][] = $item_data;
+                    if ($item_data['menu_order'] < $grouped_items[$group_id]['min_order']) {
+                        $grouped_items[$group_id]['min_order'] = $item_data['menu_order'];
+                    }
+                } else {
+                    $ungrouped_items[] = $item_data;
+                }
+            endwhile;
+
+            // グループと個別アイテムを表示順でマージ
+            $display_items = array();
+
+            foreach ($grouped_items as $group_id => $group_data) {
+                $display_items[] = array(
+                    'type' => 'group',
+                    'group_id' => $group_id,
+                    'items' => $group_data['items'],
+                    'order' => $group_data['min_order']
+                );
+            }
+
+            foreach ($ungrouped_items as $item) {
+                $display_items[] = array(
+                    'type' => 'single',
+                    'item' => $item,
+                    'order' => $item['menu_order']
+                );
+            }
+
+            // 表示順でソート
+            usort($display_items, function($a, $b) {
+                return $a['order'] - $b['order'];
+            });
+            ?>
             <section class="menu-category sushi-category" id="<?php echo esc_attr($category_slug); ?>">
                 <div class="container">
                     <div class="category-header">
                         <span class="category-icon"><?php echo $category_info['icon']; ?></span>
                         <h2 class="category-title"><?php echo esc_html($category_info['title']); ?></h2>
-                        <p class="category-description"><?php echo esc_html($category_info['description']); ?></p>
+                        <p class="category-description"><?php echo wp_kses_post($category_info['description']); ?></p>
                     </div>
 
-                    <div class="menu-grid">
-                        <?php while ($menu_items->have_posts()) : $menu_items->the_post(); ?>
-                            <div class="menu-card">
-                                <?php if (has_post_thumbnail()) : ?>
-                                    <div class="menu-card-image">
-                                        <?php the_post_thumbnail('medium', array('loading' => 'lazy', 'alt' => get_the_title())); ?>
-                                    </div>
-                                <?php endif; ?>
-                                <div class="menu-card-content">
-                                    <div class="menu-item-header">
-                                    <h3 class="menu-card-title"><?php the_title(); ?></h3>
-                                        <?php 
-                                        $price = get_post_meta(get_the_ID(), '_menu_price', true);
-                                        if ($price) : ?>
-                                            <span class="menu-leader" aria-hidden="true"></span>
-                                            <span class="menu-item-price"><?php echo ($price === '時価') ? $price : '¥' . esc_html($price); ?></span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="menu-card-meta">
-                                        <?php 
-                                        $origin = get_post_meta(get_the_ID(), '_menu_origin', true);
-                                        if ($origin) : ?>
-                                            <span class="menu-badge origin"><?php echo esc_html($origin); ?></span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <?php 
-                                    $description = get_post_meta(get_the_ID(), '_menu_description', true);
-                                    if ($description) : ?>
-                                        <p class="menu-card-description"><?php echo esc_html($description); ?></p>
+                    <div class="menu-grid" data-nosnippet>
+                        <?php foreach ($display_items as $display_item) :
+                            if ($display_item['type'] === 'group') :
+                                // グループカード
+                                $group_items = $display_item['items'];
+                                // グループ内でmenu_orderでソート
+                                usort($group_items, function($a, $b) {
+                                    return $a['menu_order'] - $b['menu_order'];
+                                });
+
+                                // 代表画像を取得
+                                $group_image = '';
+                                foreach ($group_items as $g_item) {
+                                    if ($g_item['is_group_image'] == '1' && $g_item['has_thumbnail']) {
+                                        $group_image = $g_item['thumbnail'];
+                                        break;
+                                    }
+                                }
+                                // 代表画像がなければ最初の画像を使用
+                                if (empty($group_image)) {
+                                    foreach ($group_items as $g_item) {
+                                        if ($g_item['has_thumbnail']) {
+                                            $group_image = $g_item['thumbnail'];
+                                            break;
+                                        }
+                                    }
+                                }
+                                ?>
+                                <div class="menu-card menu-card-group">
+                                    <?php if (!empty($group_image)) : ?>
+                                        <div class="menu-card-image">
+                                            <?php echo $group_image; ?>
+                                        </div>
                                     <?php endif; ?>
+                                    <div class="menu-card-content menu-group-content">
+                                        <?php foreach ($group_items as $g_item) :
+                                            // 季節限定タグの後方互換性
+                                            $seasonal_type = $g_item['seasonal_type'];
+                                            if (empty($seasonal_type) && $g_item['is_seasonal'] == '1') {
+                                                $seasonal_type = 'seasonal';
+                                            }
+                                            ?>
+                                            <div class="menu-group-item">
+                                                <div class="menu-item-header">
+                                                    <h3 class="menu-card-title"><?php echo esc_html($g_item['title']); ?></h3>
+                                                    <?php if ($g_item['price']) : ?>
+                                                        <span class="menu-leader" aria-hidden="true"></span>
+                                                        <span class="menu-item-price"><?php echo ($g_item['price'] === '時価') ? $g_item['price'] : '¥' . esc_html($g_item['price']); ?></span>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <?php if (!empty($seasonal_type) || !empty($g_item['origin'])) : ?>
+                                                    <div class="menu-card-meta">
+                                                        <?php if ($seasonal_type == 'seasonal') : ?>
+                                                            <span class="menu-badge seasonal">季節限定</span>
+                                                        <?php elseif ($seasonal_type == 'summer') : ?>
+                                                            <span class="menu-badge summer">夏季限定</span>
+                                                        <?php elseif ($seasonal_type == 'winter') : ?>
+                                                            <span class="menu-badge winter">冬季限定</span>
+                                                        <?php endif; ?>
+                                                        <?php if ($g_item['origin']) : ?>
+                                                            <span class="menu-badge origin"><?php echo esc_html($g_item['origin']); ?></span>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                                <?php if ($g_item['description']) : ?>
+                                                    <p class="menu-card-description"><?php echo esc_html($g_item['description']); ?></p>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
-                            </div>
-                        <?php endwhile; ?>
+                            <?php else :
+                                // 個別カード（従来通り）
+                                $item = $display_item['item'];
+                                $seasonal_type = $item['seasonal_type'];
+                                if (empty($seasonal_type) && $item['is_seasonal'] == '1') {
+                                    $seasonal_type = 'seasonal';
+                                }
+                                $card_classes = 'menu-card';
+                                if (!$item['has_thumbnail']) {
+                                    $card_classes .= ' menu-card-no-image';
+                                }
+                                ?>
+                                <div class="<?php echo esc_attr($card_classes); ?>">
+                                    <?php if ($item['has_thumbnail']) : ?>
+                                        <div class="menu-card-image">
+                                            <?php echo $item['thumbnail']; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="menu-card-content">
+                                        <div class="menu-item-header">
+                                            <h3 class="menu-card-title"><?php echo esc_html($item['title']); ?></h3>
+                                            <?php if ($item['price']) : ?>
+                                                <span class="menu-leader" aria-hidden="true"></span>
+                                                <span class="menu-item-price"><?php echo ($item['price'] === '時価') ? $item['price'] : '¥' . esc_html($item['price']); ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <?php if (!empty($seasonal_type) || !empty($item['origin'])) : ?>
+                                            <div class="menu-card-meta">
+                                                <?php if ($seasonal_type == 'seasonal') : ?>
+                                                    <span class="menu-badge seasonal">季節限定</span>
+                                                <?php elseif ($seasonal_type == 'summer') : ?>
+                                                    <span class="menu-badge summer">夏季限定</span>
+                                                <?php elseif ($seasonal_type == 'winter') : ?>
+                                                    <span class="menu-badge winter">冬季限定</span>
+                                                <?php endif; ?>
+                                                <?php if ($item['origin']) : ?>
+                                                    <span class="menu-badge origin"><?php echo esc_html($item['origin']); ?></span>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($item['description']) : ?>
+                                            <p class="menu-card-description"><?php echo esc_html($item['description']); ?></p>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif;
+                        endforeach; ?>
                     </div>
                 </div>
             </section>
@@ -216,9 +362,9 @@ get_header(); ?>
             <div class="notice-content">
                 <h3>ご案内</h3>
                 <ul>
+                    <li>表示価格はすべて税込みです</li>
                     <li>仕入れ状況により、ネタが変更になる場合がございます</li>
                     <li>アレルギーをお持ちの方は、事前にお申し付けください</li>
-                    <li>カウンター席は予約制となっております</li>
                 </ul>
             </div>
         </div>

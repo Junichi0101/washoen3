@@ -63,7 +63,7 @@ get_header(); ?>
 
                     // 塩町店の画像データ
                     $shiomachi_images = array();
-                    $shiomachi_labels = array('外観', 'カウンター', '握り', '料理');
+                    $shiomachi_labels = array('外観', 'カウンター', '鮨', '一品料理');
                     for ($i = 1; $i <= 4; $i++) {
                         $img_id = get_theme_mod('first_visit_shiomachi_' . $i, 0);
                         if ($img_id) {
@@ -73,7 +73,7 @@ get_header(); ?>
                                 'label' => $shiomachi_labels[$i - 1],
                                 'phone' => get_theme_mod('shiomachi_phone', '079-223-6879'),
                                 'address' => get_theme_mod('shiomachi_address', '〒670-0904 兵庫県姫路市塩町177 アールビル1F'),
-                                'description' => '本格江戸前鮨',
+                                'description' => '本格鮨',
                             );
                         }
                     }

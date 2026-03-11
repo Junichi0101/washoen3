@@ -37,7 +37,17 @@ function washouen_fukunaka_menu_meta_box($post) {
     $price = get_post_meta($post->ID, '_menu_price', true);
     $description = get_post_meta($post->ID, '_menu_description', true);
     $is_seasonal = get_post_meta($post->ID, '_menu_is_seasonal', true);
+    $seasonal_type = get_post_meta($post->ID, '_menu_seasonal_type', true);
+    // 後方互換性: 旧データの場合、is_seasonal=1ならseasonal_type='seasonal'に変換
+    if ($is_seasonal == '1' && empty($seasonal_type)) {
+        $seasonal_type = 'seasonal';
+    }
     $category = get_post_meta($post->ID, '_menu_category', true);
+    $group_id = get_post_meta($post->ID, '_menu_group_id', true);
+    $is_group_image = get_post_meta($post->ID, '_menu_is_group_image', true);
+
+    // 既存のグループIDを取得
+    $existing_groups = washouen_get_existing_group_ids('fukunaka_menu');
     ?>
     <style>
         .menu-meta-field {
@@ -67,8 +77,59 @@ function washouen_fukunaka_menu_meta_box($post) {
             font-size: 13px;
             margin-top: 5px;
         }
+        .menu-group-settings {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .menu-group-settings h4 {
+            margin: 0 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .group-id-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .group-id-wrapper input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+        }
+        .group-id-wrapper select {
+            min-width: 200px;
+        }
     </style>
-    
+
+    <div class="menu-group-settings">
+        <h4>グループ設定（複数メニューで1画像を共有）</h4>
+        <div class="menu-meta-field">
+            <label for="menu_group_id">グループID</label>
+            <div class="group-id-wrapper">
+                <input type="text" id="menu_group_id" name="menu_group_id" value="<?php echo esc_attr($group_id); ?>" placeholder="例: course-matsu">
+                <?php if (!empty($existing_groups)) : ?>
+                    <select id="menu_group_id_select" onchange="document.getElementById('menu_group_id').value = this.value;">
+                        <option value="">既存グループから選択...</option>
+                        <?php foreach ($existing_groups as $gid) : ?>
+                            <option value="<?php echo esc_attr($gid); ?>" <?php selected($group_id, $gid); ?>><?php echo esc_html($gid); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php endif; ?>
+            </div>
+            <p class="menu-help">同じグループIDを持つメニューは1つのカードにまとめて表示されます。空欄の場合は個別表示。</p>
+        </div>
+        <div class="menu-meta-field">
+            <label>
+                <input type="checkbox" name="menu_is_group_image" value="1" <?php checked($is_group_image, '1'); ?>>
+                このメニューの画像をグループの代表画像として使用
+            </label>
+            <p class="menu-help">グループ内の1つのメニューにチェックを入れてください。</p>
+        </div>
+    </div>
+
     <div class="menu-meta-field">
         <label for="menu_price">価格</label>
         <input type="text" id="menu_price" name="menu_price" value="<?php echo esc_attr($price); ?>" placeholder="例: 1,200 または 時価">
@@ -118,13 +179,16 @@ function washouen_fukunaka_menu_meta_box($post) {
         </select>
         <p class="menu-help">カテゴリーは「福中店 お品書き」→「メニューカテゴリー」から追加・編集できます。</p>
     </div>
-    
+
     <div class="menu-meta-field">
-        <label>
-            <input type="checkbox" class="menu-meta-checkbox" id="menu_is_seasonal" name="menu_is_seasonal" value="1" <?php checked($is_seasonal, '1'); ?>>
-            季節限定メニュー
-        </label>
-        <p class="menu-help">季節限定の場合はチェックしてください。</p>
+        <label for="menu_seasonal_type">季節限定タグ</label>
+        <select id="menu_seasonal_type" name="menu_seasonal_type">
+            <option value="" <?php selected($seasonal_type, ''); ?>>なし</option>
+            <option value="seasonal" <?php selected($seasonal_type, 'seasonal'); ?>>季節限定</option>
+            <option value="summer" <?php selected($seasonal_type, 'summer'); ?>>夏季限定</option>
+            <option value="winter" <?php selected($seasonal_type, 'winter'); ?>>冬季限定</option>
+        </select>
+        <p class="menu-help">季節限定のタグを選択してください。</p>
     </div>
 
     <div class="menu-meta-field">
@@ -138,11 +202,22 @@ function washouen_fukunaka_menu_meta_box($post) {
 // 塩町店お品書きメタボックスの内容
 function washouen_shiomachi_menu_meta_box($post) {
     wp_nonce_field('washouen_save_menu_meta', 'washouen_menu_nonce');
-    
+
     $price = get_post_meta($post->ID, '_menu_price', true);
     $description = get_post_meta($post->ID, '_menu_description', true);
     $origin = get_post_meta($post->ID, '_menu_origin', true);
+    $is_seasonal = get_post_meta($post->ID, '_menu_is_seasonal', true);
+    $seasonal_type = get_post_meta($post->ID, '_menu_seasonal_type', true);
+    // 後方互換性: 旧データの場合、is_seasonal=1ならseasonal_type='seasonal'に変換
+    if ($is_seasonal == '1' && empty($seasonal_type)) {
+        $seasonal_type = 'seasonal';
+    }
     $category = get_post_meta($post->ID, '_menu_category', true);
+    $group_id = get_post_meta($post->ID, '_menu_group_id', true);
+    $is_group_image = get_post_meta($post->ID, '_menu_is_group_image', true);
+
+    // 既存のグループIDを取得
+    $existing_groups = washouen_get_existing_group_ids('shiomachi_menu');
     ?>
     <style>
         .menu-meta-field {
@@ -163,32 +238,86 @@ function washouen_shiomachi_menu_meta_box($post) {
         .menu-meta-field textarea {
             height: 100px;
         }
+        .menu-meta-checkbox {
+            margin-right: 5px;
+        }
         .menu-help {
             color: #666;
             font-style: italic;
             font-size: 13px;
             margin-top: 5px;
         }
+        .menu-group-settings {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .menu-group-settings h4 {
+            margin: 0 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .group-id-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .group-id-wrapper input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+        }
+        .group-id-wrapper select {
+            min-width: 200px;
+        }
     </style>
-    
+
+    <div class="menu-group-settings">
+        <h4>グループ設定（複数メニューで1画像を共有）</h4>
+        <div class="menu-meta-field">
+            <label for="menu_group_id">グループID</label>
+            <div class="group-id-wrapper">
+                <input type="text" id="menu_group_id" name="menu_group_id" value="<?php echo esc_attr($group_id); ?>" placeholder="例: course-matsu">
+                <?php if (!empty($existing_groups)) : ?>
+                    <select id="menu_group_id_select" onchange="document.getElementById('menu_group_id').value = this.value;">
+                        <option value="">既存グループから選択...</option>
+                        <?php foreach ($existing_groups as $gid) : ?>
+                            <option value="<?php echo esc_attr($gid); ?>" <?php selected($group_id, $gid); ?>><?php echo esc_html($gid); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php endif; ?>
+            </div>
+            <p class="menu-help">同じグループIDを持つメニューは1つのカードにまとめて表示されます。空欄の場合は個別表示。</p>
+        </div>
+        <div class="menu-meta-field">
+            <label>
+                <input type="checkbox" name="menu_is_group_image" value="1" <?php checked($is_group_image, '1'); ?>>
+                このメニューの画像をグループの代表画像として使用
+            </label>
+            <p class="menu-help">グループ内の1つのメニューにチェックを入れてください。</p>
+        </div>
+    </div>
+
     <div class="menu-meta-field">
         <label for="menu_price">価格</label>
         <input type="text" id="menu_price" name="menu_price" value="<?php echo esc_attr($price); ?>" placeholder="例: 800 または 時価">
         <p class="menu-help">価格を入力してください。「時価」と入力することも可能です。</p>
     </div>
-    
+
     <div class="menu-meta-field">
         <label for="menu_description">説明</label>
         <textarea id="menu_description" name="menu_description" placeholder="ネタの説明を入力してください"><?php echo esc_textarea($description); ?></textarea>
         <p class="menu-help">ネタの特徴や産地などを記載してください。</p>
     </div>
-    
+
     <div class="menu-meta-field">
         <label for="menu_origin">産地</label>
         <input type="text" id="menu_origin" name="menu_origin" value="<?php echo esc_attr($origin); ?>" placeholder="例: 北海道産">
         <p class="menu-help">産地を入力してください（任意）。</p>
     </div>
-    
+
     <div class="menu-meta-field">
         <label for="menu_category">カテゴリー</label>
         <select id="menu_category" name="menu_category">
@@ -224,6 +353,17 @@ function washouen_shiomachi_menu_meta_box($post) {
             ?>
         </select>
         <p class="menu-help">カテゴリーは「塩町店 お品書き」→「メニューカテゴリー」から追加・編集できます。</p>
+    </div>
+
+    <div class="menu-meta-field">
+        <label for="menu_seasonal_type">季節限定タグ</label>
+        <select id="menu_seasonal_type" name="menu_seasonal_type">
+            <option value="" <?php selected($seasonal_type, ''); ?>>なし</option>
+            <option value="seasonal" <?php selected($seasonal_type, 'seasonal'); ?>>季節限定</option>
+            <option value="summer" <?php selected($seasonal_type, 'summer'); ?>>夏季限定</option>
+            <option value="winter" <?php selected($seasonal_type, 'winter'); ?>>冬季限定</option>
+        </select>
+        <p class="menu-help">季節限定のタグを選択してください。</p>
     </div>
 
     <div class="menu-meta-field">
@@ -272,14 +412,29 @@ function washouen_save_menu_meta($post_id) {
         }
     }
     
-    // 福中店用フィールド
-    $is_seasonal = isset($_POST['menu_is_seasonal']) ? '1' : '0';
-    update_post_meta($post_id, '_menu_is_seasonal', $is_seasonal);
-    
+    // 季節限定タグ（福中店・塩町店共通）
+    if (isset($_POST['menu_seasonal_type'])) {
+        $seasonal_type = sanitize_text_field($_POST['menu_seasonal_type']);
+        update_post_meta($post_id, '_menu_seasonal_type', $seasonal_type);
+
+        // 後方互換性のため、_menu_is_seasonalも更新
+        $is_seasonal = !empty($seasonal_type) ? '1' : '0';
+        update_post_meta($post_id, '_menu_is_seasonal', $is_seasonal);
+    }
+
     // 塩町店用フィールド
     if (isset($_POST['menu_origin'])) {
         update_post_meta($post_id, '_menu_origin', sanitize_text_field($_POST['menu_origin']));
     }
+
+    // グループ設定（福中店・塩町店共通）
+    if (isset($_POST['menu_group_id'])) {
+        update_post_meta($post_id, '_menu_group_id', sanitize_text_field($_POST['menu_group_id']));
+    }
+
+    // グループ代表画像
+    $is_group_image = isset($_POST['menu_is_group_image']) ? '1' : '0';
+    update_post_meta($post_id, '_menu_is_group_image', $is_group_image);
 
     // 表示順序を保存
     if (isset($_POST['menu_order'])) {
@@ -456,3 +611,27 @@ function washouen_menu_default_order($query) {
     }
 }
 add_action('pre_get_posts', 'washouen_menu_default_order', 20);
+
+/**
+ * 既存のグループIDを取得
+ *
+ * @param string $post_type 投稿タイプ（fukunaka_menu または shiomachi_menu）
+ * @return array グループIDの配列
+ */
+function washouen_get_existing_group_ids($post_type) {
+    global $wpdb;
+
+    $group_ids = $wpdb->get_col($wpdb->prepare(
+        "SELECT DISTINCT pm.meta_value
+         FROM {$wpdb->postmeta} pm
+         INNER JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+         WHERE pm.meta_key = '_menu_group_id'
+         AND pm.meta_value != ''
+         AND p.post_type = %s
+         AND p.post_status = 'publish'
+         ORDER BY pm.meta_value ASC",
+        $post_type
+    ));
+
+    return $group_ids ? $group_ids : array();
+}

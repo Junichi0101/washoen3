@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // メニューアイテムにもアニメーションを適用
-    const animatedItems = document.querySelectorAll('.menu-category, .course-item, .store-card, .gallery-item');
+    const animatedItems = document.querySelectorAll('.menu-category, .course-item, .store-card, .gallery-item, .usage-guide-card');
     animatedItems.forEach((item, index) => {
         item.classList.add('fade-in');
         item.style.transitionDelay = `${index * 0.1}s`;
@@ -274,6 +274,59 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         const intervalMs = Math.round(intervalSeconds * 1000); // ミリ秒に変換
+
+        // 各スライドの画像にスケールを適用（EWWW対策：親要素のCSS変数から取得）
+        function applyImageScales() {
+            console.log('[Gallery] applyImageScales called');
+            gallerySlides.forEach((slide, index) => {
+                // 親要素のCSS変数 --img-scale を取得
+                const computedStyle = getComputedStyle(slide);
+                const scaleValue = computedStyle.getPropertyValue('--img-scale');
+                console.log(`[Gallery] Slide ${index}: --img-scale = "${scaleValue}"`);
+                if (scaleValue && scaleValue.trim()) {
+                    const scale = parseFloat(scaleValue);
+                    if (!isNaN(scale) && Math.abs(scale - 1.0) > 0.01) {
+                        const img = slide.querySelector('img');
+                        if (img) {
+                            console.log(`[Gallery] Applying scale ${scale} to image in slide ${index}`);
+                            // setPropertyでimportantを指定
+                            img.style.setProperty('transform-origin', 'center center', 'important');
+                            img.style.setProperty('transform', `scale(${scale})`, 'important');
+                            // 強制再描画
+                            img.offsetHeight;
+                        }
+                    }
+                }
+            });
+        }
+
+        // 初回適用
+        applyImageScales();
+
+        // 少し遅延して再適用（EWWW対策）
+        setTimeout(applyImageScales, 100);
+        setTimeout(applyImageScales, 500);
+        setTimeout(applyImageScales, 1000);
+
+        // EWWW遅延読み込み対応：画像読み込み完了後に再適用
+        gallerySlides.forEach(slide => {
+            const img = slide.querySelector('img');
+            if (img) {
+                img.addEventListener('load', () => {
+                    console.log('[Gallery] Image loaded, reapplying scales');
+                    applyImageScales();
+                });
+            }
+        });
+
+        // MutationObserverでEWWWによるDOM変更を監視
+        const observer = new MutationObserver((mutations) => {
+            console.log('[Gallery] DOM mutation detected', mutations);
+            applyImageScales();
+        });
+        gallerySlides.forEach(slide => {
+            observer.observe(slide, { childList: true, subtree: true, attributes: true });
+        });
 
         // ドットナビゲーションを生成
         if (galleryDotsContainer) {
@@ -702,6 +755,69 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+
+    // ==========================================
+    // ダークモード検出とロゴ切り替え
+    // ==========================================
+    (function initDarkMode() {
+        // OSのダークモード設定を検出
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // 保存されているユーザー設定を確認
+        const savedTheme = localStorage.getItem('washouen-theme');
+
+        // テーマを適用する関数
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                // 'auto' またはnullの場合はOSの設定に従う
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+
+        // 初期テーマを適用
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        }
+
+        // OSのダークモード設定が変更された場合の処理
+        prefersDark.addEventListener('change', function(e) {
+            // ユーザーが手動で設定していない場合のみ自動切り替え
+            const savedTheme = localStorage.getItem('washouen-theme');
+            if (!savedTheme || savedTheme === 'auto') {
+                // CSSのメディアクエリが自動で処理するため、特別な処理は不要
+                console.log('[DarkMode] OS設定が変更されました:', e.matches ? 'dark' : 'light');
+            }
+        });
+
+        // グローバル関数として公開（将来の手動切り替えボタン用）
+        window.washoenDarkMode = {
+            // 現在のテーマを取得
+            getTheme: function() {
+                return localStorage.getItem('washouen-theme') || 'auto';
+            },
+
+            // テーマを設定
+            setTheme: function(theme) {
+                if (['light', 'dark', 'auto'].includes(theme)) {
+                    localStorage.setItem('washouen-theme', theme);
+                    applyTheme(theme);
+                    console.log('[DarkMode] テーマを設定しました:', theme);
+                }
+            },
+
+            // ダークモードかどうかを判定
+            isDark: function() {
+                const savedTheme = localStorage.getItem('washouen-theme');
+                if (savedTheme === 'dark') return true;
+                if (savedTheme === 'light') return false;
+                return prefersDark.matches;
+            }
+        };
+    })();
 
     // ==========================================
     // コンソールメッセージ

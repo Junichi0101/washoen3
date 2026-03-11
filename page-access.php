@@ -30,6 +30,7 @@ get_header(); ?>
             <!-- 福中店 -->
             <div class="store-detail">
                 <div class="store-detail-content">
+                    <?php $fukunaka_exterior_id = absint(get_theme_mod('fukunaka_exterior_image', 0)); ?>
                     <div class="store-detail-text">
                         <h3>福中店</h3>
                         <p>
@@ -45,13 +46,18 @@ get_header(); ?>
                             様々なシーンに対応できる空間をご用意しております。
                         </p>
                         <div class="store-detail-info">
-                            <p><i class="fas fa-map-marker-alt"></i> <?php echo esc_html(get_theme_mod('fukunaka_address', '〒670-0042 兵庫県姫路市米田町15-1 船場東ビル1F')); ?></p>
-                            <p><i class="fas fa-phone"></i> TEL: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?></p>
+                            <p><i class="fas fa-map-marker-alt"></i> <?php echo esc_html(get_theme_mod('fukunaka_address', '〒670-0017 兵庫県姫路市福中町78')); ?></p>
+                            <p><i class="fas fa-phone"></i> TEL: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-284-5355')); ?></p>
                             <a href="<?php echo home_url('/fukunaka-menu/'); ?>" class="btn btn-japanese">福中店 お品書きを見る</a>
                         </div>
                     </div>
                     <div class="store-detail-images">
-                        <?php 
+                        <?php if ($fukunaka_exterior_id) : ?>
+                            <div class="store-exterior">
+                                <?php echo wp_get_attachment_image($fukunaka_exterior_id, 'large', false, array('class' => 'exterior-image', 'alt' => '福中店 外観')); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php
                         $fukunaka_raw = get_theme_mod('fukunaka_map_url', '');
                         $fukunaka_src = washouen_get_map_embed_src($fukunaka_raw);
                         // Fallback（念のため）
@@ -68,8 +74,8 @@ get_header(); ?>
                                 aria-label="Google Maps"
                             ></iframe>
                         </div>
-                        <?php 
-                        $fukunaka_addr = get_theme_mod('fukunaka_address', '兵庫県姫路市米田町15-1');
+                        <?php
+                        $fukunaka_addr = get_theme_mod('fukunaka_address', '兵庫県姫路市福中町78');
                         $fukunaka_maps_link = 'https://maps.google.com/?q=' . rawurlencode($fukunaka_addr);
                         ?>
                         <div class="map-actions">
@@ -84,6 +90,7 @@ get_header(); ?>
             <!-- 塩町店 -->
             <div class="store-detail reverse">
                 <div class="store-detail-content">
+                    <?php $shiomachi_exterior_id = absint(get_theme_mod('shiomachi_exterior_image', 0)); ?>
                     <div class="store-detail-text">
                         <h3>塩町店</h3>
                         <p>
@@ -94,7 +101,7 @@ get_header(); ?>
                             その地元の恵みを最大限に活かし、店主のひと手間を加えた熟練の技で、<br>
                             素材の旨みを引き出した握りを一貫ずつ、真心を込めてお届けいたします。
                         </p>
-                        
+
                         <div class="store-detail-info">
                             <p><i class="fas fa-map-marker-alt"></i> <?php echo esc_html(get_theme_mod('shiomachi_address', '〒670-0904 兵庫県姫路市塩町177 アールビル1F')); ?></p>
                             <p><i class="fas fa-phone"></i> TEL: <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?></p>
@@ -102,7 +109,12 @@ get_header(); ?>
                         </div>
                     </div>
                     <div class="store-detail-images">
-                        <?php 
+                        <?php if ($shiomachi_exterior_id) : ?>
+                            <div class="store-exterior">
+                                <?php echo wp_get_attachment_image($shiomachi_exterior_id, 'large', false, array('class' => 'exterior-image', 'alt' => '塩町店 外観')); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php
                         $shiomachi_raw = get_theme_mod('shiomachi_map_url', '');
                         $shiomachi_src = washouen_get_map_embed_src($shiomachi_raw);
                         if (!$shiomachi_src) {

@@ -6,40 +6,46 @@
                 <div class="footer-stores">
                     <div class="footer-store">
                         <h4>福中店</h4>
+                        <?php
+                            $fukunaka_phone_footer = get_theme_mod('fukunaka_phone', '079-284-5355');
+                            $fukunaka_tel_footer = preg_replace('/[^0-9]/', '', $fukunaka_phone_footer);
+                        ?>
                         <p class="store-tel">
-                            <i class="fas fa-phone"></i> 
-                            TEL: <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-284-5355')); ?>
+                            <a href="tel:<?php echo esc_attr($fukunaka_tel_footer); ?>" class="tel-link">
+                                <i class="fas fa-phone"></i>
+                                TEL: <?php echo esc_html($fukunaka_phone_footer); ?>
+                            </a>
                         </p>
                         <p class="store-address">
                             <?php echo esc_html(get_theme_mod('fukunaka_address', '〒670-0017 兵庫県姫路市福中町78')); ?>
                         </p>
+                        <p class="store-hours-inline">
+                            <i class="fas fa-clock"></i>
+                            営業時間：18:00 ~ 1:00(L.O 0:30)
+                        </p>
                     </div>
                     <div class="footer-store">
                         <h4>塩町店</h4>
+                        <?php
+                            $shiomachi_phone_footer = get_theme_mod('shiomachi_phone', '079-223-6879');
+                            $shiomachi_tel_footer = preg_replace('/[^0-9]/', '', $shiomachi_phone_footer);
+                        ?>
                         <p class="store-tel">
-                            <i class="fas fa-phone"></i> 
-                            TEL: <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?>
+                            <a href="tel:<?php echo esc_attr($shiomachi_tel_footer); ?>" class="tel-link">
+                                <i class="fas fa-phone"></i>
+                                TEL: <?php echo esc_html($shiomachi_phone_footer); ?>
+                            </a>
                         </p>
                         <p class="store-address">
                             <?php echo esc_html(get_theme_mod('shiomachi_address', '〒670-0904 兵庫県姫路市塩町177 アールビル1F')); ?>
                         </p>
+                        <p class="store-hours-inline">
+                            <i class="fas fa-clock"></i>
+                            営業時間：18:00 ~ 2:00(L.O 1:30)
+                        </p>
                     </div>
                 </div>
-
-                <!-- 営業時間 -->
-                <div class="footer-hours">
-                    <h4>営業時間</h4>
-                    <div class="store-hours">
-                        <h5>福中店</h5>
-                        <p><?php echo nl2br(esc_html(get_theme_mod('fukunaka_hours', "昼：11:30～14:00\n夜：17:00～22:00"))); ?></p>
-                        <p class="holiday">定休日：<?php echo esc_html(get_theme_mod('fukunaka_closed', '月曜日')); ?></p>
-                    </div>
-                    <div class="store-hours">
-                        <h5>塩町店</h5>
-                        <p><?php echo nl2br(esc_html(get_theme_mod('shiomachi_hours', "昼：11:30～14:00\n夜：17:00～22:00"))); ?></p>
-                        <p class="holiday">定休日：<?php echo esc_html(get_theme_mod('shiomachi_closed', '火曜日')); ?></p>
-                    </div>
-                </div>
+                <p class="footer-notice">※ネタ、シャリが無くなり次第閉店になることがございますので、ご了承ください。</p>
             </div>
 
             <!-- メニューリンク -->
@@ -75,18 +81,24 @@
                 </button>
             </div>
             <div class="floating-reservation-options">
-                <a href="tel:0792225678" class="reservation-option">
+                <?php
+                    $fukunaka_phone = get_theme_mod('fukunaka_phone', '079-284-5355');
+                    $shiomachi_phone = get_theme_mod('shiomachi_phone', '079-223-6879');
+                    $fukunaka_tel = preg_replace('/[^0-9]/', '', $fukunaka_phone);
+                    $shiomachi_tel = preg_replace('/[^0-9]/', '', $shiomachi_phone);
+                ?>
+                <a href="tel:<?php echo esc_attr($fukunaka_tel); ?>" class="reservation-option">
                     <div class="reservation-option-store">福中店</div>
                     <div class="reservation-option-phone">
                         <i class="fas fa-phone"></i>
-                        <?php echo esc_html(get_theme_mod('fukunaka_phone', '079-222-5678')); ?>
+                        <?php echo esc_html($fukunaka_phone); ?>
                     </div>
                 </a>
-                <a href="tel:0792236879" class="reservation-option">
+                <a href="tel:<?php echo esc_attr($shiomachi_tel); ?>" class="reservation-option">
                     <div class="reservation-option-store">塩町店</div>
                     <div class="reservation-option-phone">
                         <i class="fas fa-phone"></i>
-                        <?php echo esc_html(get_theme_mod('shiomachi_phone', '079-223-6879')); ?>
+                        <?php echo esc_html($shiomachi_phone); ?>
                     </div>
                 </a>
             </div>

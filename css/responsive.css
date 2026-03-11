@@ -9,8 +9,13 @@
     padding: 0 var(--spacing-md);
   }
 
-  .nav-menu ul {
-    gap: var(--spacing-md);
+  .nav-menu ul,
+  .nav-menu-list {
+    gap: 0.45rem;
+  }
+
+  .nav-menu a {
+    font-size: 0.78rem;
   }
 
   /* ヒーロー */
@@ -139,6 +144,11 @@
   }
 
   .nav-menu a::after {
+    display: none;
+  }
+
+  .nav-menu .menu-item-has-news-dropdown::after,
+  .nav-menu .news-dropdown {
     display: none;
   }
 
